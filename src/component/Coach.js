@@ -6,7 +6,7 @@ import AcademyNavbar from './AcademyNavbar.js'; // Assuming you already have thi
 import './Style.css';
 
 const Coach = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
   const { academyId, role } = useParams(); // Get the academyId from the URL
   const [coaches, setCoaches] = useState([]);
@@ -22,7 +22,7 @@ const Coach = () => {
         setError('Failed to load coach details.');
         console.error('Error fetching coach data:', error);
       });
-  }, [API_BASE_URL ,academyId]);
+  }, [academyId]);
 
   return (
     <div>

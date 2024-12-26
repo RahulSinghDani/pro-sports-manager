@@ -21,7 +21,7 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 
 const AcademyDetails = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
   const { role, academyId } = useParams(); // Get the academy_id from the URL
   // console.log(role);
@@ -44,7 +44,7 @@ const AcademyDetails = () => {
     };
 
     fetchTotalPlayers();
-  }, [API_BASE_URL]);
+  }, []);
 
 
 
@@ -59,7 +59,7 @@ const AcademyDetails = () => {
         console.error('Error fetching data:', error); // Log the error object
         setError('Failed to load academy details.');
       });
-  }, [API_BASE_URL ,academyId]);
+  }, [academyId]);
 
   if (error) {
     return <div>{error}</div>;

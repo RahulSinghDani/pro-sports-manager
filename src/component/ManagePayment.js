@@ -6,7 +6,7 @@ import './Style.css';
 import { styles } from "./Style";
 
 const ManagePayment = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
     const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ const ManagePayment = () => {
         };
 
         fetchAllRecords();
-    }, [API_BASE_URL]);
+    }, []);
 
     const handleSearch = async () => {
         try {

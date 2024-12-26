@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const PublicBookings = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ const PublicBookings = () => {
                 setError('Failed to load booking data.');
                 setLoading(false);
             });
-    }, [API_BASE_URL]);
+    }, []);
 
     // Show loading message while data is being fetched
     if (loading) {

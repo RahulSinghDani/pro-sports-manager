@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams, useNavigate,Link } from "react-router-dom";
 
 const EditPlayer = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
   const { academyId,role } = useParams(); // Academy ID from URL
   const navigate = useNavigate(); // For redirection
@@ -39,7 +39,7 @@ const EditPlayer = () => {
       }
     };
     fetchBatches();
-  }, [API_BASE_URL ,academyId]);
+  }, [academyId]);
 
   // Fetch Player Details only on button click
   const fetchPlayerDetails = async () => {
@@ -79,7 +79,7 @@ const EditPlayer = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/editPlayer/${academyId}/${playerId}`,
+        `${API_BASE_URL}/api/editPlayer/${academyId}/${playerId}`,
         playerData
       );
       if (response.status === 200) {

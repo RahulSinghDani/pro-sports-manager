@@ -4,7 +4,7 @@ import AcademyNavbar from './AcademyNavbar.js';
 import { Link ,useParams} from 'react-router-dom';
 
 const Player = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
   const { academyId,role } = useParams(); // Get the academy_id from the URL
   const [totalPlayers, setTotalPlayers] = useState(0);
@@ -28,7 +28,7 @@ const Player = () => {
     };
 
     fetchTotalPlayers();
-}, [API_BASE_URL]);
+}, []);
 
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const Player = () => {
         setError('Failed to load player details.');
         setLoading(false); // Stop loading even on error
       });
-  }, [API_BASE_URL ,academyId]);
+  }, [academyId]);
 
   // Show loading spinner or message while fetching data
   if (loading) {

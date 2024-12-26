@@ -11,7 +11,7 @@ import defaultprofile from "./Images/playerpng.png"; // Import the background im
 
 
 const HomeAllPlayerDashboard = () => {
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
     const [players, setPlayers] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true); // Add a loading state
@@ -40,7 +40,7 @@ const HomeAllPlayerDashboard = () => {
                 setError('Failed to load player details.');
                 setLoading(false); // Stop loading even on error
             });
-    }, [API_BASE_URL]);
+    }, []);
 
     // Show loading spinner or message while fetching data
     if (loading) {

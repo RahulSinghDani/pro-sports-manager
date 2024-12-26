@@ -7,7 +7,7 @@ import { useParams, Link, useLocation } from 'react-router-dom';
 import defaultImage from "./Images/playerpng.png"; // Import the default image
 
 const LoginPlayerDashboard = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
     const { role, academy_id, id } = useParams();
     const [totalPlayers, setTotalPlayers] = useState(0);
@@ -32,14 +32,14 @@ const LoginPlayerDashboard = () => {
         };
 
         fetchTotalPlayers();
-    }, [API_BASE_URL]);
+    }, []);
 
 
     //Player by academy id AND id
     useEffect(() => {
         const fetchPlayerData = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/allPlayers/${academy_id}/${id}`);
+                const response = await axios.get(`${API_BASE_URL}/api/allPlayers/${academy_id}/${id}`);
                 setPlayerData(response.data);
             } catch (error) {
                 console.error("Error fetching Data : ", error);

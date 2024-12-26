@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import AcademyNavbar from './AcademyNavbar';
 
 const AcademyAssets = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
     const { academyId,role } = useParams(); // to get the academy id from URL
     const [asset, setAsset] = useState([]); // Change "Asset" to "asset" (lowercase first letter for consistency)
@@ -24,7 +24,7 @@ const AcademyAssets = () => {
                 setError('Failed to load asset details.');
                 setLoading(false); // Set loading to false if there's an error
             });
-    }, [API_BASE_URL ,academyId]);
+    }, [academyId]);
 
     if (loading) {
         return <div>Loading...</div>; // Show loading text while fetching

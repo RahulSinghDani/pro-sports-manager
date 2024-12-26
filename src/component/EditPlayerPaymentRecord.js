@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
 const EditPlayerPaymentRecord = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
     
     const {academyId, role, id } = useParams(); // Get booking ID from URL
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ const EditPlayerPaymentRecord = () => {
             .catch((error) => {
                 console.error('Error fetching player record details:', error);
             });
-    }, [API_BASE_URL ,id]);
+    }, [id]);
 
     // Handle input changes
     const handleChange = (e) => {

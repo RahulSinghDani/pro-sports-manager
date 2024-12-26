@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const SearchPlayer = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
   const [searchTerm, setSearchTerm] = useState(""); // To store the search term
   const [searchBy, setSearchBy] = useState("id"); // To determine search type (id or name)

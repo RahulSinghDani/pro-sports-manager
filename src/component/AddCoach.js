@@ -4,7 +4,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 
 
 const AddCoach = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
   const { academyId, role } = useParams(); // Get the academyId from the URL
   const navigate = useNavigate(); // To navigate after adding a course
@@ -40,7 +40,7 @@ const AddCoach = () => {
     };
 
     fetchCourseTimings();
-  }, [API_BASE_URL ,academyId]);
+  }, [academyId]);
 
   const handleBatchChange = (index, field, value) => {
     const updatedBatches = [...batches];
@@ -72,7 +72,7 @@ const AddCoach = () => {
 
     // Generate ID when the component mounts or academyId changes
     generateCoachId();
-}, [API_BASE_URL, academyId]);  // Runs when API_BASE_URL or academyId changes
+}, [academyId]);  // Runs when API_BASE_URL or academyId changes
 
 
  

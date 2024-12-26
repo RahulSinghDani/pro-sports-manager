@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams, useNavigate,Link } from "react-router-dom";
 
 const AddPlayer = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
   const { academyId, role } = useParams(); // Get academyId from URL
   const navigate = useNavigate(); // To navigate after adding a player
@@ -51,7 +51,7 @@ const AddPlayer = () => {
       fetchBatches();
       fetchPlayerId();
     }
-  }, [API_BASE_URL ,academyId]);
+  }, [academyId]);
 
   // Handle form submission to add a new player
   const handleSubmit = async (e) => {

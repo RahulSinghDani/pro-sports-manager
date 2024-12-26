@@ -14,7 +14,7 @@ import swimming_pool_gear from './Images/swimmingImg.jpg';
 import bowling_machine from './Images/bowling-machine.jpg';
 import defaultImage from './Images/ground2.jpg';
 const Asset = () => {
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
     const assetImageMap = {
         cricket_kit: cricket_kit,
@@ -65,7 +65,7 @@ const Asset = () => {
                 setError('Failed to load asset details.');
                 setLoading(false); // Set loading to false if there's an error
             });
-    }, [API_BASE_URL, academyId]);
+    }, [academyId]);
 
 
     useEffect(() => {
@@ -77,7 +77,7 @@ const Asset = () => {
             .catch((error) => {
                 console.error('Error fetching assetBookings:', error);
             });
-    }, [API_BASE_URL, academyId]);
+    }, [ academyId]);
 
     if (loading) {
         return <div>Loading...</div>; // Show loading text while fetching

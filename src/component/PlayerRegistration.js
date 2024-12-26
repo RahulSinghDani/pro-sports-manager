@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const PlayerRegistration = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
   const navigate = useNavigate(); // Navigate to the Login page after registration
   const location = useLocation();
@@ -57,7 +57,7 @@ const PlayerRegistration = () => {
     if (user_id) {
       fetchInitialData();
     }
-  }, [API_BASE_URL ,user_id]);
+  }, [ user_id]);
   // Fetch available batches whenever selected school changes
   useEffect(() => {
     const fetchBatches = async () => {
@@ -74,7 +74,7 @@ const PlayerRegistration = () => {
     };
 
     fetchBatches();
-  }, [API_BASE_URL ,academyId]);
+  }, [academyId]);
   //--------------
 
   // Handle dropdown change

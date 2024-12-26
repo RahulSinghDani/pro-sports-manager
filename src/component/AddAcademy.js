@@ -3,7 +3,7 @@ import { useNavigate ,Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const AddAcademy = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
 
   const {role} = useParams();
   const [formData, setFormData] = useState({
