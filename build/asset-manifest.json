@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.52711f27.css",
+    "main.js": "/static/js/main.b08a6555.js",
+    "static/js/453.8ab44547.chunk.js": "/static/js/453.8ab44547.chunk.js",
+    "static/media/homeimage.jpg": "/static/media/homeimage.34a9b943ac39d85dd648.jpg",
+    "static/media/instapng.png": "/static/media/instapng.7e4fc55c90a30d4a833f.png",
+    "static/media/fitnessimg.jpg": "/static/media/fitnessimg.72be0c133e414a77b8bd.jpg",
+    "static/media/yogaImage.jpg": "/static/media/yogaImage.8f6e69820621045a763b.jpg",
+    "static/media/ground2.jpg": "/static/media/ground2.4619fb38226780537648.jpg",
+    "static/media/cricketBg.jpg": "/static/media/cricketBg.f4e80d32629ffe6658d2.jpg",
+    "static/media/cricket-gear.jpg": "/static/media/cricket-gear.cf4e12108e75e4cad785.jpg",
+    "static/media/playerpng.png": "/static/media/playerpng.970f7320c83f41efa79e.png",
+    "static/media/ytpng.png": "/static/media/ytpng.3671fd12106de65ef027.png",
+    "static/media/dashboardBg.jpg": "/static/media/dashboardBg.f3c9259670818e459d07.jpg",
+    "static/media/swimmingImg.jpg": "/static/media/swimmingImg.863851cda9d19be9d3c8.jpg",
+    "static/media/bowling-machine.jpg": "/static/media/bowling-machine.60fb00058053a90d8a84.jpg",
+    "index.html": "/index.html",
+    "main.52711f27.css.map": "/static/css/main.52711f27.css.map",
+    "main.b08a6555.js.map": "/static/js/main.b08a6555.js.map",
+    "453.8ab44547.chunk.js.map": "/static/js/453.8ab44547.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.52711f27.css",
+    "static/js/main.b08a6555.js"
+  ]
+}

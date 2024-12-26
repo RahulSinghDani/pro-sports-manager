@@ -1,0 +1,843 @@
+/* Universal Styling */
+* {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Prevents padding from increasing element width/height */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  /* Prevent horizontal scrolling */
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+div {
+  flex-wrap: wrap;
+}
+
+.nav {
+  height: auto;
+  background: rgb(255, 255, 255); /* White background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 10px 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  width: 100%;
+  position: sticky; /* Sticky positioning */
+  top: 0; /* Stick to the top of the viewport */
+  z-index: 10; /* Ensure it stays above other elements */
+  box-sizing: border-box;
+}
+.logo {
+  color: grey;
+  font-size: 1.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-decoration: none;
+}
+.navLinks {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* main table css */
+/* Table Styling */
+table {
+
+  width: 100%;
+  margin-bottom: 12px;
+  border-collapse: collapse;
+  /* Avoids double borders */
+  margin-top: 20px;
+  /* Adds space above the table */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* Soft shadow effect */
+  border-radius: 8px;
+  /* Rounded corners for the table */
+}
+
+table th,
+table td {
+
+  padding: 12px;
+  /* Comfortable padding */
+  text-align: left;
+  border: 1px solid #ddd;
+  /* Light border for cells */
+  font-size: 14px;
+}
+
+table th {
+  background-color: #4a90e2;
+  color: #fff;
+  font-weight: bold;
+  /* Header emphasis */
+  border-top-left-radius: 8px;
+  /* Rounded top-left corners */
+  border-top-right-radius: 8px;
+  /* Rounded top-right corners */
+}
+
+table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+table tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+table a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 400;
+  /* Lighter font for links */
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+table a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+table a:visited {
+  color: #6c757d;
+}
+
+table a:active {
+  color: #ff4500;
+}
+
+/* General Link Styling */
+a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 400;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+a:hover {
+  color: #0056b3;
+  transform: scale(1.05);
+  text-decoration: underline;
+}
+
+a:visited {
+  color: #6c757d;
+}
+
+a:active {
+  color: #ff4500;
+}
+
+/* List Styling */
+ul,
+li {
+  list-style: none;
+}
+
+li {
+  margin: 5px 0;
+}
+
+li a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 400;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+li a:hover {
+  color: #ffffff;
+  background-color: #256ebc;
+}
+
+li a:active {
+  background-color: #0056b3;
+}
+
+/* Button Styling */
+button,
+li button,
+.link-button button {
+  padding: 8px 10px;
+  background-color: #005cc6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  /* font-size: 14px; */
+  /* font-weight: bold; */
+  cursor: pointer;
+  margin: 2px;
+  transition: all 0.3s ease;
+}
+
+button:hover,
+li button:hover,
+.link-button button:hover {
+  background-color: #004ea1;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:active,
+li button:active,
+.link-button button:active {
+  background-color: #004288;
+  transform: scale(0.98);
+}
+
+.link-button {
+  /* margin-right: '10px'; */
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Container Styling */
+.container {
+  margin: 15px;
+  background: none;
+}
+
+.heading {
+  padding-top: 8px;
+  text-align: center;
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+/* General form styling */
+form {
+  display: flex;
+  flex-direction: column;
+  /* Stack form fields vertically */
+  align-items: center;
+  /* Center the form */
+  margin: 20px auto;
+  /* Center the form horizontally with margin */
+  max-width: 600px;
+  /* Maximum width for the form */
+  padding: 20px;
+  gap: 15px;
+  /* Space between fields */
+}
+
+/* Styling for the div containers */
+form div {
+  display: flex;
+  /* Align label and input horizontally */
+  justify-content: space-between;
+  /* Space out label and input */
+  align-items: center;
+  /* Align items vertically */
+  width: 100%;
+  /* Make div take full width */
+  gap: 10px;
+  /* Space between label and input */
+}
+
+/* Label styling */
+label {
+  font-size: 1rem;
+  /* Regular font size */
+  font-weight: bolder;
+  /* Regular weight */
+  color: #333;
+  /* Dark text for contrast */
+  flex: 1;
+  /* Allows label to take equal space */
+}
+
+/* Input styling */
+input {
+  padding: 5px;
+  /* Comfortable padding */
+  font-size: 1rem;
+  /* Regular font size */
+  border: 1px solid #ccc;
+  /* Light border */
+  border-radius: 4px;
+  /* Rounded corners */
+  width: 100%;
+  /* Limit input width */
+  max-width: 300px;
+  /* Maximum width for input */
+}
+
+/* Styling for input focus */
+form div input:focus {
+  border-color: #4a90e2;
+  /* Blue border when focused */
+  outline: none;
+  /* Removes default outline */
+}
+
+/* style={{ display: 'flex',justifyContent:'center' ,alignItems:'center'}} */
+
+.homeImgWithText {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  height: auto;
+}
+
+.homeImage {
+  width: 60%;
+}
+
+#aboutHome {
+  width: 40%;
+}
+
+@media (max-width: 1170px) {
+/* ----------------------------------- */
+/* for table  */
+
+  /* ---------------------- */
+  .homeImgWithText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .homeImage {
+    width: 90%;
+  }
+
+  #aboutHome {
+    width: 100%;
+  }
+  /* Styling for navLinks inside a separate div */
+  .navLinks {
+    position: absolute;
+    top: 50px; /* Fixed: Added 'px' for proper positioning */
+    right: 0;
+    width: 200px;
+    height: auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Ensure consistent spacing */
+    align-items: stretch; /* Ensure child elements stretch to container width */
+  }
+}
+
+/* Optional: Style for smaller screens (responsive design) */
+@media (max-width: 800px) {
+  #navLinkIdHome{
+    margin: 0;
+    padding: 0;
+  }
+  form div {
+    flex-direction: column;
+    /* Stack label and input vertically on smaller screens */
+    align-items: center;
+    /* Center the label and input */
+  }
+
+  #contact {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+  }
+
+  .contactus {
+    background-color: #f0f8ff;
+    padding: 20px 20px;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .home-contactus-div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    padding: 30px;
+  }
+
+  .home-contactus {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  form div input {
+    width: 80%;
+    /* Increase input width on smaller screens */
+    max-width: none;
+    /* Remove max-width on small screens */
+  }
+  
+}
+
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+li,
+a,
+input,
+textarea {
+  margin: 0;
+  /* padding: 0; */
+  box-sizing: border-box;
+  /* Ensures padding and border don't affect width */
+}
+
+/* Prevent Text Overflow */
+p,
+a,
+span,
+h4,
+h5,
+h6,
+ul,
+li {
+  overflow-wrap: break-word;
+  /* Wraps long words or URLs */
+  word-break: break-word;
+  /* Breaks long words if needed */
+  word-wrap: break-word;
+  /* For backward compatibility */
+}
+
+/* Responsive Iframe (Map) */
+iframe {
+  width: 100%;
+  height: auto;
+  /* Maintain aspect ratio */
+  border: 0;
+  /* Remove border */
+}
+
+/* Ensure Inputs/Textareas are Responsive */
+input,
+textarea {
+  width: 100%;
+  box-sizing: border-box;
+  /* Prevent overflow */
+  height: 30px;
+}
+
+.h1Style {
+  font-size: 60px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 60px;
+  font-family: sans-serif;
+}
+
+.h3Style {
+  font-size: 26px;
+  color: #333;
+  font-family: sans-serif;
+}
+
+
+/* ---------------------------- for managepayments  */
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  /* Light background color */
+}
+
+
+
+/* Button Styles */
+button {
+  background-color: #4CAF50;
+  /* Green background for buttons */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+
+
+/* Divider Style */
+div[style*="background: blue"] {
+  /* background-color: #007bff;  */
+  height: 2px;
+}
+
+/* Search Box Styles */
+div[style*="background:#FAEBD7"] {
+  background-color: #FAEBD7;
+  /* Antique white background for filters */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+input[type="date"],
+input[type="text"] {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+input[type="date"]:focus,
+input[type="text"]:focus {
+  border-color: #4CAF50;
+  /* Green border on focus */
+  outline: none;
+}
+
+
+th,
+/* Additional Styling for 'No Records' Row */
+td[colspan="8"] {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}
+
+/* Refresh Button Style */
+button[onClick="handleRefresh"] {
+  background-color: #f44336;
+  /* Red for the refresh button */
+  margin-left: 10px;
+}
+
+button[onClick="handleRefresh"]:hover {
+  background-color: #e53935;
+}
+
+
+/* General container styling */
+.container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Heading style */
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Dashboard Box Styling */
+#dashboard-boxes {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.dashboard-box {
+  padding: 20px;
+  background-color: #f1f1f1;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  max-width: 250px;
+}
+
+.dashboard-box h3 {
+  font-size: 1.5rem;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.dashboard-box p {
+  font-size: 1.2rem;
+  color: #555;
+  margin: 0;
+}
+
+/* Academy Details Styling */
+.academy-details {
+  background-color: #fafafa;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-box {
+  padding: 20px;
+  /* background-color: #fafafa; */
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.detail-box h3 {
+  font-size: 1.2rem;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.detail-box p {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 0;
+}
+
+.detail-box a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+p {
+  padding: 4px;
+}
+
+.detail-box a:hover {
+  text-decoration: underline;
+}
+
+/* ----------------------------------------- */
+/* home sports boxes */
+/* css for sports boxes in home page  */
+/* Container styling */
+.sports-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Box styling */
+.sports-box {
+  width: 250px;
+  text-decoration: none;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
+}
+
+.sports-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Image styling */
+.sports-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Name and description styling */
+.sports-name {
+  font-size: 1.2em;
+  color: #333;
+  margin: 10px 0;
+}
+
+.sports-description {
+  font-size: 0.9em;
+  color: #666;
+  padding: 0 10px 20px;
+}
+/* booking boxes */
+.booking-box {
+  width: 350px;
+  text-decoration: none;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  text-align: center;
+  cursor: pointer;
+  padding-bottom: 12px;
+}
+/* home contact us  */
+.home-contactus {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 35px;
+  flex-wrap: wrap;
+  background-color: white;
+  padding: 40px;
+}
+
+.contactus {
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
+  flex-wrap: wrap;
+}
+
+#contact {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+
+/* Media Queries for Small Screens (Mobile) */
+@media (max-width: 600px) {
+
+  /* Ensure body text is smaller and more compact on small screens */
+  * {
+    margin: 0;
+    box-sizing: border-box;
+
+  }
+.logo{
+  font-size: 1rem;
+}
+
+  body {
+    font-size: 14px;
+  }
+
+  p {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  h1 {
+    font-size: 1rem;
+  }
+
+  h2 {
+    font-size: 0.9rem;
+  }
+
+  h3 {
+    font-size: 0.8rem;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: rem;
+  }
+
+  /* Stack divs on top of each other */
+  div {
+    display: block;
+    /* width: 100%; */
+    margin: 0px;
+  }
+
+  /* Make all lists in a single column */
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  ul li {
+    margin-bottom: 8px;
+  }
+
+  /* Adjust for images to ensure they are responsive */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Handle links on mobile */
+
+
+  /* Remove extra spacing in the iframe container */
+  .iframe-container {
+    margin-top: 20px;
+    position: relative;
+    width: 100%;
+    
+    padding-top: 56.25%;
+    /* Aspect ratio: 16:9 */
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    /* Optional: Remove the border */
+  }
+
+  .h1Style {
+    font-size: 40px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 60px;
+    font-family: sans-serif;
+  }
+
+  .h3Style {
+    font-size: 16px;
+    color: #333;
+    font-family: sans-serif;
+  }
+}

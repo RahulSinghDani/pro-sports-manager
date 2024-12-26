@@ -1,0 +1,211 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+form {
+  max-width: 90%;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+div #title{
+    font-size: 2.5rem; /* Large font size to make it prominent */
+    font-weight: 700; /* Bold text for emphasis */
+    color: #2C3E50; /* A strong, professional dark blue */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    text-transform: uppercase; /* Capitalize all letters for a bold statement */
+    letter-spacing: 2px; /* Adds spacing between letters for clarity */
+    text-align: center; /* Center aligns the title */
+    margin-top: 20px; /* Add space from the top */
+    margin-bottom: 20px; /* Add space below the title */
+    border-bottom: 2px solid #1ABC9C; /* Adds a stylish underline with a vibrant color */
+    padding-bottom: 10px; /* Padding for better spacing between text and underline */
+  }
+  
+
+
+/* Container Styles */
+.form-container {
+  display: flex;
+  /* flex-direction: column; */
+  gap: 20px;
+}
+
+.container {
+  display: flex;
+}
+
+/* Section Styles */
+.registration-section, 
+.office-use-section {
+  padding: 10px 20px;
+  /* width: 45%; */
+  margin: auto;
+  margin-top: 10px;
+}
+
+.registration-section h2, 
+.office-use-section h2 {
+  margin-bottom: 10px;
+  color: #333;
+  border-bottom: 2px solid #007BFF;
+  padding-bottom: 5px;
+}
+
+label {
+  /* display: block; */
+  margin: 8px 0 4px;
+  font-weight: bold;
+  color: #555;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box; /* Ensures padding and borders are included in the width */
+  /* appearance: none; //Removes default browser-specific styling for select */
+}
+
+
+/* Partition Line */
+.office-use-section {
+  border-left: 2px solid #007BFF;
+  margin-left: 20px;
+  padding-left: 20px;
+}
+
+/* Operator Field */
+.operator-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.operator-container label {
+  margin-bottom: 5px;
+}
+
+.operator-container input {
+  width: 150px;
+}
+
+/* Button Styles */
+.office-use-section button {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 4px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Smooth hover effect */
+}
+
+.office-use-section Link {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 4px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Smooth hover effect */
+}
+/* Edit Button Styles */
+#editButton {
+  background-color: #28a745; /* Green */
+  color: white;
+}
+
+#editButton:hover {
+  background-color: #218838; /* Darker green */
+  transform: translateY(-2px); /* Slight hover lift effect */
+}
+
+#editButton:active {
+  transform: translateY(2px); /* Slight push-down effect when clicked */
+}
+
+/* Search Button Styles */
+#searchButton {
+  background-color: #ffc107; /* Yellow */
+  color: black;
+}
+
+#searchButton:hover {
+  background-color: #e0a800; /* Darker yellow */
+  transform: translateY(-2px); /* Slight hover lift effect */
+}
+
+#searchButton:active {
+  transform: translateY(2px); /* Slight push-down effect when clicked */
+}
+
+/* Clear Button Styles */
+#clearButton {
+  background-color: #dc3545; /* Red */
+  color: white;
+}
+
+#clearButton:hover {
+  background-color: #c82333; /* Darker red */
+  transform: translateY(-2px); /* Slight hover lift effect */
+}
+
+#clearButton:active {
+  transform: translateY(2px); /* Slight push-down effect when clicked */
+}
+
+/* Enter Button Styles */
+#enterButton {
+  background-color: #007BFF; /* Blue */
+  color: white;
+}
+
+#enterButton:hover {
+  background-color: #0056b3; /* Darker blue */
+  transform: translateY(-2px); /* Slight hover lift effect */
+}
+
+#enterButton:active {
+  transform: translateY(2px); /* Slight push-down effect when clicked */
+}
+
+
+/* ------------------ */
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .form-container {
+    padding: 10px;
+  }
+  
+  .office-use-section {
+    border-left: none;
+    margin-left: 0;
+    padding-left: 0;
+    border-top: 2px solid #007BFF;
+    margin-top: 20px;
+    padding-top: 10px;
+  }
+}
+.operator-container select {
+  width: 150px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+
