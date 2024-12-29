@@ -42,7 +42,6 @@ const UserRegistration = () => {
       alert(data.message);
     }
   };
-  console.log("Selected role:", role);
 
   return (
     <div>

@@ -3,13 +3,13 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const NewBooking = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     const { academyId, role } = useParams();
     const [bookingDetails, setBookingDetails] = useState({
         name: '',
         date_of_booking: '',
-        time: '',
+        time: ' - ', // Default value to ensure proper splitting
         amount: '',
         customer_name: '',
         contact: '',
@@ -17,40 +17,73 @@ const NewBooking = () => {
         remarks: '',
         location: '',
         image_url: '',
-        academy_id: academyId
+        academy_id: academyId,
     });
+
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
     // Handle form input changes
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setBookingDetails((prevState) => ({
-            ...prevState,
-            [name]: value
-        }));
+        const { name, value, files } = e.target;
+        if (name === 'image_url' && files && files[0]) {
+            setBookingDetails((prevState) => ({
+                ...prevState,
+                [name]: files[0], // Set file object
+            }));
+        } else {
+            setBookingDetails((prevState) => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
+    };
+    const handleTimeChange = (e, type) => {
+        const value = e.target.value;
+        setBookingDetails((prevDetails) => {
+            const times = prevDetails.time ? prevDetails.time.split(' - ') : ['', ''];
+            if (type === 'start') {
+                times[0] = value;
+            } else if (type === 'end') {
+                times[1] = value;
+            }
+            return { ...prevDetails, time: times.join(' - ') };
+        });
     };
 
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Ensure all fields are filled before submission
-        if (Object.values(bookingDetails).includes('')) {
-            setError('Please fill all fields.');
-            return;
+    
+        const requiredFields = ['name', 'date_of_booking', 'time', 'amount', 'customer_name', 'contact', 'status', 'remarks', 'location'];
+        for (const field of requiredFields) {
+            if (!bookingDetails[field]) {
+                setError(`Please fill in the ${field.replace('_', ' ')} field.`);
+                return;
+            }
         }
-
+    
+        const formData = new FormData();
+        Object.entries(bookingDetails).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+    
         axios
-            .post( `${API_BASE_URL}/bookings/${role}/${academyId}`, bookingDetails) // Replace with your backend API
+            .post(`${API_BASE_URL}/bookings/${role}/${academyId}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            })
             .then((response) => {
                 alert('Booking created successfully!');
-                navigate(`/ManagePayment/${role}/${academyId}/Bookings`); // Navigate to the bookings list after successful creation
+                navigate(`/AcademyDetails/${role}/${academyId}/Asset`);
             })
             .catch((error) => {
                 console.error('Error creating booking:', error);
                 setError('Failed to create booking.');
             });
     };
+    
+
+
 
     return (
         <div className="new-booking-container">
@@ -77,12 +110,21 @@ const NewBooking = () => {
                 </div>
                 <div>
                     <label>Time:</label>
-                    <input
-                        type="time"
-                        name="time"
-                        value={bookingDetails.time}
-                        onChange={handleInputChange}
-                    />
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <input
+                            type="time"
+                            value={bookingDetails.time.split(' - ')[0]} // Extract start time
+                            onChange={(e) => handleTimeChange(e, 'start')}
+                            style={{ marginRight: '5px' }}
+                        />
+                        <span>-</span>
+                        <input
+                            type="time"
+                            value={bookingDetails.time.split(' - ')[1]} // Extract end time
+                            onChange={(e) => handleTimeChange(e, 'end')}
+                            style={{ marginLeft: '5px' }}
+                        />
+                    </div>
                 </div>
                 <div>
                     <label>Amount:</label>
@@ -145,15 +187,17 @@ const NewBooking = () => {
                 <div>
                     <label>Image:</label>
                     <input
-                        type="text"
-                        name="image_url"
-                        value={bookingDetails.image_url}
-                        onChange={handleInputChange}
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setBookingDetails((prevState) => ({
+                            ...prevState,
+                            image: e.target.files[0], // Store the selected file
+                        }))}
                     />
                 </div>
                 <button type="submit">Create Booking</button>
             </form>
-            <button onClick={() => navigate(`/ManagePayment/${role}/${academyId}/Bookings`)}>Back to Bookings</button>
+            {/* <button onClick={() => navigate(`/ManagePayment/${role}/${academyId}/Bookings`)}>Back to Bookings</button> */}
         </div>
     );
 };

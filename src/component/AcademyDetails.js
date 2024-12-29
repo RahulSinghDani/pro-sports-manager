@@ -24,7 +24,7 @@ const AcademyDetails = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
   const { role, academyId } = useParams(); // Get the academy_id from the URL
-  // console.log(role);
+
   const [academyData, setAcademy] = useState(null); // Use an object for a single academy
   const [error, setError] = useState();
   const [totalPlayers, setTotalPlayers] = useState(0);

@@ -700,7 +700,7 @@ p {
 }
 /* booking boxes */
 .booking-box {
-  width: 350px;
+  width: 250px;
   text-decoration: none;
   background: #fff;
   border-radius: 10px;
@@ -712,7 +712,7 @@ p {
   padding-bottom: 12px;
 }
 .booking-box-asset{
-  width: 300px;
+  width: 250px;
   height: auto;
   text-decoration: none;
   background: #fff;
@@ -722,14 +722,14 @@ p {
   overflow: hidden;
   text-align: center;
   cursor: pointer;
-  padding-bottom: 12px;
+  padding-bottom: 10px;
   
 }
 .booking-box-asset p , .booking-box-asset h3{
   padding-bottom:8px;
 }
 .sports-image-asset{
-  width: 300px;
+  width: 250px;
   height: 150px;
 }
 

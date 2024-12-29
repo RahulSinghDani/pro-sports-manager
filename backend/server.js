@@ -40,12 +40,13 @@ db.connect(err => {
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // File upload setup using multer
+// Configure multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+      cb(null, 'uploads/'); // Folder to save uploaded images
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+      cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
@@ -876,7 +877,8 @@ app.post("/api/addPlayer/:academyId", upload.single("profile_pic"), (req, res) =
 });
 
 // Serve static files (profile pics)
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
+
 //---------------------------------------------------------
 //delete player from id 
 // fetch player details from id 
@@ -1319,11 +1321,28 @@ app.get('/assets-bookings/:academyId', (req, res) => {
   });
 });
 //---------------------------------------
+//------------------
+// Get all groundss 
+app.get('/all-grounds/:academyId', (req, res) => {
+  const { academyId } = req.params;
+  const query = 'SELECT * FROM grounds where academy_id != ?';
+  db.query(query, [academyId], (err, results) => {
+    if (err) {
+      console.error('Error fetching ground:', err);
+      res.status(500).send('Error fetching ground');
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+
+//-------------------------------
 //// booking role here 
 // Get all bookings
 app.get('/bookings/:academyId', (req, res) => {
   const { academyId } = req.params;
-  const query = 'SELECT * FROM booking where academy_id = ?';
+  const query = 'SELECT * FROM grounds where academy_id = ?';
   db.query(query, [academyId], (err, results) => {
     if (err) {
       console.error('Error fetching bookings:', err);
@@ -1335,79 +1354,100 @@ app.get('/bookings/:academyId', (req, res) => {
 });
 
 // Add a new booking
-app.post('/bookings/:role/:academyId', (req, res) => {
+// Update booking route to handle file upload
+// app.post('/bookings/:role/:academyId', upload.single('image'), (req, res) => {
+//   const { academyId } = req.params;
+//   const { name, date_of_booking, time, amount, customer_name, contact, status, remarks, location } = req.body;
+//   const image_url = req.file ? req.file.filename : null;
+
+//   if (!name || !date_of_booking || !time || !amount || !customer_name || !contact || !status || !remarks || !location || !image_url) {
+//       return res.status(400).send('All fields are required');
+//   }
+
+//   const query = 'INSERT INTO grounds (name, date_of_booking, time, amount, customer_name, contact, status, remarks, academy_id, location, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+//   db.query(query, [name, date_of_booking, time, amount, customer_name, contact, status, remarks, academyId, location, image_url], (err, result) => {
+//       if (err) {
+//           console.error('Error adding grounds:', err);
+//           return res.status(500).send(`Error adding grounds: ${err.message}`);
+//       } else {
+//           res.status(201).send('Grounds added successfully');
+//       }
+//   });
+// });
+app.post('/bookings/:role/:academyId', upload.single('image'), (req, res) => {
   const { academyId } = req.params;
-  const { name, date_of_booking, time, amount, customer_name, contact, status, remarks, location, image_url } = req.body;
+  const { name, date_of_booking, time, amount, customer_name, contact, status, remarks, location } = req.body;
+  const image_url = req.file ? req.file.filename : null;
 
-  if (!name || !date_of_booking || !time || !amount || !customer_name || !contact || !status || !remarks || !location || !image_url) {
-    return res.status(400).send('All fields are required');
-  }
+  const query = `
+      INSERT INTO grounds (name, date_of_booking, time, amount, customer_name, contact, status, remarks, academy_id, location, image_url)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
 
-  const query = 'INSERT INTO booking (name, date_of_booking, time, amount, customer_name, contact, status, remarks, academy_id, location, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   db.query(query, [name, date_of_booking, time, amount, customer_name, contact, status, remarks, academyId, location, image_url], (err, result) => {
-    if (err) {
-      console.error('Error adding booking:', err);
-      return res.status(500).send(`Error adding booking: ${err.message}`);
-    } else {
-      res.status(201).send('Booking added successfully');
-    }
+      if (err) {
+          console.error('Error adding booking:', err);
+          res.status(500).send('Error adding ground.');
+      } else {
+          res.status(201).send('Ground added successfully.');
+      }
   });
 });
 
 
 
-// Get a single booking by ID
+// Get a single grounds by ID
 app.get('/bookings/:id', (req, res) => {
   const { id } = req.params;
-  const query = 'SELECT * FROM booking WHERE id = ?';
+  const query = 'SELECT * FROM grounds WHERE id = ?';
   db.query(query, [id], (err, results) => {
     if (err) {
-      console.error('Error fetching booking:', err);
-      res.status(500).send('Error fetching booking');
+      console.error('Error fetching grounds:', err);
+      res.status(500).send('Error fetching grounds');
     } else {
       res.json(results[0]);
     }
   });
 });
-// Update a booking
+// Update a grounds
 app.put('/bookings/:id', (req, res) => {
   const { id } = req.params;
   const { name, date_of_booking, time, amount, customer_name, contact, status, remarks, location, image_url } = req.body;
-  const query = 'UPDATE booking SET name = ?, date_of_booking = ?, time = ?, amount = ?, customer_name = ?, contact = ?, status = ?, remarks = ? , ,location = ? ,image_url = ? WHERE id = ?';
+  const query = 'UPDATE grounds SET name = ?, date_of_booking = ?, time = ?, amount = ?, customer_name = ?, contact = ?, status = ?, remarks = ? , ,location = ? ,image_url = ? WHERE id = ?';
   db.query(query, [name, date_of_booking, time, amount, customer_name, contact, status, remarks, location, image_url, id], (err) => {
     if (err) {
-      console.error('Error updating booking:', err);
-      res.status(500).send('Error updating booking');
+      console.error('Error updating grounds:', err);
+      res.status(500).send('Error updating grounds');
     } else {
-      res.send('Booking updated successfully');
+      res.send('grounds updated successfully');
     }
   });
 });
 
-// Delete a booking
+// Delete a grounds
 app.delete('/bookings/:id', (req, res) => {
   const { id } = req.params;
-  const query = 'DELETE FROM booking WHERE id = ?';
+  const query = 'DELETE FROM grounds WHERE id = ?';
   db.query(query, [id], (err) => {
     if (err) {
-      console.error('Error deleting booking:', err);
-      res.status(500).send('Error deleting booking');
+      console.error('Error deleting grounds:', err);
+      res.status(500).send('Error deleting grounds');
     } else {
-      res.send('Booking deleted successfully');
+      res.send('grounds deleted successfully');
     }
   });
 });
 
 //-------------------------------------------------
 
-// public booking home booking 
+// public grounds home grounds 
 app.get('/public-bookings', (req, res) => {
 
-  const query = 'SELECT * FROM booking';
+  const query = 'SELECT * FROM grounds';
   db.query(query, (err, results) => {
     if (err) {
-      console.error('Error fetching bookings:', err);
-      res.status(500).send('Error fetching bookings');
+      console.error('Error fetching grounds:', err);
+      res.status(500).send('Error fetching grounds');
     } else {
       res.json(results);
     }
@@ -1416,14 +1456,14 @@ app.get('/public-bookings', (req, res) => {
 
 //----------------------------------------------------
 //total revenue
-// Total Revenue - Summing 'amount' from the booking and player_financial table
+// Total Revenue - Summing 'amount' from the grounds and player_financial table
 app.get("/api/booking/totalrevenue/:academyId", (req, res) => {
   const { academyId } = req.params;
 
-  // Query for total revenue from the 'booking' table
+  // Query for total revenue from the 'grounds' table
   const bookingRevenueQuery = `
     SELECT SUM(amount) AS totalRevenue
-    FROM booking
+    FROM grounds
     WHERE academy_id = ? AND status='confirmed';
   `;
 
@@ -1437,8 +1477,8 @@ app.get("/api/booking/totalrevenue/:academyId", (req, res) => {
   // Run both queries
   db.query(bookingRevenueQuery, [academyId], (err, bookingResults) => {
     if (err) {
-      console.error("Error fetching booking revenue:", err);
-      return res.status(500).json({ error: "Error fetching booking revenue" });
+      console.error("Error fetching grounds revenue:", err);
+      return res.status(500).json({ error: "Error fetching grounds revenue" });
     }
 
     db.query(playerRevenueQuery, [academyId], (err, playerResults) => {
@@ -1466,7 +1506,7 @@ app.get("/api/player_financial/totalexpenses/:academyId", (req, res) => {
 
   const query = `
     SELECT SUM(amount) AS totalExpenses
-    FROM booking
+    FROM grounds
     WHERE academy_id = ? AND status='confirmed';
   `;
 

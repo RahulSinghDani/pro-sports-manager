@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import FinancialSummary from "./FinancialSummary";
+// import FinancialSummary from "./FinancialSummary";
 import './Style.css';
 import { styles } from "./Style";
 
 const ManagePayment = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     const navigate = useNavigate();
 
     const location = useLocation();
     const { coachId } = location.state || {};
-    console.log('Coach ID:', coachId);
+    console.log( coachId);
 
     const { academyId, role } = useParams();
-    
+
     const [searchParams, setSearchParams] = useState({
         fromDate: "",
         toDate: "",
@@ -109,34 +109,17 @@ const ManagePayment = () => {
     };
     return (
         <div className="body">
-            <nav className="nav">
-                {(role === "academy") &&
-                    <Link to={`/LoginHome/${role}/${academyId}`} className="logo">Pro Sports Manager</Link>
-                }
 
-                {(role === "coach") &&
-                    <p className="logo">Pro Sports Manager</p>
+            <nav className='nav'>
+                <h1 className='logo'>Pro Sports Manager</h1>
+                {(role === "admin" || role === "academy") &&
+                    <Link to={`/AcademyDetails/${role}/${academyId}`}>
+                        <button style={{ background: "rgb(14, 56, 27)", float: "right" }}>Back</button>
+                    </Link>
                 }
-                <div className="navLink">
-                    {(role === "admin" || role === "academy") &&
-                        <Link to={`/ManagePayment/${role}/${academyId}/Bookings`}>
-                            <button style={styles.btn}>Bookings</button>
-                        </Link>
-                    }
-                    {(role === "admin" || role === "academy") &&
-                        <Link to={`/AcademyDetails/${role}/${academyId}`}>
-                            <button style={{ background: "rgb(14, 56, 27)", float: "right" }}>Back</button>
-                        </Link>
-                    }
-                    {/* {role === "coach" &&
-                        <Link to={`/LoginCoachDashboard/${role}/${academyId}/${coachId}`}>
-                            <button style={{ background: "rgb(14, 56, 27)", float: "right" }}>Back</button>
-                        </Link>
-                    } */}
-                </div>
             </nav>
-            <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-                {
+            <div className="below-navbar" style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+                {/* {
                     (role === 'academy' || role === 'admin') && (
                         <div>
                             <div style={{ background: 'white' }}>
@@ -150,7 +133,7 @@ const ManagePayment = () => {
                             <div style={{ marginTop: "12px", marginBottom: '12px', height: "2px", background: "black" }}></div>
                         </div>
                     )
-                }
+                } */}
 
 
 

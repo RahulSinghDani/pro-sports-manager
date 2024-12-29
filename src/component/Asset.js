@@ -41,7 +41,6 @@ const Asset = () => {
         "Swimming Pool Gear": "swimming_pool_gear",
         "Skating Gear": "skating_gear",
         "Rowing Machine": "rowing_machine",
-        // Add more mappings as needed
     };
 
 
@@ -50,6 +49,7 @@ const Asset = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true); // Add a loading state
     const [bookings, setBookings] = useState([]);
+    const [allAcademyGround, setAllAcademyGround] = useState([]);
 
     const [assetBookings, setAssetBookings] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('sports'); // State to track selected category
@@ -78,6 +78,18 @@ const Asset = () => {
             })
             .catch((error) => {
                 console.error('Error fetching bookings:', error);
+            });
+    }, [API_BASE_URL, academyId]);
+
+    // Fetch bookings from the backend
+    useEffect(() => {
+        axios
+            .get(`${API_BASE_URL}/all-grounds/${academyId}`) // Replace with your backend API
+            .then((response) => {
+                setAllAcademyGround(response.data);
+            })
+            .catch((error) => {
+                console.error('Error fetching grounds:', error);
             });
     }, [API_BASE_URL, academyId]);
 
@@ -201,20 +213,29 @@ const Asset = () => {
                         ) : (
                             <table border="1" width="700px">
                                 <div className="container">
-                                    <h1>Academy Grounds</h1>
-                                    <div className="bottom-buttons" style={{ float: 'right' }}>
-                                        <button onClick={handleNewBooking}>New Booking</button>
-                                    </div>
+                                    <h1>Academy Grounds <span style={{ float: 'right' }}><button onClick={handleNewBooking}>Add New Ground </button></span></h1>
+
 
                                     <div className="sports-container">
                                         {bookings.length === 0 ? (
-                                            <p>No bookings found.</p>
+                                            <p>No grounds found.</p>
                                         ) : (
                                             bookings.map((booking) => (
                                                 <div key={booking.id} className="booking-box-asset">
-                                                    <img src={booking.image_url} alt={`${booking.name}`} className="sports-image-asset" />
+                                                    {/* <img src={booking.image_url} alt={`${booking.name}`} className="sports-image-asset" /> */}
+                                                    <div>
+                                                        <img
+                                                            src={
+                                                                booking.image_url?.startsWith('http') // Check if the URL is a valid link
+                                                                    ? booking.image_url // Use the provided link if valid
+                                                                    : `${API_BASE_URL}/uploads/${booking.image_url}` // Otherwise, construct the file path
+                                                            }
+                                                            alt={booking.name || 'Image not available'}
+                                                            className="sports-image"
+                                                            onError={(e) => { e.target.src = defaultImage; }} // Fallback if the image fails to load
+                                                        />
+                                                    </div>
                                                     <h3>{booking.name}</h3>
-                                                    {/* <p><strong>Date of Booking:</strong> {booking.date_of_booking}</p> */}
                                                     <p>
                                                         <strong>Date:</strong>{' '}
                                                         {new Date(booking.date_of_booking).toLocaleDateString('en-GB', {
@@ -222,17 +243,31 @@ const Asset = () => {
                                                             month: 'short',
                                                             year: 'numeric',
                                                         })}
-                                                        |
+                                                        <br></br>
                                                         <strong>Time:</strong> {booking.time}
                                                         <br></br>
-                                                        <strong>Customer Name:</strong> {booking.customer_name} | <strong>Contact:</strong> {booking.contact}
+                                                        <strong>Contact Name:</strong> {booking.customer_name} | <strong>Contact:</strong> {booking.contact}
 
                                                         <br></br>
-                                                        <strong>Amount:</strong> {booking.amount} | <strong>Status:</strong> <span style={{ color: booking.status === 'confirmed' ? 'green' : 'blue' }}>
+                                                        <strong>Amount:</strong> {booking.amount} /hr
+                                                        <br></br> <strong>Status:</strong> <span style={{ color: booking.status === 'confirmed' ? 'green' : 'blue' }}>
                                                             {booking.status}
                                                         </span></p>
                                                     <p><strong>Remarks:</strong> {booking.remarks}</p>
-                                                    <p className="sports-description"><strong>Location:</strong> <a href={booking.location} target='_blank' rel="noopener noreferrer"><button style={{ background: 'grey' }}>Go to Location</button></a></p>
+                                                    {/* <p className="sports-description"><a href={booking.location} target='_blank' rel="noopener noreferrer"><button style={{ background: 'grey' }}>Go to Location</button></a></p> */}
+                                                    <p className="sports-description">
+                                                        <a
+                                                            href={
+                                                                booking.location?.startsWith("http")
+                                                                    ? booking.location // Use the provided link if it's a complete URL
+                                                                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.location)}` // Generate Google Maps search link for plain names
+                                                            }
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            <button style={{ background: 'grey' }}>Go to Location</button>
+                                                        </a>
+                                                    </p>
 
                                                     <div className="booking-actions">
                                                         <button onClick={() => handleEditBooking(booking.id)}>Edit</button>
@@ -251,7 +286,61 @@ const Asset = () => {
 
                     {/* Display the whole booking assets / items / hall / ground etc  */}
                     <h2 className='heading'>Available Assets for Booking</h2>
+                    <div>
 
+                        <table border="1" width="700px">
+                            <div className="container">
+                                <h1>Available Grounds</h1>
+
+                                <div className="sports-container">
+                                    {allAcademyGround.length === 0 ? (
+                                        <p>No ground found.</p>
+                                    ) : (
+                                        allAcademyGround.map((booking) => (
+                                            <div key={booking.id} className="booking-box-asset">
+                                                <img src={booking.image_url} alt={`${booking.name}`} className="sports-image-asset" />
+                                                <h3>{booking.name}</h3>
+                                                {/* <p><strong>Date of Booking:</strong> {booking.date_of_booking}</p> */}
+                                                <p>
+
+                                                    <strong>Time:</strong> {booking.time}
+                                                    <br></br>
+                                                    <strong>Contact Name:</strong> {booking.customer_name} <br></br> <strong>Contact:</strong> {booking.contact}
+
+                                                    <br></br>
+                                                    <strong>Charges: </strong>Rs. {booking.amount} / hr for per person
+                                                    {/* <strong>Status:</strong> <span style={{ color: booking.status === 'confirmed' ? 'green' : 'blue' }}>
+                                                        {booking.status}
+                                                    </span> */}
+                                                </p>
+                                                {/* <p><strong>Remarks:</strong> {booking.remarks}</p> */}
+                                                {/* <p className="sports-description"> <a href={booking.location} target='_blank' rel="noopener noreferrer"><button style={{ background: 'grey' }}>Go to Location</button></a></p> */}
+                                                <p className="sports-description">
+                                                        <a
+                                                            href={
+                                                                booking.location?.startsWith("http")
+                                                                    ? booking.location // Use the provided link if it's a complete URL
+                                                                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.location)}` // Generate Google Maps search link for plain names
+                                                            }
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            <button style={{ background: 'grey' }}>Go to Location</button>
+                                                        </a>
+                                                    </p>
+                                                <div className="booking-actions">
+                                                    <button >Bookable</button>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+
+
+                            </div>
+                        </table>
+
+                    </div>
                     <div className="sports-container">
                         {assetBookings.length === 0 ? (
                             <p>No assetBookings found.</p>

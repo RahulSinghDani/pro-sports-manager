@@ -12,7 +12,7 @@ import defaultprofile from "./Images/playerpng.png"; // Import the background im
 
 const HomeAllPlayerDashboard = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || `http://165.232.183.58:5000`;
-console.log("API_BASE_URL :  ",API_BASE_URL);
+
 
     const [players, setPlayers] = useState([]);
     const [error, setError] = useState('');
