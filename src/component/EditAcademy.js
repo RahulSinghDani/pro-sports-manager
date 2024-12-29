@@ -4,7 +4,7 @@ import { useNavigate,Link, useParams } from 'react-router-dom';
 // import Dashboard from './Dashboard';
 
 const EditAcademy = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
   const {role} = useParams(); 
   const [academyId, setAcademyId] = useState('');
@@ -41,7 +41,7 @@ const EditAcademy = () => {
     };
 
     fetchAcademy();
-  }, [ academyId]);
+  }, [API_BASE_URL, academyId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

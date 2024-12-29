@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 const DeletePlayer = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
   const { academyId, role } = useParams(); // Academy ID from URL
   const navigate = useNavigate(); // For redirection

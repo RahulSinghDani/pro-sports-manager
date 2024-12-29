@@ -7,7 +7,7 @@ import { styles } from './Style';
 import dashboardBg from "./Images/dashboardBg.jpg"; // Import the background image
 
 const Dashboard = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
     const { role } = useParams();
     const [academicData, setAcademicData] = useState([]);
@@ -28,7 +28,7 @@ const Dashboard = () => {
         };
 
         fetchTotalPlayers();
-    }, []);
+    }, [API_BASE_URL]);
 
     useEffect(() => {
         // Fetch academic data from the backend
@@ -39,7 +39,7 @@ const Dashboard = () => {
             .catch(error => {
                 console.error('There was an error fetching the academic data!', error);
             });
-    }, []);
+    }, [API_BASE_URL]);
 
     return (
         <div className='body'>
@@ -71,13 +71,13 @@ const Dashboard = () => {
                     <h2>Academy Information</h2>
                     
                     <div style={{display:'flex',justifyContent:'center',gap:'8px'}}>
-                        <Link to="/add-academy/:role">
+                        <Link to={`/add-academy/${role}`} >
                             <button>Add a New Academy</button>
                         </Link>
-                        <Link to="/delete-academy/:role">
+                        <Link to={`/delete-academy/${role}`}>
                             <button>Delete Academy</button>
                         </Link>
-                        <Link to="/edit-academy/:role">
+                        <Link to={`/edit-academy/${role}`}>
                             <button>Edit Academy</button>
                         </Link>
 

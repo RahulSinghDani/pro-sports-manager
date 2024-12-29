@@ -3,7 +3,7 @@ import { useNavigate ,Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const AddAcademy = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
   const {role} = useParams();
   const [formData, setFormData] = useState({
@@ -35,7 +35,7 @@ const AddAcademy = () => {
     e.preventDefault();
 
     axios
-      .post(`${API_BASE_URL}/api/academies`, formData)
+      .post(`${API_BASE_URL}/api/addacademies`, formData)
       .then((response) => {
         setSuccess('Academy added successfully!');
         setTimeout(() => {
@@ -49,13 +49,20 @@ const AddAcademy = () => {
   };
 
   return (
-    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
+    <div>
+      <nav className='nav'>
+              <h1 className='logo'>Pro Sports Manager</h1>
+              <Link to={`/Dashboard/${role}`}>
+                <button style={{ background: "rgb(13, 101, 183)", float: "right" }}>Home</button>
+              </Link>
+            </nav>
+    <div className="container" style={{ maxWidth: '600px', marginTop: '40px', padding: '20px' }}>
       <h2 className='heading'>Add a New Academy</h2>
-      <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0"}}/> {/*  adjust margin to set into column line */}
+      <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "5px 0"}}/> {/*  adjust margin to set into column line */}
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
-      <div className='container'>
+      <div className=''>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -164,6 +171,7 @@ const AddAcademy = () => {
       </Link>
       </form>
       </div>
+    </div>
     </div>
   );
 };

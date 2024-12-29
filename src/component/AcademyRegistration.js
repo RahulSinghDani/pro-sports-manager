@@ -1,234 +1,131 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useParams ,useLocation} from 'react-router-dom';
 import axios from 'axios';
 
-
 const AcademyRegistration = () => {
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-    const location = useLocation();
-    const user_id = location.state?.user_id;
+  const { role } = useParams();
+  const location = useLocation();
+  const user_id = location.state?.user_id; 
+  const [formData, setFormData] = useState({
+    name: '',
+    address: '',
+    owner_name: '',
+    phone_num: '',
+    email: '',
+    website: '',
+    images: 'N/A',
+    logo: 'N/A',
+    youtube: 'N/A',
+    instagram: 'N/A',
+    facebook: 'N/A',
+    user_id: user_id,
+    latitude: 0.00,
+    longitude: 0.00,
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        name: '',
-        address: '',
-        owner_name: '',
-        phone_num: '',
-        email: '',
-        location: '',
-        website: '',
-        images: '',
-        logo: '',
-        youtube: '',
-        instagram: '',
-        facebook: '',
-        user_id: user_id,
-    });
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
-    const navigate = useNavigate();
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        axios
-            .post(`${API_BASE_URL}/api/academies`, formData)
-            .then((response) => {
-                setSuccess('Academy added successfully!');
-                setTimeout(() => {
-                    navigate(`/Login`); // Redirect to Dashboard after success
-                }, 2000); // Wait for 2 seconds before redirecting
-            })
-            .catch((error) => {
-                console.error('Error adding academy:', error);
-                setError('Failed to add academy. Please try again.');
-            });
-    };
-
-    return (
-        <div>
-            <nav style={styles.nav}>
-                    <h1 style={styles.logo}>Pro Sports Manager</h1>
-                    <Link to={`/`}>
-                      <button style={{ background: "rgb(13, 101, 183)", float: "right" }}>Home</button>
-                    </Link>
-                  </nav>
-        
-        <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
-            <h2 className='heading'>Add a New Academy</h2>
-            <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
-
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {success && <p style={{ color: 'green' }}>{success}</p>}
-            <div className='container'>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label>User ID (Unique):</label>
-                        <input type="number" value={user_id} onChange={handleChange} disabled />
-                    </div>
-
-                    <div className="form-group">
-                    <label>Academy Name:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Academy Name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Address:</label>
-                    <input
-                        type="text"
-                        name="address"
-                        placeholder="Address"
-                        value={formData.address}
-                        onChange={handleChange}
-                        required
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Owner Name:</label>
-                    <input
-                        type="text"
-                        name="owner_name"
-                        placeholder="Owner Name"
-                        value={formData.owner_name}
-                        onChange={handleChange}
-                        required
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Phone Number:</label>
-                    <input
-                        type="text"
-                        name="phone_num"
-                        placeholder="Phone Number"
-                        value={formData.phone_num}
-                        onChange={handleChange}
-                        required
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Location (Longitude & Latitude):</label>
-                    <input
-                        type="text"
-                        name="location"
-                        placeholder="Location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        required
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Website:</label>
-                    <input
-                        type="text"
-                        name="website"
-                        placeholder="Website"
-                        value={formData.website}
-                        onChange={handleChange}
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Image:</label>
-                    <input
-                        type="text"
-                        name="images"
-                        placeholder="Images (Comma-separated URLs)"
-                        value={formData.images}
-                        onChange={handleChange}
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Logo:</label>
-                    <input
-                        type="text"
-                        name="logo"
-                        placeholder="Logo URL"
-                        value={formData.logo}
-                        onChange={handleChange}
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Youtube (Link):</label>
-                    <input
-                        type="text"
-                        name="youtube"
-                        placeholder="YouTube Link"
-                        value={formData.youtube}
-                        onChange={handleChange}
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Instagram:</label>
-                    <input
-                        type="text"
-                        name="instagram"
-                        placeholder="Instagram Link"
-                        value={formData.instagram}
-                        onChange={handleChange}
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label>Facebook:</label>
-                    <input
-                        type="text"
-                        name="facebook"
-                        placeholder="Facebook Link"
-                        value={formData.facebook}
-                        onChange={handleChange}
-                    />
-                    </div>
-                    <button type="submit">Submit</button>
-                    <Link to={`/Login`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <button>Back</button>
-                    </Link>
-                </form>
-            </div>
-        </div>
-        </div>
-    );
-};
-const styles = {
-    nav: {
-  
-        background: "linear-gradient(to right, #4f46e5, #3b82f6)", // Indigo to Blue Gradient
-        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    
-        fontFamily: "'Arial', sans-serif",
-        display: "flex",
-        padding:'8px 32px',
-        alignItems: "center",
-        justifyContent: "space-between",
-        color: "white",
-        position: 'sticky', // Sticky positioning
-        top: 0, // Stick to the top of the viewport
-        zIndex: 10, // Ensure it stays above other elements
-    },
-    logo: {
-        fontSize: "1.8rem",
-        fontWeight: "bold",
-        textTransform: "uppercase",
-        letterSpacing: "2px",
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
-export default AcademyRegistration
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    axios
+      .post(`${API_BASE_URL}/api/addacademies`, formData)
+      .then((response) => {
+        setSuccess('Academy added successfully!');
+        setTimeout(() => {
+          navigate(`/Login`); // Redirect to Dashboard after success
+        }, 2000); // Wait for 2 seconds before redirecting
+      })
+      .catch((error) => {
+        console.error('Error adding academy:', error);
+        setError('Failed to add academy. Please try again.');
+      });
+  };
+
+  return (
+    <div>
+
+      <nav className='nav'>
+        <h1 className='logo'>Pro Sports Manager</h1>
+        <Link to={`/`}>
+          <button style={{ background: "rgb(13, 101, 183)", float: "right" }}>Home</button>
+        </Link>
+      </nav>
+      <div className="container" style={{ maxWidth: '600px', marginTop: '40px', padding: '20px' }}>
+        <h2 className='heading'>Register Your Academy</h2>
+        <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "5px 0" }} /> {/*  adjust margin to set into column line */}
+
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {success && <p style={{ color: 'green' }}>{success}</p>}
+        <div className=''>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Academy Name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="address"
+              placeholder="Address"
+              value={formData.address}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="owner_name"
+              placeholder="Owner Name"
+              value={formData.owner_name}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="phone_num"
+              placeholder="Phone Number"
+              value={formData.phone_num}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+
+            <input
+              type="text"
+              name="website"
+              placeholder="Website"
+              value={formData.website}
+              onChange={handleChange}
+            />
+
+
+            <button type="submit">Submit</button>
+            <Link to={`/Dashboard/${role}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <button>Back</button>
+            </Link>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AcademyRegistration;

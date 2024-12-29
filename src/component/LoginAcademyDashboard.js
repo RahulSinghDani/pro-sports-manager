@@ -6,7 +6,7 @@ import './AcademyNavbar.css';
 import AcademyNavbar from './AcademyNavbar.js';
 
 const LoginAcademyDashboard = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
     const { id: academyId ,role} = useParams();
     const [academyData, setAcademy] = useState(null); // Use an object for a single academy
@@ -28,7 +28,7 @@ const LoginAcademyDashboard = () => {
         };
 
         fetchTotalPlayers();
-    }, []);
+    }, [API_BASE_URL]);
 
 
 
@@ -43,7 +43,7 @@ const LoginAcademyDashboard = () => {
                 console.error('Error fetching data:', error); // Log the error object
                 setError('Failed to load academy details.');
             });
-    }, [academyId]);
+    }, [API_BASE_URL,academyId]);
 
     if (error) {
         return <div>{error}</div>;

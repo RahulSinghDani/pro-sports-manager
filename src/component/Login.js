@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import CryptoJS from 'crypto-js';  // Import CryptoJS for hashing
 
 const Login = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -12,10 +13,15 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+        // Hash the password using SHA256 (or another algorithm of your choice)
+        const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
+        
+
     try {
       const response = await axios.post(`${API_BASE_URL}/login`, {
         username,
-        password
+        password: hashedPassword  // Send the hashed password to the backend
+        
       });
 
       if (response.data.message === 'Login successful') {
@@ -29,7 +35,7 @@ const Login = () => {
         }else if (role === 'player') {
           navigate(`/LoginPlayerDashboard/${role}/${academy_id}/${id}`); // Player dashboard
         } else if (role === 'academy') {
-          // navigate(`/LoginAcademyDashboard/${role}/${id}`); // Academy dashboard
+          navigate(`/LoginAcademyDashboard/${role}/${id}`); // Academy dashboard
           const academyId= id;
           navigate(`/LoginHome/${role}/${academyId}`);
         } else {

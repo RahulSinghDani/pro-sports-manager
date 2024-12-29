@@ -11,7 +11,9 @@ import defaultprofile from "./Images/playerpng.png"; // Import the background im
 
 
 const HomeAllPlayerDashboard = () => {
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || `http://165.232.183.58:5000`;
+console.log("API_BASE_URL :  ",API_BASE_URL);
+
     const [players, setPlayers] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true); // Add a loading state
@@ -25,13 +27,14 @@ const HomeAllPlayerDashboard = () => {
     //     const ageMonths = (months < 0 ? 12 + months : months);
     //     return `${ageYears} years ${ageMonths} months`;
     // };
-    
+
 
     useEffect(() => {
-        // Fetch player data from the backend
+        // Mock data
         axios
             .get(`${API_BASE_URL}/api/allplayer`)
             .then(response => {
+                console.log("API Response:", response);
                 setPlayers(response.data); // Set the fetched player data
                 setLoading(false); // Stop loading
             })
@@ -40,7 +43,7 @@ const HomeAllPlayerDashboard = () => {
                 setError('Failed to load player details.');
                 setLoading(false); // Stop loading even on error
             });
-    }, []);
+    }, [API_BASE_URL]);
 
     // Show loading spinner or message while fetching data
     if (loading) {
@@ -57,7 +60,7 @@ const HomeAllPlayerDashboard = () => {
             <nav className='nav'>
                 <Link to={`/`}><h1 className='logo'>Pro Sports Manager</h1></Link>
                 <Link to={`/`}>
-                    <button style={{ background: "rgb(35, 38, 41)", float: "right",fontWeight:'bold' }}>Home</button>
+                    <button style={{ background: "rgb(35, 38, 41)", float: "right", fontWeight: 'bold' }}>Home</button>
                 </Link>
             </nav>
             <p className="heading" style={{ fontWeight: 'bold', textAlign: "center", color: "black" }}>  Player Dashboard </p>

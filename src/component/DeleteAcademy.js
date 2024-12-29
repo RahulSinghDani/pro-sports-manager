@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate,Link, useParams } from 'react-router-dom';
 
 const DeleteAcademy = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
   const {role} = useParams();
   const [academyId, setAcademyId] = useState('');
@@ -52,7 +52,13 @@ const DeleteAcademy = () => {
 
   return (
     <div>
-      <h2 className='heading'>Delete Academy</h2>
+      <nav className='nav'>
+                    <h1 className='logo'>Pro Sports Manager</h1>
+                    <Link to={`/Dashboard/${role}`}>
+                      <button style={{ background: "rgb(13, 101, 183)", float: "right" }}>Home</button>
+                    </Link>
+                  </nav>
+      <h2 className='heading' style={{marginTop:"55px"}}>Delete Academy</h2>
       <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0"}}/> {/*  adjust margin to set into column line */}
 
       <form onSubmit={handleDelete}>

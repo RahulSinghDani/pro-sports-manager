@@ -7,7 +7,7 @@ import { useParams, Link, useLocation } from 'react-router-dom';
 import defaultImage from "./Images/playerpng.png"; // Import the default image
 
 const LoginPlayerDashboard = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
     const { role, academy_id, id } = useParams();
     const [totalPlayers, setTotalPlayers] = useState(0);
@@ -32,7 +32,7 @@ const LoginPlayerDashboard = () => {
         };
 
         fetchTotalPlayers();
-    }, []);
+    }, [API_BASE_URL]);
 
 
     //Player by academy id AND id
@@ -46,7 +46,7 @@ const LoginPlayerDashboard = () => {
             }
         };
         fetchPlayerData();
-    }, [academy_id, id]);
+    }, [API_BASE_URL,academy_id, id]);
 
     const calculateAge = (dob) => {
         const birthDate = new Date(dob);

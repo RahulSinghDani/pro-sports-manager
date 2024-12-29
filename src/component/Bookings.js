@@ -5,7 +5,7 @@ import './Style.css'; // Ensure your styles are imported
 
 
 const Bookings = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
     const { academyId, role } = useParams();
     const [bookings, setBookings] = useState([]);
@@ -21,7 +21,7 @@ const Bookings = () => {
             .catch((error) => {
                 console.error('Error fetching bookings:', error);
             });
-    }, [academyId]);
+    }, [API_BASE_URL ,academyId]);
 
     // Delete booking handler
     const deleteBooking = (id) => {

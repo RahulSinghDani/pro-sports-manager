@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const TotalPlayerCount = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
   const [totalPlayers, setTotalPlayers] = useState(0);
 
@@ -19,7 +19,7 @@ const TotalPlayerCount = () => {
     };
 
     fetchTotalPlayers();
-  }, []);
+  }, [API_BASE_URL]);
 
   return (
     <div className="total-player-count">

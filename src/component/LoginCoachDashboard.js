@@ -6,7 +6,7 @@ import defaultprofile from "./Images/playerpng.png"; // Import the background im
 // import { styles } from './Style';
 
 const LoginCoachDashboard = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
   const { role, academy_id: academyId, coachId } = useParams(); // Get the academy_id from the URL
   const [totalPlayers, setTotalPlayers] = useState(0);
@@ -33,7 +33,7 @@ const LoginCoachDashboard = () => {
         setError('Failed to load coach details.');
         console.error('Error fetching coach data:', error);
       });
-  }, [academyId, coachId]);
+  }, [API_BASE_URL ,academyId, coachId]);
 
   // Handler to toggle coach visibility
   const toggleCoachVisibility = () => {
@@ -55,7 +55,7 @@ const LoginCoachDashboard = () => {
     };
 
     fetchTotalPlayers();
-  }, []);
+  }, [API_BASE_URL]);
 
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const LoginCoachDashboard = () => {
         setError('Failed to load player details.');
         setLoading(false); // Stop loading even on error
       });
-  }, [academyId]);
+  }, [API_BASE_URL,academyId]);
 
   // Show loading spinner or message while fetching data
   if (loading) {

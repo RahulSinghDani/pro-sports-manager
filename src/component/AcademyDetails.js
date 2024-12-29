@@ -21,7 +21,7 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
 
 const AcademyDetails = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
   const { role, academyId } = useParams(); // Get the academy_id from the URL
   // console.log(role);
@@ -44,7 +44,7 @@ const AcademyDetails = () => {
     };
 
     fetchTotalPlayers();
-  }, []);
+  }, [API_BASE_URL]);
 
 
 
@@ -59,7 +59,7 @@ const AcademyDetails = () => {
         console.error('Error fetching data:', error); // Log the error object
         setError('Failed to load academy details.');
       });
-  }, [academyId]);
+  }, [API_BASE_URL ,academyId]);
 
   if (error) {
     return <div>{error}</div>;
@@ -80,12 +80,10 @@ const AcademyDetails = () => {
     <div >
       <AcademyNavbar role={role} academyId={academyId} />
       <div className='container'>
-        <h2 style={styles.heading}>{academyData.name}</h2>
-
-
 
         <div className='academy-img' alt="Ground"
           style={{
+            marginTop:'50px',
             width: '100%', // Makes the image responsive and fills the width of its container
             height: 'auto', // Maintains aspect ratio
             borderRadius: '10px', // Optional: Adds rounded corners to the image
@@ -97,7 +95,9 @@ const AcademyDetails = () => {
             // padding:'12px 12px',
           }}>
           <img src={GroundImage} style={{ width: '800px' }} alt='Loading...'></img>
+          
         </div>
+        <h2 style={styles.heading}>{academyData.name}</h2>
         {/* Dashboard Boxes */}
         <div id="dashboard-boxes">
           <div className="dashboard-box">

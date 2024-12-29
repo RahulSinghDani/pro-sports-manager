@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const FinancialSummary = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://165.232.183.58:5000';
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
     const { academyId} = useParams();
     const [financialData, setFinancialData] = useState({
@@ -35,7 +35,7 @@ const FinancialSummary = () => {
         };
 
         fetchFinancialData();
-    }, [academyId]);
+    }, [API_BASE_URL ,academyId]);
 
     return (
         <div

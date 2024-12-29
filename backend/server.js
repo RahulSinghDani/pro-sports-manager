@@ -158,7 +158,7 @@ app.post("/registerUser", (req, res) => {
   const query = "INSERT INTO userdata (role, username, password) VALUES (?, ?, ?)";
   db.query(query, [role, username, password], (err, result) => {
     if (err) {
-      res.status(500).send({ message: "Error registering user", error: err });
+      res.status(500).send({ message: "Please use different username", error: err });
     } else {
       res.send({ userId: result.insertId });
     }
@@ -321,7 +321,7 @@ app.get('/api/players/:academyId', (req, res) => {
 
 //Add New Academy ------------------------------
 // Endpoint to add a new academy
-app.post('/api/academies', (req, res) => {
+app.post('/api/addacademies', (req, res) => {
   const {
     name,
     address,
@@ -387,7 +387,7 @@ app.post('/api/academies', (req, res) => {
   );
 });
 
-// Endpoint to view all academies
+// Endpoint to view all academies id
 app.get('/api/academies', (req, res) => {
   const query = 'SELECT * FROM academy';
 
