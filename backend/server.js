@@ -24,17 +24,25 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST || 'localhost', // Fallback to localhost
-  user: process.env.DB_USER || 'root',     // Fallback to root
-  password: process.env.DB_PASSWORD || '', // Fallback to empty password
-  database: process.env.DB_NAME || ''      // Fallback to empty database name
+// const db = mysql.createConnection({
+//   host: process.env.DB_HOST || 'localhost', // Fallback to localhost
+//   user: process.env.DB_USER || 'root',     // Fallback to root
+//   password: process.env.DB_PASSWORD || '', // Fallback to empty password
+//   database: process.env.DB_NAME || ''      // Fallback to empty database name
+// });
+
+const db = mysql.createPool({
+  connectionLimit: 10, // Adjust the number of connections based on your needs
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || ''
 });
 
-db.connect(err => {
-  if (err) throw err;
-  console.log('Connected to MySQL database');
-});
+// db.connect(err => {
+//   if (err) throw err;
+//   console.log('Connected to MySQL database');
+// });
 
 // Set up static folder for profile picture uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
