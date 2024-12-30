@@ -50,7 +50,7 @@ CREATE TABLE `academy` (
 
 LOCK TABLES `academy` WRITE;
 /*!40000 ALTER TABLE `academy` DISABLE KEYS */;
-INSERT INTO `academy` VALUES ('aca001','ProSports Academy Delhi','123 Sports Street, Nainital, Uttarakhand','Rahul','1234567890','contact@prosports.com','http://www.prosportsacademy.com','images/sports_academy.jpg','images/logo.jpg','https://youtube.com/prosports','https://instagram.com/prosports','https://facebook.com/prosports',1,29.381800,79.446900),('aca002','Sports Academy','88 Sports Street, Nainital, Uttarakhand','Karan','1234567822','contacts@prosports.com','http://www.prosportsacademy.com','images/sports_academy.jpg','images/logo.jpg','https://youtube.com/prosports','https://instagram.com/prosports','https://facebook.com/prosports',NULL,29.512300,79.543200),('aca003','BSSV School','123 Academy Street, Nainital','Pratab Bhaiya','+91-9876543210','info@bssvacademy.com','http://www.bssvacademy.com','/path/to/image1.jpg','/path/to/logo.jpg','https://www.youtube.com/channel/UC123456789','https://www.instagram.com/bssvacademy','https://www.facebook.com/bssvacademy',NULL,29.218300,79.513000),('aca004','Elite Sports Academy','456 Elm Street, Dehradun','Rohit Sharma','+91-9988776655','contact@elitesports.com','http://www.elitesports.com','/path/to/image2.jpg','/path/to/logo2.jpg','https://www.youtube.com/channel/UC567890123','https://www.instagram.com/elitesportsacademy','https://www.facebook.com/elitesportsacademy',NULL,29.451000,79.345600),('aca005','Mountain View Academy','789 Pine Avenue, Shimla','Vikram Kapoor','+91-9123456789','info@mountainviewacademy.com','http://www.mountainviewacademy.com','/path/to/image3.jpg','/path/to/logo3.jpg','https://www.youtube.com/channel/UC098765432','https://www.instagram.com/mountainviewacademy','https://www.facebook.com/mountainviewacademy',NULL,29.675400,79.675800),('aca006','Habibi School','Dubai','Habibi Shekh','1234567890','habibi@gmail.com','habibischool.com','jds.jpg','jd.jpg','yt.com','insta.com','fb.com',NULL,29.521000,79.562300),('aca007','Manovar Academy','Manali','Mukesh','9876543210','manovar@gmail.com','manovaracademy.com','ja.jpg','hh.png','manovaryt.com','manovar.insta.com','manovar.fb.com',22,29.589100,79.459700),('aca008','Cota Academy','haldwani academy road ','Suresh','+91 3233333333','cota@gmail.com','cota.com','jds.jpg','logo.jpg','www.youtube.com','www.instagram.com','www.facebook.com',NULL,29.854500,34.454500);
+INSERT INTO `academy` VALUES ('aca001','ProSports Academy Delhi','123 Sports Street, Nainital, Uttarakhand','Rahul','1234567890','contact@prosports.com','http://www.prosportsacademy.com','images/sports_academy.jpg','images/logo.jpg','https://youtube.com/prosports','https://instagram.com/prosports','https://facebook.com/prosports',1,29.381800,79.446900),('aca002','Sports Academy','88 Sports Street, Nainital, Uttarakhand','Karan','1234567822','contacts@prosports.com','http://www.prosportsacademy.com','images/sports_academy.jpg','images/logo.jpg','https://youtube.com/prosports','https://instagram.com/prosports','https://facebook.com/prosports',NULL,29.512300,79.543200),('aca003','BSSV School','123 Academy Street, Nainital','Pratab Bhaiya','+91-9876543210','info@bssvacademy.com','http://www.bssvacademy.com','/path/to/image1.jpg','/path/to/logo.jpg','https://www.youtube.com/channel/UC123456789','https://www.instagram.com/bssvacademy','https://www.facebook.com/bssvacademy',NULL,29.218300,79.513000),('aca004','Elite Sports Academy','456 Elm Street, Dehradun','Rohit Sharma','+91-9988776655','contact@elitesports.com','http://www.elitesports.com','/path/to/image2.jpg','/path/to/logo2.jpg','https://www.youtube.com/channel/UC567890123','https://www.instagram.com/elitesportsacademy','https://www.facebook.com/elitesportsacademy',NULL,29.451000,79.345600),('aca005','Mountain View Academy','789 Pine Avenue, Shimla','Vikram Kapoor','+91-9123456789','info@mountainviewacademy.com','http://www.mountainviewacademy.com','/path/to/image3.jpg','/path/to/logo3.jpg','https://www.youtube.com/channel/UC098765432','https://www.instagram.com/mountainviewacademy','https://www.facebook.com/mountainviewacademy',NULL,29.675400,79.675800),('aca006','Habibi School','Dubai','Habibi Shekh','1234567890','habibi@gmail.com','habibischool.com','jds.jpg','jd.jpg','yt.com','insta.com','fb.com',NULL,29.521000,79.562300),('aca007','Manovar Academy','Manali','Mukesh','9876543210','manovar@gmail.com','manovaracademy.com','ja.jpg','hh.png','manovaryt.com','manovar.insta.com','manovar.fb.com',22,29.589100,79.459700),('aca008','Cota Academy','haldwani academy road ','Suresh','+91 3233333333','cota@gmail.com','cota.com','jds.jpg','logo.jpg','www.youtube.com','www.instagram.com','www.facebook.com',NULL,29.854500,34.454500),('aca009','strella sports','noida','rakesh jhunjhunvala','+91-9876543210','rakesh@email.com','strella.com','','','','','',NULL,29.854500,34.454500),('aca010','jd','sj','sj','3434342342','c@gmail.com','SEJ','N/A','N/A','N/A','N/A','N/A',53,0.000000,0.000000),('aca011','aedwwjhgj','jhjjhgjhgjhg','jhgjhgjhg','8786876876','hj@gmail.com','hjvhv.com','N/A','N/A','N/A','N/A','N/A',NULL,0.000000,0.000000);
 /*!40000 ALTER TABLE `academy` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,40 +83,6 @@ LOCK TABLES `assets` WRITE;
 /*!40000 ALTER TABLE `assets` DISABLE KEYS */;
 INSERT INTO `assets` VALUES ('aca002','ass001','Football',30,500.00,'Football Kit',NULL),('aca002','ass002','Basketball',20,700.00,'Basketball Kit',NULL),('aca002','ass003','Ball',15,300.00,'Cricket Kit',NULL),('aca002','ass004','Bat',10,500.00,'Cricket Kit',NULL),('aca001','ass005','Bat',10,400.00,'Cricket Kit',NULL),('aca001','ass006','Ball throwing machine',2,10000.00,'Ball Throwing Machine',NULL),('aca001','ass007','Tennis Rackets',10,500.00,'Badminton Kit',NULL),('aca003','ass008','Shuttlecock Machine',1,2000.00,'Shuttlecock Machine','https://s.alicdn.com/@sc04/kf/H858f4d70ce7e4b1c9102f3972374c0dfm.jpg?avif=close'),('aca003','ass009','Footballs',15,100.00,'Football Kit',NULL),('aca004','ass010','Gym Equipment Set',5,2000.00,'Gym Equipment',NULL),('aca004','ass011','Cricket Bowling Machine',2,3000.00,'Ball Throwing Machine',NULL),('aca005','ass012','Swimming Pool Gear',20,800.00,'Swimming Pool Gear','https://img.freepik.com/free-vector/realistic-set-diving-equipment-snorkeling-mask-flippers-swim-glasses-aqualung_1441-2551.jpg?t=st=1735112958~exp=1735116558~hmac=3f28387518e3773655386415ffa50a54264c21d000567612e9a1b1cf1eb78d23&w=826'),('aca005','ass013','Skating Boards',12,300.00,'Skating Gear','https://img.freepik.com/free-photo/close-up-young-boy-skateboard_23-2148624913.jpg?t=st=1735113239~exp=1735116839~hmac=d66229cd77a0524af1041b8e9ce179d4e17471b1082ab7c38163c8a01ad0b4b6&w=1060'),('aca001','ass014','Rowing Machine',2,500.00,'Rowing Machine','https://cdn.mos.cms.futurecdn.net/9EahYj7iz9SQXiSoxHBpnn-1200-80.jpg');
 /*!40000 ALTER TABLE `assets` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `booking`
---
-
-DROP TABLE IF EXISTS `booking`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `booking` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `date_of_booking` date NOT NULL,
-  `time` time NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  `customer_name` varchar(255) NOT NULL,
-  `contact` varchar(15) NOT NULL,
-  `status` enum('confirmed','pending') NOT NULL,
-  `remarks` text,
-  `academy_id` varchar(255) DEFAULT NULL,
-  `location` varchar(255) DEFAULT NULL,
-  `image_url` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `booking`
---
-
-LOCK TABLES `booking` WRITE;
-/*!40000 ALTER TABLE `booking` DISABLE KEYS */;
-INSERT INTO `booking` VALUES (3,'Football Ground B','2024-12-15','14:00:00',12000.00,'Ravi Sharma','9876543222','confirmed','Confirmed for team event','aca002','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/free-vector/gradient-football-field-background_52683-65681.jpg?t=st=1734629597~exp=1734633197~hmac=df5d3bab40b5033a319d76cdd364792c07513f2bcd9828cf74b844d848492182&w=900'),(4,'Tennis Court A','2024-12-20','10:00:00',8000.00,'Nisha Reddy','9876543233','pending','Waiting for payment','aca002','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/ground-tennis-court_875825-50452.jpg?w=900'),(7,'Golf Ground','2024-12-01','10:16:00',45000.00,'Rahul','2344545543','confirmed','Golf Ground A','aca001','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/golf-ground_1039849-86.jpg?w=1060'),(8,'Cricket Ground B','2024-12-01','12:57:00',30000.00,'Rohan Upadhyay','8383737333','confirmed','Cricket Ground For students','aca001','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/cricket-stadium_1258715-1512.jpg?w=740'),(9,'Snooker Hall ','2024-11-11','11:00:00',34000.00,'Suresh Upreti','+91 9087654321','confirmed','Bookable','aca001','https://maps.app.goo.gl/haV7CiZfget444bR7','https://img.freepik.com/free-photo/young-woman-playing-billiard_329181-2814.jpg?t=st=1734684776~exp=1734688376~hmac=d417c9e8022834615e0bb7282035f637cfa3bdf3c0a706859afb9a05b7fd4dfd&w=900');
-/*!40000 ALTER TABLE `booking` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -185,6 +151,40 @@ LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
 INSERT INTO `employee` VALUES ('aca002','Coach001','John Smith','Coach','456 Coach Lane, Nainital','5 years','9876543210','john.smith@prosports.com',25000.00,'monthly','files/resume_coach1.pdf','weekend (7am to 12pm)',23),('aca002','Coach002','Jane Doe','Manager','789 Manager Street, Nainital','3 years','9876543211','jane.doe@prosports.com',20000.00,'monthly','files/resume_manager.pdf','weekend (7am to 12pm)',NULL),('aca003','coach003','John Doe','Software Engineer','1234 Elm St, Some City','5','123-456-7890','john.doe@example.com',50000.00,'Monthly','resume1.pdf','weekend(5am to 8am)',NULL),('aca002','coach004','mukesh','Coach','dwarka','4 years','3423423432','a@gmail.com',30000.00,'monthly',NULL,'Weekend (4am to 6am)',NULL),('aca002','coach005','sindhe','Coach','dwarka','4 years','324234234','a@gmail.com',34000.00,'monthly',NULL,'Weekend (4am to 6am), Weekend (1pm to 3pm)',NULL),('aca002','coach006','Dhiru','Coach','dwarka','2 years','122323232','a@gmail.com',23000.00,'monthly',NULL,'Weekend (4am to 6am)',NULL),('aca004','coach008','SukhVindar','Coach','Mumbai','fresher','233232323','a@gmail.com',12000.00,'monthly',NULL,'Weekend (4am to 6am)',NULL),('aca001','coach009','Mukesh Joshi','Coach','Haldwani','4 years','232423432','a@gmail.com',20000.00,'monthly',NULL,'Weekend (4am to 6am)',NULL),('aca001','coach010','Rahul','Coach','Dwarka','3 years','08954784712','rahuldani00@gmail.com',30000.00,'monthly',NULL,'Monthly (4am to 6am)',NULL),('aca001','coach011','Shridhar','Coach','Bangalore','2 years','3773737333','shridhar@gmail.com',33000.00,'weekly',NULL,'Weekend (4am to 6am)',NULL),('aca001','coach012','Suresh Rena','Coach','Gurgaon','4 years','3983383833','suresh@gmail.com',33000.00,'monthly',NULL,'Monthly (5am to 8am)',NULL);
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `grounds`
+--
+
+DROP TABLE IF EXISTS `grounds`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `grounds` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `date_of_booking` date NOT NULL,
+  `time` text,
+  `amount` decimal(10,2) NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `contact` varchar(15) NOT NULL,
+  `status` enum('confirmed','pending') NOT NULL,
+  `remarks` text,
+  `academy_id` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `grounds`
+--
+
+LOCK TABLES `grounds` WRITE;
+/*!40000 ALTER TABLE `grounds` DISABLE KEYS */;
+INSERT INTO `grounds` VALUES (3,'Football Ground B','2024-12-15','06:00 AM - 06:00 PM',400.00,'Ravi Sharma','9876543222','confirmed','Confirmed for team event','aca002','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/free-vector/gradient-football-field-background_52683-65681.jpg?t=st=1734629597~exp=1734633197~hmac=df5d3bab40b5033a319d76cdd364792c07513f2bcd9828cf74b844d848492182&w=900'),(4,'Tennis Court A','2024-12-20','08:00 AM - 07:00 PM',300.00,'Nisha Reddy','9876543233','pending','Waiting for payment','aca002','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/ground-tennis-court_875825-50452.jpg?w=900'),(7,'Golf Ground','2024-12-01','08:00 AM - 07:00 PM',250.00,'Rahul','2344545543','confirmed','Golf Ground A','aca001','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/golf-ground_1039849-86.jpg?w=1060'),(8,'Cricket Ground B','2024-12-01','08:00 AM - 06:00 PM',400.00,'Rohan Upadhyay','8383737333','confirmed','Cricket Ground For students','aca001','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/cricket-stadium_1258715-1512.jpg?w=740'),(9,'Snooker Hall ','2024-11-11','09:00 AM - 06:00 PM',500.00,'Suresh Upreti','+91 9087654321','confirmed','Bookable','aca001','https://maps.app.goo.gl/haV7CiZfget444bR7','https://img.freepik.com/free-photo/young-woman-playing-billiard_329181-2814.jpg?t=st=1734684776~exp=1734688376~hmac=d417c9e8022834615e0bb7282035f637cfa3bdf3c0a706859afb9a05b7fd4dfd&w=900'),(12,'Gym','2024-12-10','04:00 - 20:00',2000.00,'Suresh Upreti','+91 9087654321','confirmed','Bookable','aca001','Nainital uttarakhand','1735484950279-fitnessimg.jpg');
+/*!40000 ALTER TABLE `grounds` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -277,8 +277,10 @@ CREATE TABLE `userdata` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `username_2` (`username`),
+  UNIQUE KEY `username_3` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -287,7 +289,7 @@ CREATE TABLE `userdata` (
 
 LOCK TABLES `userdata` WRITE;
 /*!40000 ALTER TABLE `userdata` DISABLE KEYS */;
-INSERT INTO `userdata` VALUES (1,'academy','academy123','1234','2024-12-07 08:08:16','2024-12-07 08:08:16'),(2,'admin','rahul','1234','2024-12-07 08:09:26','2024-12-07 08:09:26'),(3,'player','sarkarsindhe@gmail.com','1234','2024-12-07 08:15:41','2024-12-07 16:37:15'),(4,'player','khilendra@gmail.com','1234','2024-12-07 16:39:11','2024-12-07 16:39:11'),(5,'player','rahuldani@gmail.com','1234','2024-12-07 16:43:26','2024-12-07 16:43:26'),(16,'player','harry','harry','2024-12-11 02:57:53','2024-12-11 02:57:53'),(22,'academy','aca11','1234','2024-12-11 14:34:46','2024-12-11 14:34:46'),(23,'coach','coach1','1234','2024-12-14 06:23:04','2024-12-14 06:23:04');
+INSERT INTO `userdata` VALUES (1,'academy','academy123','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','2024-12-07 08:08:16','2024-12-28 09:51:53'),(2,'admin','rahul','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','2024-12-07 08:09:26','2024-12-28 09:52:32'),(3,'player','sarkarsindhe@gmail.com','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','2024-12-07 08:15:41','2024-12-28 09:52:32'),(4,'player','khilendra@gmail.com','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','2024-12-07 16:39:11','2024-12-28 09:52:32'),(5,'player','rahuldani@gmail.com','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','2024-12-07 16:43:26','2024-12-28 09:52:32'),(16,'player','harry','harry','2024-12-11 02:57:53','2024-12-11 02:57:53'),(22,'academy','aca11','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','2024-12-11 14:34:46','2024-12-28 09:53:29'),(23,'coach','coach1','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','2024-12-14 06:23:04','2024-12-28 09:53:29'),(51,'academy','aca005','a1HUMd9dfxQcvs7M957fPdhhw7QGnwsRZho+76y7qRg=','2024-12-28 15:10:01','2024-12-28 15:10:01'),(52,'academy','aca006','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','2024-12-29 03:56:38','2024-12-29 03:56:38'),(53,'academy','aca007','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','2024-12-29 04:25:53','2024-12-29 04:25:53'),(54,'academy','aca008','A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=','2024-12-29 04:48:41','2024-12-29 04:48:41');
 /*!40000 ALTER TABLE `userdata` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -300,4 +302,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-26 10:08:01
+-- Dump completed on 2024-12-30  8:42:32
