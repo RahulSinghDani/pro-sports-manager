@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import AcademyNavbar from './AcademyNavbar.js';
 import { Link ,useParams} from 'react-router-dom';
-
+import About from './About.js';
 const Player = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
@@ -156,6 +156,7 @@ const Player = () => {
         </table>
       )}
     </div>
+    <About />
     </div>
   );
 };

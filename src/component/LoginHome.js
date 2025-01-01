@@ -104,7 +104,7 @@ const LoginHome = () => {
 
       {/* Hero Section */}
       {/* Hero Section as About Section */}
-      <div style={styles.mainHeading}>
+      <div className='mainHeading'>
         <h1 className='h1Style' >ProSportsManager</h1>
         <h3 className='h3StyleAcademy' style={styles.h3StyleAcademy}>Your Sports Venue & Player <span style={styles.hubSpan}>Hub</span></h3>
 

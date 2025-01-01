@@ -10,6 +10,7 @@ import InstagramPng from './Images/instapng.png';
 import YoutubePng from './Images/ytpng.png';
 import FacebookPng from './Images/fbpng.png';
 import LocationImg from './Images/locationIcon.jpg';
+import About from './About.js';
 
 // import { Map, GoogleApiWrapper } from '@react-google-maps/api';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
@@ -79,7 +80,7 @@ const AcademyDetails = () => {
   return (
     <div >
       <AcademyNavbar role={role} academyId={academyId} />
-      <div className='container'>
+      <div className='below-navbar'>
 
         <div className='academy-img' alt="Ground"
           style={{
@@ -172,7 +173,7 @@ const AcademyDetails = () => {
 
             </div> */}
             <div className="iframe-container">
-              <h3 style={styles.heading}>ACADEMY LOCATION</h3>
+              <h3 className='heading'>ACADEMY LOCATION</h3>
               <LoadScript googleMapsApiKey="AIzaSyB0bx0i1japWV7bxcN5tVXXGuo7EVqLyDA">
                 <GoogleMap
                   mapContainerStyle={{
@@ -199,6 +200,7 @@ const AcademyDetails = () => {
           </div>
         </div>
       </div>
+      <About />
     </div >
 
   );

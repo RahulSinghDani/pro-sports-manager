@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import AcademyNavbar from './AcademyNavbar';
-
+import About from './About';
 const AcademyAssets = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -84,6 +84,7 @@ const AcademyAssets = () => {
                     </table>
                 )}
             </div>
+            <About />
         </div>
     );
 };

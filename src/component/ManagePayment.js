@@ -4,7 +4,7 @@ import axios from "axios";
 // import FinancialSummary from "./FinancialSummary";
 import './Style.css';
 import { styles } from "./Style";
-
+import About from "./About";
 const ManagePayment = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -144,10 +144,10 @@ const ManagePayment = () => {
 
 
 
-                    <div style={{ display: 'flex', justifyContent: 'center', padding: '4px', borderRadius: '20px', gap: '50px' }}>
+                    <div className="managepayment-search-main">
 
                         {/* Date Filters */}
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: '20px', width: '45%', border: '1px solid grey' }}>
+                        <div className="search-box-managepayment">
                             <label style={{ display: 'flex', flexDirection: 'row' }}>
                                 From: {" "}
                                 <input
@@ -174,7 +174,7 @@ const ManagePayment = () => {
                         {/* <div style={{ width: '4px', height: '100%', background: 'black' }}></div> */}
 
                         {/* Search by Player */}
-                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', border: '1px solid grey', padding: '20px', width: '45%' }}>
+                        <div className="search-box-managepayment">
                             <label style={{ display: 'flex', flexDirection: 'row' }}>
                                 Player ID: {" "}
                                 <input
@@ -199,7 +199,7 @@ const ManagePayment = () => {
                         </div>
 
                         {/* Quick Filters */}
-                        <div style={{ padding: '10px', borderRadius: '20px', display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', width: '100%', border: '1px solid grey' }}>
+                        <div className="search-by-year-month">
                             <button style={styles.quickSearch} onClick={() => handleQuickSearch("week")}>This Week</button>
                             <button style={styles.quickSearch} onClick={() => handleQuickSearch("month")} >
                                 This Month
@@ -214,12 +214,7 @@ const ManagePayment = () => {
                     </div>
                     {/* Results Table */}
                     <table
-                        style={{
-                            width: "100%",
-                            borderCollapse: "collapse",
-                            // marginTop: "20px",
-                            border: "1px solid #ddd",
-                        }}
+                        className="table-main"
                     >
                         <thead>
                             <tr style={{ background: "#f4f4f4", textAlign: "left" }}>
@@ -263,6 +258,7 @@ const ManagePayment = () => {
                     </table>
                 </div>
             </div>
+            <About />
         </div>
     );
 };

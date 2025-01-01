@@ -15,6 +15,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
+const { useParams } = require('react-router-dom');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -52,10 +53,10 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Configure multer storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      cb(null, 'uploads/'); // Folder to save uploaded images
+    cb(null, 'uploads/'); // Folder to save uploaded images
   },
   filename: (req, file, cb) => {
-      cb(null, `${Date.now()}-${file.originalname}`);
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 
@@ -1345,7 +1346,20 @@ app.get('/all-grounds/:academyId', (req, res) => {
   });
 });
 
-
+//-------------------------
+// Get grounds based on ground id
+app.get('/all-bookable-grounds/:academyId/:id', (req, res) => {
+  const { academyId, id } = req.params;
+  const query = 'SELECT * FROM grounds where academy_id != ? AND id=?';
+  db.query(query, [academyId, id], (err, results) => {
+    if (err) {
+      console.error('Error fetching ground:', err);
+      res.status(500).send('Error fetching ground');
+    } else {
+      res.json(results);
+    }
+  });
+});
 //-------------------------------
 //// booking role here 
 // Get all bookings
@@ -1385,21 +1399,21 @@ app.get('/bookings/:academyId', (req, res) => {
 // });
 app.post('/bookings/:role/:academyId', upload.single('image'), (req, res) => {
   const { academyId } = req.params;
-  const { name, date_of_booking, time, amount, customer_name, contact, status, remarks, location } = req.body;
+  const { name, date_of_booking, time, amount, customer_name, contact, status, remarks, location, about } = req.body;
   const image_url = req.file ? req.file.filename : null;
 
   const query = `
-      INSERT INTO grounds (name, date_of_booking, time, amount, customer_name, contact, status, remarks, academy_id, location, image_url)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO grounds (name, date_of_booking, time, amount, customer_name, contact, status, remarks, academy_id, location, image_url,about)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
   `;
 
-  db.query(query, [name, date_of_booking, time, amount, customer_name, contact, status, remarks, academyId, location, image_url], (err, result) => {
-      if (err) {
-          console.error('Error adding booking:', err);
-          res.status(500).send('Error adding ground.');
-      } else {
-          res.status(201).send('Ground added successfully.');
-      }
+  db.query(query, [name, date_of_booking, time, amount, customer_name, contact, status, remarks, academyId, location, image_url, about], (err, result) => {
+    if (err) {
+      console.error('Error adding booking:', err);
+      res.status(500).send('Error adding ground.');
+    } else {
+      res.status(201).send('Ground added successfully.');
+    }
   });
 });
 
@@ -1447,8 +1461,73 @@ app.delete('/bookings/:id', (req, res) => {
   });
 });
 
-//-------------------------------------------------
+//------------------------------
+// -------------------
+app.post('/api/bookings-book-now', (req, res) => {
+  const { academy_id, item_type, item_id, booking_date, start_time, end_time, booked_by, contact_number, status } = req.body;
 
+  const bookingDate = new Date(booking_date);
+  const year = bookingDate.getFullYear();
+  const month = String(bookingDate.getMonth() + 1).padStart(2, '0');
+  const day = String(bookingDate.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+
+  const query = `
+    INSERT INTO bookings (academy_id, item_type, item_id, booking_date, start_time, end_time, booked_by, contact_number, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(query, [academy_id, item_type, item_id, formattedDate, start_time, end_time, booked_by, contact_number, status], (err, result) => {
+    if (err) {
+      console.error('Error inserting booking:', err.message);
+      return res.status(500).json({ message: 'Booking failed', error: err.message });
+    }
+    return res.status(200).json({ message: 'Booking successful' });
+  });
+});
+
+//---------------------------------------------------
+//display all bookings of academy id 
+// API to fetch booked data
+app.get('/api/booked/:academy_id', (req, res) => {
+  const { academy_id } = req.params;
+
+  const query = `
+      SELECT booking_id, item_type, item_id, booking_date, start_time, end_time, booked_by, contact_number, status 
+      FROM bookings 
+      WHERE academy_id = ? AND status = 'Confirmed';
+  `;
+
+  db.query(query, [academy_id], (err, results) => {
+    if (err) {
+      console.error('Error fetching bookings:', err);
+      return res.status(500).json({ message: 'Error fetching bookings' });
+    }
+
+    res.status(200).json(results);
+  });
+});
+//--------------------------------------------------
+//booked date fetch academyid 
+
+app.get('/api/bookings/dates/:id', (req, res) => {
+  const {id } = req.params;
+  const query = 'SELECT DATE(booking_date) AS booking_date FROM bookings WHERE item_id = ?';
+  db.query(query,[id], (err, result) => {
+    if (err) {
+      console.error('Error fetching booked dates:', err);
+      return res.status(500).json({ message: 'Failed to fetch booked dates' });
+    }
+    const bookedDates = result.map(row => {
+      const date = new Date(row.booking_date); // Convert to Date object
+      return date.toISOString().split('T')[0]; // Format to 'YYYY-MM-DD'
+    });
+
+    return res.status(200).json(bookedDates); // Return an array of formatted dates
+
+  });
+});
+//------------------------------
 // public grounds home grounds 
 app.get('/public-bookings', (req, res) => {
 
@@ -1460,6 +1539,31 @@ app.get('/public-bookings', (req, res) => {
     } else {
       res.json(results);
     }
+  });
+});
+//-------------------------------------------------------------
+// bookable dashboard for booking 
+
+//---------------------------------------------------
+//all bookings 
+// Get bookings for a specific academy
+app.get('/all-bookings/:academyId', (req, res) => {
+  const { academyId } = req.params;
+  const query = `
+      SELECT 
+          booking_id, item_type, item_id, booking_date, start_time, end_time, 
+          booked_by, contact_number, status 
+      FROM bookings 
+      WHERE academy_id = ? 
+      ORDER BY booking_date DESC, start_time ASC
+  `;
+
+  db.query(query, [academyId], (err, results) => {
+    if (err) {
+      console.error('Error fetching bookings:', err.message);
+      return res.status(500).json({ error: 'Failed to fetch bookings' });
+    }
+    res.status(200).json(results);
   });
 });
 

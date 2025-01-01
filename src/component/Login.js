@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import CryptoJS from 'crypto-js';  // Import CryptoJS for hashing
-
+import About from './About';
 const Login = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
   const [username, setUsername] = useState('');
@@ -62,7 +62,7 @@ const Login = () => {
 
 
       {/* <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} />  { /*Adjust margin to position the line */} 
-      <div className="login-container" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '80vh' }}>
+      <div className="login-container" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
 
 
       <h2 className="heading" style={{ textAlign: "center", width: "100%"}}>Login</h2>
@@ -89,6 +89,7 @@ const Login = () => {
           <Link to="/UserRegistration"><button style={{ width: "100%", backgroundColor: "gray" }}>Register</button></Link>
         </form>
       </div>
+      <About />
     </div>
   );
 };

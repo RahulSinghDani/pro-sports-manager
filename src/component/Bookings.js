@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import './Style.css'; // Ensure your styles are imported
-
+import About from './About';
 
 const Bookings = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
@@ -108,6 +108,7 @@ const Bookings = () => {
 
                 
             </div>
+            <About />
         </div>
     );
 };

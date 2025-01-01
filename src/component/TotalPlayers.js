@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import About from "./About";
 const TotalPlayerCount = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
@@ -24,6 +24,7 @@ const TotalPlayerCount = () => {
   return (
     <div className="total-player-count">
       <h3>Total Players: {totalPlayers}</h3>
+      <About />
     </div>
   );
 };

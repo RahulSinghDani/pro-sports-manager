@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link, useParams ,useLocation} from 'react-router-dom';
 import axios from 'axios';
+import About from './About';
 
 const AcademyRegistration = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -124,6 +125,7 @@ const AcademyRegistration = () => {
           </form>
         </div>
       </div>
+      <About />
     </div>
   );
 };

@@ -35,20 +35,10 @@ export const styles = {
     justifyContent: 'center', // Vertically center content (if needed)
     width: '100%', // Take full width of its parent
     textAlign: 'center', // Center text within the h1 and h3
-    marginTop: '160px', // Add some top margin for spacing (adjust as needed)
+    paddingTop: '100px', // Add some top margin for spacing (adjust as needed)
+    height:'100vh'
   },
-  h1Style: {
-    fontSize: '60px',
-    fontWeight: '600', // Semibold
-    color: '#333', // Dark Gray
-    marginBottom: '60px',
-    fontFamily: 'sans-serif'
-  },
-  h3Style: {
-    fontSize: '26px',
-    color: '#333', // Dark Gray
-    fontFamily: 'sans-serif'
-  },
+ 
   h3StyleAcademy:{
     fontSize: '26px',
     color: '#333', // Dark Gray
@@ -132,15 +122,7 @@ export const styles = {
 
   },
 
-  playerBoxStyle: {
-    border: "1px solid #ddd",
-    padding: "10px",
-    borderRadius: "8px",
-    width: "270px",
-    background: "#fff",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.7)",
-    textAlign: "center",
-  },
+
   tableDiv: {
     width: "100%",
 

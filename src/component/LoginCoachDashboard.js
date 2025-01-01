@@ -4,9 +4,9 @@ import { useParams, Link } from 'react-router-dom';
 import './Style.css';
 import defaultprofile from "./Images/playerpng.png"; // Import the background image
 // import { styles } from './Style';
-
+import About from './About';
 const LoginCoachDashboard = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const { role, academy_id: academyId, coachId } = useParams(); // Get the academy_id from the URL
   const [totalPlayers, setTotalPlayers] = useState(0);
@@ -33,7 +33,7 @@ const LoginCoachDashboard = () => {
         setError('Failed to load coach details.');
         console.error('Error fetching coach data:', error);
       });
-  }, [API_BASE_URL ,academyId, coachId]);
+  }, [API_BASE_URL, academyId, coachId]);
 
   // Handler to toggle coach visibility
   const toggleCoachVisibility = () => {
@@ -71,7 +71,7 @@ const LoginCoachDashboard = () => {
         setError('Failed to load player details.');
         setLoading(false); // Stop loading even on error
       });
-  }, [API_BASE_URL,academyId]);
+  }, [API_BASE_URL, academyId]);
 
   // Show loading spinner or message while fetching data
   if (loading) {
@@ -91,9 +91,9 @@ const LoginCoachDashboard = () => {
   return (
     <div>
       <nav className='nav'>
-      <h1 className='logo'>Pro Sports Manager</h1>
+        <h1 className='logo'>Pro Sports Manager</h1>
 
-      <div className='navLinks'>
+        <div className='navLinks'>
           <Link to={`/AcademyDetails/${role}/${academyId}/ManagePayment`} style={buttonStyle}>
             Payment Info
           </Link>
@@ -111,90 +111,90 @@ const LoginCoachDashboard = () => {
           </Link>
         </div>
       </nav>
-    <div style={{ background: "#f5f5f5", minHeight: '100vh' }}>
+      <div style={{ background: "#f5f5f5", minHeight: '100vh' }}>
 
-        <h2 style={{fontWeight:'bold',marginTop:'20PX', textAlign: "center", color: "black" }}>Player Information</h2>
-     
-      <div className='container' >
+        <h2 style={{ fontWeight: 'bold', marginTop: '20PX', textAlign: "center", color: "black" }}>Player Information</h2>
+
+        <div className='container' >
 
 
-        <div className='coachDetails'>
-          {/* Circle to toggle Coach Details */}
-          <div
-            onClick={toggleCoachVisibility}
-            style={{
-              width: '50px', height: '50px', borderRadius: '50%', backgroundColor: '#007bff',
-              display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer',
-              color: '#fff', fontWeight: 'bold', position: 'fixed', top: '20px', left: '20px', marginTop: '60px',
-            }}
-          >
-            Coach
+          <div className='coachDetails'>
+            {/* Circle to toggle Coach Details */}
+            <div
+              onClick={toggleCoachVisibility}
+              style={{
+                width: '50px', height: '50px', borderRadius: '50%', backgroundColor: '#007bff',
+                display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer',
+                color: '#fff', fontWeight: 'bold', position: 'fixed', top: '20px', left: '20px', marginTop: '60px',
+              }}
+            >
+              Coach
+            </div>
+
+
+            {/* Sidebar for Coach Details */}
+            {isCoachVisible && (
+              <div >
+
+                {coach ? (
+                  <div style={sidebarStyle}>
+                    <h2>Coach Details</h2>
+                    <p ><img src={defaultprofile} alt='Loading...' style={{ width: '50px', height: 'auto', borderRadius: '50%' }}></img></p>
+                    <p><strong>ID:</strong> {coach.id}</p>
+                    <p><strong>Name:</strong> {coach.name}</p>
+                    <p><strong>Designation:</strong> {coach.designation}</p>
+                    <p><strong>Experience:</strong> {coach.experience} years</p>
+                    <p><strong>Phone:</strong> {coach.phone_num}</p>
+                    <p><strong>Email:</strong> {coach.email}</p>
+                    <p><strong>Salary:</strong> ₹{coach.salary}</p>
+                    <p><strong>Batch Name:</strong> {coach.batch_name}</p>
+                  </div>
+                ) : (
+                  <p>{error || 'Loading coach details...'}</p>
+                )}
+              </div>
+            )}
           </div>
 
 
-          {/* Sidebar for Coach Details */}
-          {isCoachVisible && (
-            <div >
-              
-              {coach ? (
-                <div style={sidebarStyle}>
-                  <h2>Coach Details</h2>
-                  <p ><img src={defaultprofile} alt='Loading...' style={{width:'50px',height:'auto',borderRadius:'50%'}}></img></p>
-                  <p><strong>ID:</strong> {coach.id}</p>
-                  <p><strong>Name:</strong> {coach.name}</p>
-                  <p><strong>Designation:</strong> {coach.designation}</p>
-                  <p><strong>Experience:</strong> {coach.experience} years</p>
-                  <p><strong>Phone:</strong> {coach.phone_num}</p>
-                  <p><strong>Email:</strong> {coach.email}</p>
-                  <p><strong>Salary:</strong> ₹{coach.salary}</p>
-                  <p><strong>Batch Name:</strong> {coach.batch_name}</p>
-                </div>
-              ) : (
-                <p>{error || 'Loading coach details...'}</p>
-              )}
+
+
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '10px' }}>
+            <div
+              id="dashboard-boxes"
+              style={{ marginTop: '8px', display: "flex", gap: "20px", justifyContent: 'center', alignItems: 'center', marginBottom: "20px" }}
+            >
+              {/* Total Players Box */}
+              <div style={boxStyle}>
+                <h3>Total Players</h3>
+                <p>{totalPlayers}</p>
+              </div>
+              <div style={boxStyle}>
+                <h3>New Players MTD</h3>
+                <p>{totalPlayers}</p>
+              </div>
+              <div style={boxStyle}>
+                <h3>Total Fees Outstanding</h3>
+                <p>--</p>
+              </div>
             </div>
-          )}
-        </div>
+            {/* ------------------------------------ */}
 
 
 
 
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '10px' }}>
-          <div
-            id="dashboard-boxes"
-            style={{ marginTop: '8px', display: "flex", gap: "20px", justifyContent: 'center', alignItems: 'center', marginBottom: "20px" }}
-          >
-            {/* Total Players Box */}
-            <div style={boxStyle}>
-              <h3>Total Players</h3>
-              <p>{totalPlayers}</p>
-            </div>
-            <div style={boxStyle}>
-              <h3>New Players MTD</h3>
-              <p>{totalPlayers}</p>
-            </div>
-            <div style={boxStyle}>
-              <h3>Total Fees Outstanding</h3>
-              <p>--</p>
-            </div>
-          </div>
-          {/* ------------------------------------ */}
+            {error && <p>{error}</p>}
+            {players.length === 0 ? (
+              <p>No Players found for this academy.</p>
+            ) : (
+              <div style={playersContainerStyle}>
+                {players.map((player) => (
+                  <div key={player.id} style={playerBoxStyle}>
+                    <p ><img src={defaultprofile} alt='Loading...' style={{ width: '50px', height: 'auto', borderRadius: '50%' }}></img></p>
 
 
-
-
-          {error && <p>{error}</p>}
-          {players.length === 0 ? (
-            <p>No Players found for this academy.</p>
-          ) : (
-            <div style={playersContainerStyle}>
-              {players.map((player) => (
-                <div key={player.id} style={playerBoxStyle}>
-                  <p ><img src={defaultprofile} alt='Loading...' style={{width:'50px',height:'auto',borderRadius:'50%'}}></img></p>
-
-
-                {/* image fetch from db if available */}
-                  {/* {player.profile_pic ? (
+                    {/* image fetch from db if available */}
+                    {/* {player.profile_pic ? (
                             <img src={player.profile_pic} alt='Player' style={{ width: '100px', height: '100px', borderRadius: '50%', marginBottom: '10px' }} />
                         ) : (
                             <p>
@@ -202,26 +202,27 @@ const LoginCoachDashboard = () => {
                             </p>
                         )} */}
 
-                  <h3>{player.name}</h3>
-                  <p>ID: {player.id}</p>
-                  <p>DOB: {player.dob}</p>
-                  <p>Gender: {player.gender}</p>
-                  <p>Batch: {player.batch}</p>
+                    <h3>{player.name}</h3>
+                    <p>ID: {player.id}</p>
+                    <p>DOB: {player.dob}</p>
+                    <p>Gender: {player.gender}</p>
+                    <p>Batch: {player.batch}</p>
 
-                  <Link
-                    to={`/LoginPlayerDashboard/${role}/${academyId}/${player.id}`} state={{ coachId: coachId }} // State is passed here
-                    style={{ textDecoration: 'none', color: 'blue', fontWeight: 'bold' }}
-                  >
-                    View Details
-                  </Link>
-                </div>
-              ))}
-            </div>
-          )}
+                    <Link
+                      to={`/LoginPlayerDashboard/${role}/${academyId}/${player.id}`} state={{ coachId: coachId }} // State is passed here
+                      style={{ textDecoration: 'none', color: 'blue', fontWeight: 'bold' }}
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* ---------------- */}
         </div>
-        {/* ---------------- */}
       </div>
-    </div>
+      <About />
     </div>
 
   );

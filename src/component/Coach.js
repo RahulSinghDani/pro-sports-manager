@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import AcademyNavbar from './AcademyNavbar.js'; // Assuming you already have this navbar
-
+import About from './About.js';
 import './Style.css';
 
 const Coach = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const { academyId, role } = useParams(); // Get the academyId from the URL
   const [coaches, setCoaches] = useState([]);
@@ -22,31 +22,32 @@ const Coach = () => {
         setError('Failed to load coach details.');
         console.error('Error fetching coach data:', error);
       });
-  }, [API_BASE_URL ,academyId]);
+  }, [API_BASE_URL, academyId]);
 
   return (
     <div>
       <AcademyNavbar role={role} academyId={academyId} /> {/* Pass academyId to the Navbar */}
-      <div className='container'>
+      <div className='below-navbar'>
 
-        <h2>Coaches for Academy {academyId}</h2>
-        <Link to={`/edit-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <button>Edit Coach</button>
-        </Link>
-        <Link to={`/add-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <h2>Coaches for Academy</h2>
+        <div>
+          <Link to={`/edit-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <button>Edit Coach</button>
+          </Link>
+          <Link to={`/add-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
 
-          <button>Add Coach</button>
-        </Link>
-        <Link to={`/delete-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <button>Add Coach</button>
+          </Link>
+          <Link to={`/delete-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
 
-          <button>Delete Coach</button>
-        </Link>
-
+            <button>Delete Coach</button>
+          </Link>
+        </div>
         {error && <p>{error}</p>}
         {coaches.length === 0 ? (
           <p>No coaches found for this academy.</p>
         ) : (
-          <table border="1" width="700px" >
+          <table className='table-main'>
             <thead>
               <tr>
                 <th>ID</th>
@@ -76,6 +77,7 @@ const Coach = () => {
           </table>
         )}
       </div>
+      <About />
     </div>
   );
 };

@@ -43,12 +43,18 @@ import ManagePayment from "./component/ManagePayment";
 import Bookings from "./component/Bookings";
 import EditBooking from "./component/EditBooking";
 import NewBooking from "./component/NewBooking";
+
+
+import AllBookings from "./component/AllBookings";
 import EditPlayerPaymentRecord from "./component/EditPlayerPaymentRecord";
 import FinancialSummary from "./component/FinancialSummary";
 import HomeAllPlayerDashboard from "./component/HomeAllPlayerDashboard";
 import LoginHome from "./component/LoginHome";
 import PublicBookings from "./component/PublicBookings";
 import AcademyAssets from "./component/AcademyAssets";
+import BookableDashboard from "./component/BookableDashboard";
+import About from "./component/About";
+import BookNow from "./component/BookNow";
 
 
 function App() {
@@ -92,6 +98,8 @@ function App() {
           <Route path="/AcademyDetails/:role/:academyId" element={<AcademyDetails />} />
           <Route path="/AcademyDetails/:role/:academyId/:id" element={<PlayerDetails />} />
           <Route path="/PublicBookings" element={<PublicBookings />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/booking-book-now/:role/:academyId/:id" element={<BookNow />} />
 
           <Route path="/UserRegistration" element={<UserRegistration />} />
           <Route path="/playerRegistration" element={<PlayerRegistration />} />
@@ -102,6 +110,9 @@ function App() {
           <Route path="/edit-booking/:role/:academyId/:id" element={<EditBooking />} />
           <Route path="/new-booking/:role/:academyId" element={<NewBooking />} />
           <Route path="/financialsummary/:role/:academyId" element={<FinancialSummary />} />
+
+          <Route path="/all-bookings/:role/:academyId/:id" element={<AllBookings />} />
+          <Route path="/bookable-dashboard/:role/:academyId/:id" element={<BookableDashboard/>} />
 
 
 

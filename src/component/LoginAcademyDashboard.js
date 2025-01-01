@@ -4,6 +4,7 @@ import axios from 'axios';
 // import './Style.css';
 import './AcademyNavbar.css';
 import AcademyNavbar from './AcademyNavbar.js';
+import About from './About.js';
 
 const LoginAcademyDashboard = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
@@ -111,6 +112,7 @@ const LoginAcademyDashboard = () => {
                     </tbody>
                 </table>
             </div>
+            <About />
         </div>
     );
 };

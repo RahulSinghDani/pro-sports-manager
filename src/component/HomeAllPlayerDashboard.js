@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { styles } from './Style';
-
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 
 import './Style.css';
 import defaultprofile from "./Images/playerpng.png"; // Import the background image
-
+import About from './About';
 
 
 const HomeAllPlayerDashboard = () => {
@@ -63,39 +61,43 @@ const HomeAllPlayerDashboard = () => {
                     <button style={{ background: "rgb(35, 38, 41)", float: "right", fontWeight: 'bold' }}>Home</button>
                 </Link>
             </nav>
-            <p className="heading" style={{ fontWeight: 'bold', textAlign: "center", color: "black" }}>  Player Dashboard </p>
+            <div className='below-navbar'>
+                <p className="heading" style={{ fontWeight: 'bold', textAlign: "center", color: "black" }}>Players </p>
 
-            <div className="container" style={{ display: "flex", justifyContent: "center" }}>
+                <div className="container" style={{ display: "flex", justifyContent: "center" }}>
 
-                {/* all player */}
+                    {/* all player */}
 
-                {players.length === 0 ? (
-                    <p>No Players found for this academy.</p>
-                ) : (
-                    <div className='sports-container'>
-                        {players.map((player) => (
-                            <div key={player.id} className="sports-box" style={styles.playerBoxStyle}>
-                                <p ><img src={defaultprofile} alt='Loading...' style={{ width: '50px', height: 'auto', borderRadius: '50%' }}></img></p>
-
-
-                                <h3>{player.name}</h3>
-                                {/* <p><strong>Age:</strong> {calculateAge(player.dob)}</p> */}
-                                <p><strong>Sports Expertise</strong> {player.sports_expertise}</p>
-                                <p>ID: {player.id}</p>
-                                {/* <p>DOB: {player.dob}</p> */}
-                                <p>Gender: {player.gender}</p>
-                                <p>Batch: {player.batch}</p>
-
-                                <Link>
+                    {players.length === 0 ? (
+                        <p>No Players found for this academy.</p>
+                    ) : (
+                        <div className='sports-container'>
+                            {players.map((player) => (
+                                <div key={player.id} className="playerBoxStyle" >
+                                    <div className='about-player-all-img-name'>
+                                        <p ><img src={defaultprofile} alt='Loading...' style={{ width: '50px', height: 'auto', borderRadius: '50%' }}></img></p>
+                                        <h3 className='playerBoxStyle-name'>{player.name}</h3>
+                                    </div>
+                                    <div className='about-player-all'>
+                                        {/* <p><strong>Age:</strong> {calculateAge(player.dob)}</p> */}
+                                        <p><strong>Sports Expertise</strong> {player.sports_expertise}</p>
+                                        <p>ID: {player.id}</p>
+                                        {/* <p>DOB: {player.dob}</p> */}
+                                        <p>Gender: {player.gender}</p>
+                                        <p>Batch: {player.batch}</p>
+                                    </div>
+                                    {/* <Link>
                                     View Details
-                                </Link>
-                            </div>
-                        ))}
-                    </div>
-                )}
-                {/* ------------------------- */}
+                                </Link> */}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {/* ------------------------- */}
 
+                </div>
             </div>
+            <About />
         </div>
     );
 }

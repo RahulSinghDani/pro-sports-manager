@@ -5,7 +5,7 @@ import axios from 'axios';
 import cricketBg from "./Images/cricketBg.jpg"; // Import the background image
 import { useParams, Link, useLocation } from 'react-router-dom';
 import defaultImage from "./Images/playerpng.png"; // Import the default image
-
+import About from './About';
 const LoginPlayerDashboard = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
@@ -161,6 +161,7 @@ const LoginPlayerDashboard = () => {
                 </div>
 
             </div>
+            <About />
         </div>
     );
 }

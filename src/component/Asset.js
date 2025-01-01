@@ -13,10 +13,12 @@ import badminton_kit from './Images/tennisImage.jpg';
 import swimming_pool_gear from './Images/swimmingImg.jpg';
 import bowling_machine from './Images/bowling-machine.jpg';
 import defaultImage from './Images/ground2.jpg';
+import About from './About';
 const Asset = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     const navigate = useNavigate();
+
     const assetImageMap = {
         cricket_kit: cricket_kit,
         football_kit: football_kit,
@@ -50,6 +52,7 @@ const Asset = () => {
     const [loading, setLoading] = useState(true); // Add a loading state
     const [bookings, setBookings] = useState([]);
     const [allAcademyGround, setAllAcademyGround] = useState([]);
+    const [bookedData, setBookedData] = useState([]);
 
     const [assetBookings, setAssetBookings] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('sports'); // State to track selected category
@@ -81,6 +84,20 @@ const Asset = () => {
             });
     }, [API_BASE_URL, academyId]);
 
+    useEffect(() => {
+        // Fetch booked data
+        axios
+            .get(`${API_BASE_URL}/api/booked/${academyId}`)
+            .then((response) => {
+                setBookedData(response.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.error('Error fetching booked data:', err);
+                setError('Failed to fetch booked data.');
+                setLoading(false);
+            });
+    }, [API_BASE_URL, academyId]);
     // Fetch bookings from the backend
     useEffect(() => {
         axios
@@ -144,77 +161,117 @@ const Asset = () => {
     //     return <div>No assets found for this academy.</div>; // If no assets are found
     // }
 
-
+    // Helper function to format the date
+    const formatDate = (dateString) => {
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        return new Date(dateString).toLocaleDateString('en-GB', options); // DD-MM-YYYY format
+    };
 
 
     return (
         <div>
             <AcademyNavbar role={role} academyId={academyId} />
             <div className='below-navbar'>
-                <div className='container'>
+                <div >
                     <h2 className='heading'>Academy Assets</h2>
                     <div style={{ display: 'flex' }}>
-
-                        <div className="category-buttons" style={{ display: 'flex', justifyContent: 'flex-end', flexGrow: 1 }}>
-                            <button style={{ background: 'rgb(32, 32, 32)' }} onClick={() => setSelectedCategory('sports')}>Sports Kits & Equipment</button>
-                            <button style={{ background: 'rgb(32, 32, 32)' }} onClick={() => setSelectedCategory('grounds')}>Grounds & Courts</button>
+                        <div className="category-buttons-switch" >
+                            <button className="switches" style={{ background: 'rgb(32, 32, 32)' }} onClick={() => setSelectedCategory('booked')}>Booking Details</button>
+                            <button className="switches" style={{ background: 'rgb(32, 32, 32)' }} onClick={() => setSelectedCategory('sports')}>Sports Kits/Equipment</button>
+                            <button className="switches" style={{ background: 'rgb(32, 32, 32)' }} onClick={() => setSelectedCategory('grounds')}>Grounds & Courts</button>
                         </div>
                     </div>
                     {error && <p>{error}</p>}
-                    {selectedCategory === 'sports' ? (
-                        asset.length === 0 ? (
-                            <p>No Sports Kits & Equipment found for this academy.</p>
+
+                    {selectedCategory === 'booked' ? (
+                        bookedData.length === 0 ? (
+                            <p className='switches-p'>No bookings found for this academy.</p>
                         ) : (
-                            <div>
-                                <div>
-                                    {/* <Link to={`/academy-asset/${role}/${academyId}`} >Academy Asset</Link> */}
-
-                                    <Link to={`/add-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-
-                                        <button>Add Asset</button>
-                                    </Link>
-                                    <Link to={`/edit-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-
-                                        <button>Edit Asset</button>
-                                    </Link>
-                                    <Link to={`/delete-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-
-                                        <button>Delete Asset</button>
-                                    </Link>
-                                </div>
-                                <table border="1" width="700px">
-
+                            <div className="switches">
+                                <h3>Booked Items</h3>
+                                <table className='table-main'>
                                     <thead>
                                         <tr>
-                                            <th>Asset ID</th>
-                                            <th>Asset Name</th>
-                                            <th>Quantity</th>
-                                            <th>Cost</th>
-                                            <th>Asset Type</th>
+                                            <th>Booking ID</th>
+                                            <th>Item Type</th>
+                                            <th>Item ID</th>
+                                            <th>Booking Date</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
+                                            <th>Booked By</th>
+                                            <th>Contact Number</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {asset.map((assetItem) => (
-                                            <tr key={assetItem.id}>
-                                                <td>{assetItem.id}</td>
-                                                <td>{assetItem.name}</td>
-                                                <td>{assetItem.quantity}</td>
-                                                <td>{assetItem.cost} / hr</td>
-                                                <td>{assetItem.assetType}</td>
+                                        {bookedData.map((booking) => (
+                                            <tr key={booking.booking_id}>
+                                                <td>{booking.booking_id}</td>
+                                                <td>{booking.item_type}</td>
+                                                <td>{booking.item_id}</td>
+                                                <td>{formatDate(booking.booking_date)}</td>
+                                                <td>{booking.start_time}</td>
+                                                <td>{booking.end_time}</td>
+                                                <td>{booking.booked_by}</td>
+                                                <td>{booking.contact_number}</td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
                         )
-                    ) : (
-                        assetBookings.length === 0 ? (
-                            <p>No Grounds & Courts found for this academy.</p>
-                        ) : (
-                            <table border="1" width="700px">
-                                <div className="container">
-                                    <h1>Academy Grounds <span style={{ float: 'right' }}><button onClick={handleNewBooking}>Add New Ground </button></span></h1>
+                    ) :
+                        selectedCategory === 'sports' ? (
+                            asset.length === 0 ? (
+                                <p className='switches-p'>No Sports Kits & Equipment found for this academy.</p>
+                            ) : (
+                                <div className="switches">
+                                    <div>
+                                        {/* <Link to={`/academy-asset/${role}/${academyId}`} >Academy Asset</Link> */}
 
+                                        <Link to={`/add-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                                            <button>Add Asset</button>
+                                        </Link>
+                                        <Link to={`/edit-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                                            <button>Edit Asset</button>
+                                        </Link>
+                                        <Link to={`/delete-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                                            <button>Delete Asset</button>
+                                        </Link>
+                                    </div>
+                                    <table className='table-main'>
+
+                                        <thead>
+                                            <tr>
+                                                <th>Asset ID</th>
+                                                <th>Asset Name</th>
+                                                <th>Quantity</th>
+                                                <th>Cost</th>
+                                                <th>Asset Type</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {asset.map((assetItem) => (
+                                                <tr key={assetItem.id}>
+                                                    <td>{assetItem.id}</td>
+                                                    <td>{assetItem.name}</td>
+                                                    <td>{assetItem.quantity}</td>
+                                                    <td>{assetItem.cost} / hr</td>
+                                                    <td>{assetItem.assetType}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )
+                        ) : selectedCategory === 'grounds' ? (
+                            assetBookings.length === 0 ? (
+                                <p className='switches-p'>No Grounds & Courts found for this academy.</p>
+                            ) : (
+                                <div className="switches-main">
+                                    <h1 style={{ paddingBottom: '12px', width: '100%' }}>Academy Grounds <span style={{ float: 'right', paddingRight: '34px' }}><button className='available-ground-btn' onClick={handleNewBooking}>Add New Ground</button></span></h1>
 
                                     <div className="sports-container">
                                         {bookings.length === 0 ? (
@@ -243,16 +300,17 @@ const Asset = () => {
                                                             month: 'short',
                                                             year: 'numeric',
                                                         })}
-                                                        <br></br>
+                                                        <br />
                                                         <strong>Time:</strong> {booking.time}
-                                                        <br></br>
+                                                        <br />
                                                         <strong>Contact Name:</strong> {booking.customer_name} | <strong>Contact:</strong> {booking.contact}
-
-                                                        <br></br>
+                                                        <br />
                                                         <strong>Amount:</strong> {booking.amount} /hr
-                                                        <br></br> <strong>Status:</strong> <span style={{ color: booking.status === 'confirmed' ? 'green' : 'blue' }}>
+                                                        <br />
+                                                        <strong>Status:</strong> <span style={{ color: booking.status === 'confirmed' ? 'green' : 'blue' }}>
                                                             {booking.status}
-                                                        </span></p>
+                                                        </span>
+                                                    </p>
                                                     <p><strong>Remarks:</strong> {booking.remarks}</p>
                                                     {/* <p className="sports-description"><a href={booking.location} target='_blank' rel="noopener noreferrer"><button style={{ background: 'grey' }}>Go to Location</button></a></p> */}
                                                     <p className="sports-description">
@@ -277,20 +335,20 @@ const Asset = () => {
                                             ))
                                         )}
                                     </div>
-
-
                                 </div>
-                            </table>
-                        )
-                    )}
+                            )
+                        ) : (
+                            <p>No items found for this category.</p>
+                        )}
+
 
                     {/* Display the whole booking assets / items / hall / ground etc  */}
-                    <h2 className='heading'>Available Assets for Booking</h2>
-                    <div>
+                    <div className='gap-between-div'>
+                        <h2 >Available Assets for Booking</h2>
+                        <div>
 
-                        <table border="1" width="700px">
                             <div className="container">
-                                <h1>Available Grounds</h1>
+                                {/* <h2 style={{padding:'12px'}}>Available Grounds</h2> */}
 
                                 <div className="sports-container">
                                     {allAcademyGround.length === 0 ? (
@@ -298,48 +356,53 @@ const Asset = () => {
                                     ) : (
                                         allAcademyGround.map((booking) => (
                                             <div key={booking.id} className="booking-box-asset">
-                                                <img src={booking.image_url} alt={`${booking.name}`} className="sports-image-asset" />
+                                                {/* <img src={booking.image_url} alt={`${booking.name}`} className="sports-image-asset" /> */}
+                                                <div>
+                                                    <img
+                                                        src={
+                                                            booking.image_url?.startsWith('http') // Check if the URL is a valid link
+                                                                ? booking.image_url // Use the provided link if valid
+                                                                : `${API_BASE_URL}/uploads/${booking.image_url}` // Otherwise, construct the file path
+                                                        }
+                                                        alt={booking.name || 'Image not available'}
+                                                        className="sports-image"
+                                                        onError={(e) => { e.target.src = defaultImage; }} // Fallback if the image fails to load
+                                                    />
+                                                </div>
                                                 <h3>{booking.name}</h3>
-                                                {/* <p><strong>Date of Booking:</strong> {booking.date_of_booking}</p> */}
                                                 <p>
-
                                                     <strong>Time:</strong> {booking.time}
-                                                    <br></br>
-                                                    <strong>Contact Name:</strong> {booking.customer_name} <br></br> <strong>Contact:</strong> {booking.contact}
-
-                                                    <br></br>
+                                                    <br />
+                                                    <strong>Contact Name:</strong> {booking.customer_name} <br />
+                                                    <strong>Contact:</strong> {booking.contact}
+                                                    <br />
                                                     <strong>Charges: </strong>Rs. {booking.amount} / hr for per person
-                                                    {/* <strong>Status:</strong> <span style={{ color: booking.status === 'confirmed' ? 'green' : 'blue' }}>
-                                                        {booking.status}
-                                                    </span> */}
                                                 </p>
-                                                {/* <p><strong>Remarks:</strong> {booking.remarks}</p> */}
-                                                {/* <p className="sports-description"> <a href={booking.location} target='_blank' rel="noopener noreferrer"><button style={{ background: 'grey' }}>Go to Location</button></a></p> */}
                                                 <p className="sports-description">
-                                                        <a
-                                                            href={
-                                                                booking.location?.startsWith("http")
-                                                                    ? booking.location // Use the provided link if it's a complete URL
-                                                                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.location)}` // Generate Google Maps search link for plain names
-                                                            }
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            <button style={{ background: 'grey' }}>Go to Location</button>
-                                                        </a>
-                                                    </p>
+                                                    <a
+                                                        href={
+                                                            booking.location?.startsWith("http")
+                                                                ? booking.location // Use the provided link if it's a complete URL
+                                                                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.location)}` // Generate Google Maps search link for plain names
+                                                        }
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        <button style={{ background: 'grey' }}>Go to Location</button>
+                                                    </a>
+                                                </p>
                                                 <div className="booking-actions">
-                                                    <button >Bookable</button>
+                                                    <Link to={`/bookable-dashboard/${role}/${academyId}/${booking.id}`}>
+                                                        <button>Bookable</button>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         ))
                                     )}
                                 </div>
-
-
                             </div>
-                        </table>
 
+                        </div>
                     </div>
                     <div className="sports-container">
                         {assetBookings.length === 0 ? (
@@ -361,7 +424,7 @@ const Asset = () => {
 
                                     <p><strong>Quantity:</strong> {booking.quantity}</p>
                                     <p><strong>Amount :</strong> {booking.cost} /hr</p>
-                                    <p className="sports-description"><button><strong>Bookable</strong> </button></p>
+                                    <p className="sports-description"><button onClick={() => alert("Under Maintenance For Asset... only grounds are available for booking.")}><strong>Bookable</strong> </button></p>
                                     {/* <p className="sports-description"><strong>Location:</strong> <a href={booking.location} target='_blank' rel="noopener noreferrer"><button style={{background:'grey'}}>Go to Location</button></a></p> */}
                                 </div>
                             ))
@@ -369,6 +432,7 @@ const Asset = () => {
                     </div>
                 </div>
             </div>
+            <About />
         </div>
     );
 };

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import AcademyNavbar from './AcademyNavbar.js';
 import { Link } from 'react-router-dom';
-
+import About from './About.js';
 const Courses = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
@@ -86,6 +86,7 @@ const Courses = () => {
           </table>
         )}
       </div>
+      <About />
     </div>
   );
 };

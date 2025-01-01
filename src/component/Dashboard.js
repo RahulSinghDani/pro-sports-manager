@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import './Style.css';
 import { styles } from './Style';
 import dashboardBg from "./Images/dashboardBg.jpg"; // Import the background image
+import About from './About';
 
 const Dashboard = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
@@ -51,7 +52,7 @@ const Dashboard = () => {
 
             <div>
 
-                <div className='container'>
+                <div className='below-navbar'>
                     <h2>Welcome to the Academic Dashboard</h2>
                     <div id="dashboard-boxes" style={{ display: "flex", gap: "20px", justifyContent: 'center', alignItems: 'center', marginBottom: "20px" }}>
                         {/* Total Players Box */}
@@ -85,7 +86,7 @@ const Dashboard = () => {
 
 
                 </div>
-                <div className="container" style={{background:'rgb(229, 229, 229)', display: "flex", flexDirection: 'row', justifyContent: "center" }}>
+                <div className="container" style={{background:'rgb(255, 255, 255)', display: "flex", flexDirection: 'row', justifyContent: "center" }}>
                     {/* all player */}
 
                     {academicData.length === 0 ? (
@@ -93,7 +94,7 @@ const Dashboard = () => {
                     ) : (
                         <div style={styles.playersContainerStyle}>
                             {academicData.map((item, index) => (
-                                <div key={item.academy_id} style={styles.playerBoxStyle}>
+                                <div key={item.academy_id} className='playerBoxStyle'>
                                     <Link to={`/AcademyDetails/${role}/${item.academy_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                         <p ><img src={dashboardBg} alt='Loading...' style={{ width: '50px', height: 'auto', borderRadius: '50%' }}></img></p>
 
@@ -108,12 +109,12 @@ const Dashboard = () => {
                                             {item.academy_email}
                                         </a></p>
 
-                                        <Link
+                                        <p
                                         // to={`/LoginPlayerDashboard/${role}/${academy_id}/${player.id}`} state={{ coachId: coachId }} // State is passed here
                                         // style={{ textDecoration: 'none', color: 'blue', fontWeight: 'bold' }}
                                         >
                                             View Details
-                                        </Link>
+                                        </p>
                                     </Link>
                                 </div>
                             ))}
@@ -123,7 +124,7 @@ const Dashboard = () => {
                 <div style={styles.tableDiv}></div>
                 <p style={{textAlign:'center',color:'blue'}}>Click on <span style={{color:'red'}}>(Academy Id or Academy Name)</span> to view the information.</p>
                 
-                <table border="1">
+                <table border="1" className='table-main'>
                     <thead>
                         <tr>
                             <th>Academy ID</th>
@@ -132,11 +133,11 @@ const Dashboard = () => {
                             <th>Phone</th>
                             <th>Email</th>
                             {/* <th>Location</th> */}
-                            <th>Website</th>
+                            {/* <th>Website</th> */}
 
                         </tr>
                     </thead>
-                    <tbody style={{ background: 'white' }}>
+                    <tbody className='table-main' style={{ background: 'white' }}>
                         {academicData.map((item, index) => (
                             <tr key={item.academy_id || index}>
                                 <td>
@@ -163,11 +164,11 @@ const Dashboard = () => {
                                     </a>
                                 </td>
                                 {/* used for link , open in browser */}
-                                <td>
+                                {/* <td>
                                     <a href={item.academy_website} target="_blank" rel="noopener noreferrer">
                                         {item.academy_website}
                                     </a>
-                                </td>
+                                </td> */}
 
                             </tr>
                         ))}
@@ -175,6 +176,7 @@ const Dashboard = () => {
 
                 </table>
             </div>
+            <About />
         </div>
     )
 }

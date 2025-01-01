@@ -3,9 +3,9 @@ import axios from "axios";
 import defaultImage from "./Images/playerpng.png"; // Import the default image
 import { Link, useParams } from "react-router-dom";
 import cricketBg from "./Images/cricketBg.jpg"; // Import the background image
-
+import About from "./About";
 const AllPlayers = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     const { role } = useParams();
     // console.log(role);
@@ -199,17 +199,8 @@ const AllPlayers = () => {
                                     <p><strong>Outstanding Fee:</strong> 10000</p>
                                 </div>
 
-                                {/* Third Column */}
+
                                 <div>
-                                    {/* <table style={tableStyle}>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Matches:</strong> 10</td>
-                                                <td><strong>Runs:</strong> 120</td>
-                                                <td><strong>Wickets:</strong> 12</td>
-                                            </tr>
-                                        </tbody>
-                                    </table> */}
                                     <button style={buttonStyle}>Collect Fee</button>
                                 </div>
                             </div>
@@ -217,53 +208,11 @@ const AllPlayers = () => {
                     )}
 
                 </div>
-                {/* <div className="allPlayers"> */}
-                {/* <table style={{ width: "100%", borderCollapse: "collapse", opacity: 0.5 }}>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Phone Number</th>
-                        <th>Batch</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {Array.isArray(playerData) && playerData.length > 0 ? (
-                        playerData.map((player) => (
-                            <tr key={player}>
-                                <td>{player.id}</td>
-                                <td>{player.name}</td>
-                                <td>{player.phone_number}</td>
-                                <td>{player.batch}</td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="4">No player data available</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table> */}
-
-                {/* </div> */}
             </div>
+            <About />
         </div>
     );
 };
-
-// Other styles as per your original code...
-
-// const centerStyle = {
-//     display: "flex",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     height: "100vh", // Full viewport height
-//     width: "100vw",  // Full viewport width
-//     margin: "0",     // Remove default margins
-//     textAlign: "center", // Center text if needed
-//     flexDirection: "column", // Stack items vertically
-//     backgroundColor: "#f5f5f5" // Optional background color
-// };
 
 const boxStyle = {
     border: "1px solid #ddd",

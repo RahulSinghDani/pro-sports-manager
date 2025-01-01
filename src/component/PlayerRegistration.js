@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-
+import About from "./About";
 const PlayerRegistration = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
@@ -249,6 +249,7 @@ const PlayerRegistration = () => {
         </button>
       </form>
       {message && <p>{message}</p>}
+      <About />
     </div>
   );
 };

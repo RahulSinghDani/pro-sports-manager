@@ -52,6 +52,11 @@ const AddAsset = () => {
   };
 
   return (
+    <div>
+      <nav className='nav'>
+        <h1 className='logo'>Pro Sports Manager</h1>
+      </nav>
+    <div className="below-navbar">
     <div className="add-asset-container">
       <h2>Add New Asset</h2>
       <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
@@ -154,6 +159,8 @@ const AddAsset = () => {
         </Link>
       </form>
       {message && <p id="message">{message}</p>}
+    </div>
+    </div>
     </div>
   );
 };

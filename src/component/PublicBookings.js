@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import About from './About';
 const PublicBookings = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
 
@@ -78,6 +78,7 @@ const PublicBookings = () => {
                     ))}
                 </div>
             )}
+            <About />
         </div>
     );
 };

@@ -90,7 +90,7 @@ const AcademyNavbar = ({ role, academyId }) => {
           <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} ><button style={styles.btn}>Courses</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Asset`} ><button style={styles.btn}>Assets</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Player`} ><button style={styles.btn}>Player</button></Link>
-          <Link to="/"  ><button>LogOut</button></Link>
+          <Link to="/"  className='logout-btn'>LogOut</Link>
         </ul>
       )}
     </nav>
