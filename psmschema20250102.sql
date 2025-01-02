@@ -86,6 +86,42 @@ INSERT INTO `assets` VALUES ('aca002','ass001','Football',30,500.00,'Football Ki
 UNLOCK TABLES;
 
 --
+-- Table structure for table `bookings`
+--
+
+DROP TABLE IF EXISTS `bookings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bookings` (
+  `booking_id` int NOT NULL AUTO_INCREMENT,
+  `academy_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `item_type` enum('Ground','Kit') NOT NULL,
+  `item_id` int NOT NULL,
+  `booking_date` date NOT NULL,
+  `start_time` varchar(10) DEFAULT NULL,
+  `end_time` varchar(10) DEFAULT NULL,
+  `booked_by` varchar(255) NOT NULL,
+  `contact_number` bigint DEFAULT NULL,
+  `status` enum('Confirmed','Cancelled') DEFAULT 'Confirmed',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`booking_id`),
+  KEY `academy_id` (`academy_id`),
+  CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`academy_id`) REFERENCES `academy` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bookings`
+--
+
+LOCK TABLES `bookings` WRITE;
+/*!40000 ALTER TABLE `bookings` DISABLE KEYS */;
+INSERT INTO `bookings` VALUES (1,'aca002','Ground',7,'2024-12-31','09:00 AM','11:00 PM','Rahul',9876543210,'Confirmed','2025-01-01 06:20:35','2025-01-01 06:20:35'),(2,'aca002','Ground',8,'2025-01-01','08:00 AM','12:00 PM','Rahul',9876543210,'Confirmed','2025-01-01 06:27:11','2025-01-01 06:27:11'),(3,'aca002','Ground',8,'2025-01-02','08:00 AM','12:00 PM','Rahul',9876543210,'Confirmed','2025-01-01 06:28:18','2025-01-01 06:28:18'),(4,'aca001','Ground',3,'2025-01-02','09:00 AM','05:00 PM','Rohit',3445453434,'Confirmed','2025-01-01 19:07:51','2025-01-01 19:07:51'),(6,'aca001','Ground',3,'2025-01-03','12:00 AM','12:00 AM','rohit',5444544545,'Confirmed','2025-01-01 19:23:59','2025-01-01 19:23:59');
+/*!40000 ALTER TABLE `bookings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `courses`
 --
 
@@ -173,8 +209,9 @@ CREATE TABLE `grounds` (
   `academy_id` varchar(255) DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
   `image_url` varchar(255) DEFAULT NULL,
+  `about` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +220,7 @@ CREATE TABLE `grounds` (
 
 LOCK TABLES `grounds` WRITE;
 /*!40000 ALTER TABLE `grounds` DISABLE KEYS */;
-INSERT INTO `grounds` VALUES (3,'Football Ground B','2024-12-15','06:00 AM - 06:00 PM',400.00,'Ravi Sharma','9876543222','confirmed','Confirmed for team event','aca002','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/free-vector/gradient-football-field-background_52683-65681.jpg?t=st=1734629597~exp=1734633197~hmac=df5d3bab40b5033a319d76cdd364792c07513f2bcd9828cf74b844d848492182&w=900'),(4,'Tennis Court A','2024-12-20','08:00 AM - 07:00 PM',300.00,'Nisha Reddy','9876543233','pending','Waiting for payment','aca002','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/ground-tennis-court_875825-50452.jpg?w=900'),(7,'Golf Ground','2024-12-01','08:00 AM - 07:00 PM',250.00,'Rahul','2344545543','confirmed','Golf Ground A','aca001','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/golf-ground_1039849-86.jpg?w=1060'),(8,'Cricket Ground B','2024-12-01','08:00 AM - 06:00 PM',400.00,'Rohan Upadhyay','8383737333','confirmed','Cricket Ground For students','aca001','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/cricket-stadium_1258715-1512.jpg?w=740'),(9,'Snooker Hall ','2024-11-11','09:00 AM - 06:00 PM',500.00,'Suresh Upreti','+91 9087654321','confirmed','Bookable','aca001','https://maps.app.goo.gl/haV7CiZfget444bR7','https://img.freepik.com/free-photo/young-woman-playing-billiard_329181-2814.jpg?t=st=1734684776~exp=1734688376~hmac=d417c9e8022834615e0bb7282035f637cfa3bdf3c0a706859afb9a05b7fd4dfd&w=900'),(12,'Gym','2024-12-10','04:00 - 20:00',2000.00,'Suresh Upreti','+91 9087654321','confirmed','Bookable','aca001','Nainital uttarakhand','1735484950279-fitnessimg.jpg');
+INSERT INTO `grounds` VALUES (3,'Football Ground B','2024-12-15','06:00 AM - 06:00 PM',400.00,'Ravi Sharma','9876543222','confirmed','Confirmed for team event','aca002','DSA nainital Uttarakhand','https://img.freepik.com/free-vector/gradient-football-field-background_52683-65681.jpg?t=st=1734629597~exp=1734633197~hmac=df5d3bab40b5033a319d76cdd364792c07513f2bcd9828cf74b844d848492182&w=900','Football Ground:  \n- Proper sports shoes or cleats are mandatory for playing on the field. Players are requested to change into footwear after entering the premises.  \n- Participants must bring their own football and equipment, as rentals are not provided by the venue.  \n- Playing barefoot or in inappropriate footwear such as sandals is strictly prohibited.  \n- Each booking allows up to 10 players on the ground. Additional participants will incur a charge of ?150 per person.  \n- Please ensure timely arrival for your slot, as delays may affect the next booking.'),(4,'Tennis Court A','2024-12-20','08:00 AM - 07:00 PM',300.00,'Nisha Reddy','9876543233','pending','Waiting for payment','aca002','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/ground-tennis-court_875825-50452.jpg?w=900','About Venue\nTennis Court:\n- Non-marking tennis shoes are mandatory for all players. Please wear them only after entering the premises.\n- Players must bring their own tennis equipment; rental services are not available at this venue.\n- Food and beverages (except water) are not permitted inside the court area.\n- Barefoot play is strictly prohibited for safety reasons.\n- A maximum of 4 players per booking per court is allowed. Additional players will be charged ?150 per head.'),(7,'Golf Ground','2024-12-01','08:00 AM - 07:00 PM',250.00,'Rahul','2344545543','confirmed','Golf Ground A','aca001','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/golf-ground_1039849-86.jpg?w=1060','About Venue\nGolf Ground:\n- Proper golf attire, including collared shirts and golf shoes, is mandatory for all players.\n- Players must bring their own golf equipment; rental services are not available at this venue.\n- Smoking and alcohol consumption are strictly prohibited on the premises.\n- A maximum of 4 players per group is allowed. Additional players will be charged ?200 per head.\n- Respect the course by repairing divots, ball marks, and raking bunkers after use.'),(8,'Cricket Ground B','2024-12-01','08:00 AM - 06:00 PM',400.00,'Rohan Upadhyay','8383737333','confirmed','Cricket Ground For students','aca001','https://maps.app.goo.gl/cqzJWjTCTocL5QZY6','https://img.freepik.com/premium-photo/cricket-stadium_1258715-1512.jpg?w=740','About Venue\nCricket Ground:\n- Appropriate sportswear and cricket shoes with rubber spikes are mandatory.\n- Players are requested to bring their own equipment, as rental gear is not provided.\n- Food and beverages are not allowed on the field.\n- Only a maximum of 22 players are allowed on the ground at any time. Additional players will incur a charge of ?500 per head.\n- The field must be left clean and undamaged after use.'),(9,'Snooker Hall ','2024-11-11','09:00 AM - 06:00 PM',500.00,'Suresh Upreti','+91 9087654321','confirmed','Bookable','aca001','https://maps.app.goo.gl/haV7CiZfget444bR7','https://img.freepik.com/free-photo/young-woman-playing-billiard_329181-2814.jpg?t=st=1734684776~exp=1734688376~hmac=d417c9e8022834615e0bb7282035f637cfa3bdf3c0a706859afb9a05b7fd4dfd&w=900','About Venue\nSnooker Hall:\n- Formal shoes are required; sports or casual footwear is not permitted.\n- Players must bring their own snooker cue sticks; the venue does not provide equipment.\n- No food or beverages are allowed near the tables.\n- A maximum of 4 players per table is permitted. Additional players will be charged ?150 per head.\n- Players are requested to maintain decorum and respect the facility at all times.'),(12,'Gym','2024-12-10','04:00 - 20:00',2000.00,'Suresh Upreti','+91 9087654321','confirmed','Bookable','aca001','Nainital uttarakhand','1735484950279-fitnessimg.jpg','About Venue\nGym:\n- Proper gym attire, including non-marking sports shoes, is mandatory for all members.\n- Members must bring their own towels and water bottles; sharing is discouraged.\n- Wipe down equipment after use with the provided disinfectant wipes.\n- A maximum workout session of 90 minutes is allowed during peak hours.\n- Loud music or disruptive behavior is strictly prohibited in the gym premises.'),(13,'Poker','2024-12-10','12:22 - 12:22',300.00,'Rohan Upadhyay','+91 9087654321','confirmed','golapar stadium haldwani','aca001','golapar stadium haldwani','1735627703672-cricketImage.jpg','About Venue Cricket Ground: - Appropriate sportswear and cricket shoes with rubber spikes are mandatory. - Players are requested to bring their own equipment, as rental gear is not provided. - Food and beverages are not allowed on the field. - Only a maximum of 22 players are allowed on the ground at any time. Additional players will incur a charge of ₹500 per head. - The field must be left clean and undamaged after use.');
 /*!40000 ALTER TABLE `grounds` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,4 +339,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-30  8:42:32
+-- Dump completed on 2025-01-02 17:46:19
