@@ -60,28 +60,30 @@ const AcademyAssets = () => {
                 {asset.length === 0 ? (
                     <p>No Asset found for this academy.</p>
                 ) : (
-                    <table border="1" width="700px">
-                        <thead>
-                            <tr>
-                                <th>Asset ID</th>
-                                <th>Asset Name</th>
-                                <th>Quantity</th>
-                                <th>Cost</th>
-                                <th>Asset Type</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {asset.map((assetItem) => (
-                                <tr key={assetItem.id}>
-                                    <td>{assetItem.id}</td>
-                                    <td>{assetItem.name}</td>
-                                    <td>{assetItem.quantity}</td>
-                                    <td>{assetItem.cost} / hr</td>
-                                    <td>{assetItem.assetType}</td>
+                    <div className="table-wrapper">
+                        <table border="1" width="700px">
+                            <thead>
+                                <tr>
+                                    <th>Asset ID</th>
+                                    <th>Asset Name</th>
+                                    <th>Quantity</th>
+                                    <th>Cost</th>
+                                    <th>Asset Type</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {asset.map((assetItem) => (
+                                    <tr key={assetItem.id}>
+                                        <td>{assetItem.id}</td>
+                                        <td>{assetItem.name}</td>
+                                        <td>{assetItem.quantity}</td>
+                                        <td>{assetItem.cost} / hr</td>
+                                        <td>{assetItem.assetType}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
             <About />

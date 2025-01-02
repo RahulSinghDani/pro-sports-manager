@@ -3,6 +3,7 @@ import './Style.css'; // Create a CSS file for styling if needed
 import ytimg from "./Images/ytpng.png";
 import instapng from "./Images/instapng.png";
 import fbpng from "./Images/fbpng.png";
+import { Link } from 'react-router-dom';
 
 const About = () => {
     const showPrivacyPolicy = () => {
@@ -83,8 +84,8 @@ const About = () => {
 
 
 
-                    <a href="/About" style={{ color: 'white', margin: '0 10px' }}>Terms of Service</a>
-                    <a href="/About" style={{ color: 'white', margin: '0 10px' }}>Contact</a>
+                    <Link to="/About" style={{ color: 'white', margin: '0 10px' }}>Terms of Service</Link>
+                    <Link to="/About" style={{ color: 'white', margin: '0 10px' }}>Contact</Link>
                 </div>
             </div>
         </footer>

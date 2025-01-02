@@ -7,7 +7,7 @@ import { useParams, Link, useLocation } from 'react-router-dom';
 import defaultImage from "./Images/playerpng.png"; // Import the default image
 import About from './About';
 const LoginPlayerDashboard = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     const { role, academy_id, id } = useParams();
     const [totalPlayers, setTotalPlayers] = useState(0);
@@ -46,7 +46,7 @@ const LoginPlayerDashboard = () => {
             }
         };
         fetchPlayerData();
-    }, [API_BASE_URL,academy_id, id]);
+    }, [API_BASE_URL, academy_id, id]);
 
     const calculateAge = (dob) => {
         const birthDate = new Date(dob);
@@ -143,15 +143,17 @@ const LoginPlayerDashboard = () => {
 
                                 {/* Third Column */}
                                 <div>
-                                    <table style={tableStyle}>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Matches:</strong> 10</td>
-                                                <td><strong>Runs:</strong> 120</td>
-                                                <td><strong>Wickets:</strong> 12</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div className="table-wrapper">
+                                        <table style={tableStyle}>
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Matches:</strong> 10</td>
+                                                    <td><strong>Runs:</strong> 120</td>
+                                                    <td><strong>Wickets:</strong> 12</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     <button style={buttonStyle}>Pay Fee</button>
                                 </div>
                             </div>

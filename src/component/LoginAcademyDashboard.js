@@ -7,9 +7,9 @@ import AcademyNavbar from './AcademyNavbar.js';
 import About from './About.js';
 
 const LoginAcademyDashboard = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-    const { id: academyId ,role} = useParams();
+    const { id: academyId, role } = useParams();
     const [academyData, setAcademy] = useState(null); // Use an object for a single academy
     const [error, setError] = useState();
     const [totalPlayers, setTotalPlayers] = useState(0);
@@ -44,7 +44,7 @@ const LoginAcademyDashboard = () => {
                 console.error('Error fetching data:', error); // Log the error object
                 setError('Failed to load academy details.');
             });
-    }, [API_BASE_URL,academyId]);
+    }, [API_BASE_URL, academyId]);
 
     if (error) {
         return <div>{error}</div>;
@@ -56,8 +56,8 @@ const LoginAcademyDashboard = () => {
 
     return (
         <div>
-            < AcademyNavbar academyId={academyId} role={role}/>
-            <div className='container'>
+            < AcademyNavbar academyId={academyId} role={role} />
+            <div className='below-navbar'>
                 <h2>{academyData.name}</h2>
                 <div id="dashboard-boxes" style={{ display: "flex", gap: "20px", justifyContent: 'center', alignItems: 'center', marginBottom: "20px" }}>
                     {/* Total Players Box */}
@@ -74,43 +74,45 @@ const LoginAcademyDashboard = () => {
                         <p>--</p>
                     </div>
                 </div>
-                <table border="1" width="700px">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Owner Name</th>
-                            <th>Phone Number</th>
-                            <th>Email</th>
-                            <th>Website</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{academyData.id}</td>
-                            <td>{academyData.name}</td>
-                            <td>{academyData.address}</td>
-                            <td>{academyData.owner_name}</td>
-                            <td>
-                                <a href={`tel:${academyData.phone_num}`}>
-                                    {academyData.phone_num}
-                                </a>
-                            </td>
-                            <td>
-                                <a href={`mailto:${academyData.email}`}>
-                                    {academyData.email}
-                                </a>
-                            </td>
-                            <td>
-                                <a href={academyData.website} target="_blank" rel="noopener noreferrer">
-                                    {academyData.website}
-                                </a>
-                            </td>
+                <div className="table-wrapper">
+                    <table border="1" width="700px">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Owner Name</th>
+                                <th>Phone Number</th>
+                                <th>Email</th>
+                                <th>Website</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{academyData.id}</td>
+                                <td>{academyData.name}</td>
+                                <td>{academyData.address}</td>
+                                <td>{academyData.owner_name}</td>
+                                <td>
+                                    <a href={`tel:${academyData.phone_num}`}>
+                                        {academyData.phone_num}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href={`mailto:${academyData.email}`}>
+                                        {academyData.email}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href={academyData.website} target="_blank" rel="noopener noreferrer">
+                                        {academyData.website}
+                                    </a>
+                                </td>
 
-                        </tr>
-                    </tbody>
-                </table>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <About />
         </div>

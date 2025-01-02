@@ -8,7 +8,7 @@ import dashboardBg from "./Images/dashboardBg.jpg"; // Import the background ima
 import About from './About';
 
 const Dashboard = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     const { role } = useParams();
     const [academicData, setAcademicData] = useState([]);
@@ -70,8 +70,8 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <h2>Academy Information</h2>
-                    
-                    <div style={{display:'flex',justifyContent:'center',gap:'8px'}}>
+
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
                         <Link to={`/add-academy/${role}`} >
                             <button>Add a New Academy</button>
                         </Link>
@@ -86,7 +86,7 @@ const Dashboard = () => {
 
 
                 </div>
-                <div className="container" style={{background:'rgb(255, 255, 255)', display: "flex", flexDirection: 'row', justifyContent: "center" }}>
+                <div className="container" style={{ background: 'rgb(255, 255, 255)', display: "flex", flexDirection: 'row', justifyContent: "center" }}>
                     {/* all player */}
 
                     {academicData.length === 0 ? (
@@ -122,59 +122,60 @@ const Dashboard = () => {
                     )}
                 </div>
                 <div style={styles.tableDiv}></div>
-                <p style={{textAlign:'center',color:'blue'}}>Click on <span style={{color:'red'}}>(Academy Id or Academy Name)</span> to view the information.</p>
-                
-                <table border="1" className='table-main'>
-                    <thead>
-                        <tr>
-                            <th>Academy ID</th>
-                            <th>Academy Name</th>
-                            <th>Owner</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            {/* <th>Location</th> */}
-                            {/* <th>Website</th> */}
+                <p style={{ textAlign: 'center', color: 'blue' }}>Click on <span style={{ color: 'red' }}>(Academy Id or Academy Name)</span> to view the information.</p>
+                <div className="table-wrapper">
+                    <table border="1" className='table-main'>
+                        <thead>
+                            <tr>
+                                <th>Academy ID</th>
+                                <th>Academy Name</th>
+                                <th>Owner</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                {/* <th>Location</th> */}
+                                {/* <th>Website</th> */}
 
-                        </tr>
-                    </thead>
-                    <tbody className='table-main' style={{ background: 'white' }}>
-                        {academicData.map((item, index) => (
-                            <tr key={item.academy_id || index}>
-                                <td>
-                                    <Link to={`/AcademyDetails/${role}/${item.academy_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <b> {item.academy_id}</b>
-                                    </Link>
-                                </td>
-                                <td>
-                                    <Link to={`/AcademyDetails/${role}/${item.academy_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <b>{item.academy_name}</b>
-                                    </Link>
-                                </td>
-                                <td>{item.academy_owner}</td>
-                                {/* for call */}
-                                <td>
-                                    <a href={`tel:${item.academy_phone}`}>
-                                        {item.academy_phone}
-                                    </a>
-                                </td>
-                                {/* for mail */}
-                                <td>
-                                    <a href={`mailto:${item.academy_email}`}>
-                                        {item.academy_email}
-                                    </a>
-                                </td>
-                                {/* used for link , open in browser */}
-                                {/* <td>
+                            </tr>
+                        </thead>
+                        <tbody className='table-main' style={{ background: 'white' }}>
+                            {academicData.map((item, index) => (
+                                <tr key={item.academy_id || index}>
+                                    <td>
+                                        <Link to={`/AcademyDetails/${role}/${item.academy_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            <b> {item.academy_id}</b>
+                                        </Link>
+                                    </td>
+                                    <td>
+                                        <Link to={`/AcademyDetails/${role}/${item.academy_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            <b>{item.academy_name}</b>
+                                        </Link>
+                                    </td>
+                                    <td>{item.academy_owner}</td>
+                                    {/* for call */}
+                                    <td>
+                                        <a href={`tel:${item.academy_phone}`}>
+                                            {item.academy_phone}
+                                        </a>
+                                    </td>
+                                    {/* for mail */}
+                                    <td>
+                                        <a href={`mailto:${item.academy_email}`}>
+                                            {item.academy_email}
+                                        </a>
+                                    </td>
+                                    {/* used for link , open in browser */}
+                                    {/* <td>
                                     <a href={item.academy_website} target="_blank" rel="noopener noreferrer">
                                         {item.academy_website}
                                     </a>
                                 </td> */}
 
-                            </tr>
-                        ))}
-                    </tbody>
+                                </tr>
+                            ))}
+                        </tbody>
 
-                </table>
+                    </table>
+                </div>
             </div>
             <About />
         </div>

@@ -189,34 +189,36 @@ const Asset = () => {
                         ) : (
                             <div className="switches">
                                 <h3>Booked Items</h3>
-                                <table className='table-main'>
-                                    <thead>
-                                        <tr>
-                                            <th>Booking ID</th>
-                                            <th>Item Type</th>
-                                            <th>Item ID</th>
-                                            <th>Booking Date</th>
-                                            <th>Start Time</th>
-                                            <th>End Time</th>
-                                            <th>Booked By</th>
-                                            <th>Contact Number</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {bookedData.map((booking) => (
-                                            <tr key={booking.booking_id}>
-                                                <td>{booking.booking_id}</td>
-                                                <td>{booking.item_type}</td>
-                                                <td>{booking.item_id}</td>
-                                                <td>{formatDate(booking.booking_date)}</td>
-                                                <td>{booking.start_time}</td>
-                                                <td>{booking.end_time}</td>
-                                                <td>{booking.booked_by}</td>
-                                                <td>{booking.contact_number}</td>
+                                <div className="table-wrapper">
+                                    <table className='table-main'>
+                                        <thead>
+                                            <tr>
+                                                <th>Booking ID</th>
+                                                <th>Item Type</th>
+                                                <th>Item ID</th>
+                                                <th>Booking Date</th>
+                                                <th>Start Time</th>
+                                                <th>End Time</th>
+                                                <th>Booked By</th>
+                                                <th>Contact Number</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            {bookedData.map((booking) => (
+                                                <tr key={booking.booking_id}>
+                                                    <td>{booking.booking_id}</td>
+                                                    <td>{booking.item_type}</td>
+                                                    <td>{booking.item_id}</td>
+                                                    <td>{formatDate(booking.booking_date)}</td>
+                                                    <td>{booking.start_time}</td>
+                                                    <td>{booking.end_time}</td>
+                                                    <td>{booking.booked_by}</td>
+                                                    <td>{booking.contact_number}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         )
                     ) :
@@ -241,29 +243,31 @@ const Asset = () => {
                                             <button>Delete Asset</button>
                                         </Link>
                                     </div>
-                                    <table className='table-main'>
+                                    <div className="table-wrapper">
+                                        <table className='table-main'>
 
-                                        <thead>
-                                            <tr>
-                                                <th>Asset ID</th>
-                                                <th>Asset Name</th>
-                                                <th>Quantity</th>
-                                                <th>Cost</th>
-                                                <th>Asset Type</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {asset.map((assetItem) => (
-                                                <tr key={assetItem.id}>
-                                                    <td>{assetItem.id}</td>
-                                                    <td>{assetItem.name}</td>
-                                                    <td>{assetItem.quantity}</td>
-                                                    <td>{assetItem.cost} / hr</td>
-                                                    <td>{assetItem.assetType}</td>
+                                            <thead>
+                                                <tr>
+                                                    <th>Asset ID</th>
+                                                    <th>Asset Name</th>
+                                                    <th>Quantity</th>
+                                                    <th>Cost</th>
+                                                    <th>Asset Type</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                {asset.map((assetItem) => (
+                                                    <tr key={assetItem.id}>
+                                                        <td>{assetItem.id}</td>
+                                                        <td>{assetItem.name}</td>
+                                                        <td>{assetItem.quantity}</td>
+                                                        <td>{assetItem.cost} / hr</td>
+                                                        <td>{assetItem.assetType}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             )
                         ) : selectedCategory === 'grounds' ? (

@@ -25,7 +25,7 @@ const Coach = () => {
   }, [API_BASE_URL, academyId]);
 
   return (
-    <div>
+    <div >
       <AcademyNavbar role={role} academyId={academyId} /> {/* Pass academyId to the Navbar */}
       <div className='below-navbar'>
 
@@ -47,34 +47,36 @@ const Coach = () => {
         {coaches.length === 0 ? (
           <p>No coaches found for this academy.</p>
         ) : (
-          <table className='table-main'>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Designation</th>
-                <th>Experience</th>
-                <th>Phone Number</th>
-                <th>Email</th>
-                <th>Salary</th>
-                <th>Batch Name</th>
-              </tr>
-            </thead>
-            <tbody>
-              {coaches.map(coach => (
-                <tr key={coach.id}>
-                  <td>{coach.id}</td>
-                  <td>{coach.name}</td>
-                  <td>{coach.designation}</td>
-                  <td>{coach.experience}</td>
-                  <td>{coach.phone_num}</td>
-                  <td>{coach.email}</td>
-                  <td>{coach.salary}</td>
-                  <td>{coach.batch_name}</td>
+          <div className="table-wrapper">
+            <table className='table-main'>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Designation</th>
+                  <th>Experience</th>
+                  <th>Phone Number</th>
+                  <th>Email</th>
+                  <th>Salary</th>
+                  <th>Batch Name</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {coaches.map(coach => (
+                  <tr key={coach.id}>
+                    <td>{coach.id}</td>
+                    <td>{coach.name}</td>
+                    <td>{coach.designation}</td>
+                    <td>{coach.experience}</td>
+                    <td>{coach.phone_num}</td>
+                    <td>{coach.email}</td>
+                    <td>{coach.salary}</td>
+                    <td>{coach.batch_name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
       <About />

@@ -16,7 +16,7 @@ const AllBookings = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const { role, academyId, id } = useParams(); // Extract academyId from the route parameters
 
-    console.log("ROle : ",role ,"ac id: ", academyId ,"ground id : ", id);
+    console.log("ROle : ", role, "ac id: ", academyId, "ground id : ", id);
     // Fetch bookings from API
     useEffect(() => {
         const fetchBookings = async () => {
@@ -43,36 +43,38 @@ const AllBookings = () => {
             <div className='below-navbar'>
                 <h2 className='heading'>All Bookings</h2>
                 {bookings.length > 0 ? (
-                    <table className='bookings-table'>
-                        <thead>
-                            <tr>
-                                <th>Booking ID</th>
-                                <th>Item Type</th>
-                                <th>Item ID</th>
-                                <th>Booking Date</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Booked By</th>
-                                <th>Contact</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {bookings.map((booking) => (
-                                <tr key={booking.booking_id}>
-                                    <td>{booking.booking_id}</td>
-                                    <td>{booking.item_type}</td>
-                                    <td>{booking.item_id}</td>
-                                    <td>{booking.booking_date}</td>
-                                    <td>{booking.start_time || 'Full Day'}</td>
-                                    <td>{booking.end_time || 'Full Day'}</td>
-                                    <td>{booking.booked_by}</td>
-                                    <td>{booking.contact_number}</td>
-                                    <td>{booking.status}</td>
+                    <div className="table-wrapper">
+                        <table className='bookings-table'>
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>Item Type</th>
+                                    <th>Item ID</th>
+                                    <th>Booking Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Booked By</th>
+                                    <th>Contact</th>
+                                    <th>Status</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {bookings.map((booking) => (
+                                    <tr key={booking.booking_id}>
+                                        <td>{booking.booking_id}</td>
+                                        <td>{booking.item_type}</td>
+                                        <td>{booking.item_id}</td>
+                                        <td>{booking.booking_date}</td>
+                                        <td>{booking.start_time || 'Full Day'}</td>
+                                        <td>{booking.end_time || 'Full Day'}</td>
+                                        <td>{booking.booked_by}</td>
+                                        <td>{booking.contact_number}</td>
+                                        <td>{booking.status}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 ) : (
                     <p>No bookings found.</p>
                 )}

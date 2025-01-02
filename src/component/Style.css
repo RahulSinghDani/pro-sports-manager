@@ -419,71 +419,7 @@ form div input:focus {
   }
 }
 
-/* Optional: Style for smaller screens (responsive design) */
-@media (max-width: 800px) {
 
-  #navLinkIdHome {
-    margin: 0;
-    padding: 0;
-  }
-
-  form div {
-    flex-direction: column;
-    /* Stack label and input vertically on smaller screens */
-    align-items: center;
-    /* Center the label and input */
-  }
-
-  .below-navbar {
-    padding-top: 60px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 12px;
-  }
-
-  #contact {
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
-    align-items: center;
-  }
-
-
-
-  .h3Style {
-    font-size: 26px;
-    color: #333;
-    font-family: sans-serif;
-  }
-
-  .home-contactus-div {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    padding: 30px;
-  }
-
-  .home-contactus {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  form div input {
-    width: 80%;
-    /* Increase input width on smaller screens */
-    max-width: none;
-    /* Remove max-width on small screens */
-  }
-
-
-}
 
 
 p,
@@ -949,7 +885,8 @@ div {
   text-align: center;
 
 }
-.about-player-all-img-name{
+
+.about-player-all-img-name {
   display: flex;
   flex-direction: row;
   gap: 12px;
@@ -959,36 +896,102 @@ div {
   padding-top: 20px;
   text-align: center;
 }
-.gap-between-div{
+
+.gap-between-div {
   padding-top: 20px;
   padding-bottom: 30px;
   border: 1px solid rgb(207, 207, 207);
   margin-bottom: 5px;
 }
 
+.table-wrapper {
+  width: 100%;
+  /* Matches the display area width */
+  overflow-x: auto;
+  /* Adds horizontal scrollbar */
+  -webkit-overflow-scrolling: touch;
+  /* Smooth scrolling for touch devices */
+  border: 1px solid #ccc;
+  /* Optional: Adds a border to the wrapper */
+  padding: 10px;
+  /* Optional: Adds spacing inside the wrapper */
+}
+
 /* Media Queries for Small Screens (Mobile) */
-@media (max-width: 600px) {
-  .react-datepicker {
-    width: 100%; /* Fully responsive */
-    font-size: 0.8rem; /* Adjust for very small displays */
+@media (max-width: 800px) {
+
+  #navLinkIdHome {
+    margin: 0;
+    padding: 0;
   }
 
-  .react-datepicker__day-name,
-  .react-datepicker__day,
-  .react-datepicker__time-name {
-    width: 1.5rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
-    font-size: 0.8rem;
-    margin: 0.1rem;
+  form div {
+    flex-direction: column;
+    /* Stack label and input vertically on smaller screens */
+    align-items: center;
+    /* Center the label and input */
   }
-  .dashboard-box{
+
+  .below-navbar {
+    padding-top: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 12px;
+  }
+
+  #contact {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+  }
+
+
+
+  .h3Style {
+    font-size: 26px;
+    color: #333;
+    font-family: sans-serif;
+  }
+
+  .home-contactus-div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    padding: 30px;
+  }
+
+  .home-contactus {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  form div input {
+    width: 80%;
+    /* Increase input width on smaller screens */
+    max-width: none;
+    /* Remove max-width on small screens */
+  }
+
+  /* ------- */
+
+
+  .dashboard-box {
     width: 200px;
     padding: 10px;
   }
-  .dashboard-box h3{
+
+  .dashboard-box h3 {
     font-size: 1rem;
   }
+
   .switches-p {
     text-align: center;
     color: rgb(211, 111, 111);
@@ -997,10 +1000,12 @@ div {
   .available-ground-btn {
     padding: 4px 4px;
   }
-.gap-between-div{
-  padding-top: 40px;
-  padding-bottom: 30px;
-}
+
+  .gap-between-div {
+    padding-top: 40px;
+    padding-bottom: 30px;
+  }
+
   .sports-container {
     display: flex;
     flex-direction: row;
@@ -1015,6 +1020,11 @@ div {
 
   .booking-box-asset {
     width: 150px;
+  }
+
+  button {
+    padding: 6px 6px;
+    font-size: smaller;
   }
 
   .sports-container button {
@@ -1052,19 +1062,19 @@ div {
   }
 
   .search-by-year-month {
-    padding: 10px;
+    padding: 10px 12px;
     border-radius: 20px;
     display: flex;
-    /* flex-direction: row; */
+    /* flex-wrap: nowrap; */
     justify-content: center;
     align-items: center;
-    /* width: 100%; */
     border: 1px solid grey;
   }
 
   .managepayment-search-main {
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 4px;
     border-radius: 20px;
     gap: 50px;
@@ -1074,13 +1084,14 @@ div {
 
   .search-box-managepayment {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    border: 1 px solid grey;
-
+    align-items: center;
+    border: 1px solid rgb(203, 203, 203);
+    gap: 16px;
     padding: 20px;
-    width: 45%;
-    background-color: rgb(248, 248, 248);
+    width: 90%;
+    background-color: rgb(243, 248, 247);
 
   }
 
@@ -1131,17 +1142,12 @@ div {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Horizontally center content */
     justify-content: center;
-    /* Vertically center content (if needed) */
     width: 100%;
-    /* Take full width of its parent */
     text-align: center;
-    /* Center text within the h1 and h3 */
-    padding-top: 100px;
-    /* Add some top margin for spacing (adjust as needed) */
+    padding-top: 200px;
     height: 50vh;
-
+    flex-wrap: nowrap;
   }
 
   .contactus {

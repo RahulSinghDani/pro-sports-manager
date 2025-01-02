@@ -6,9 +6,9 @@ import { useParams, Link } from 'react-router-dom';
 import defaultImage from "./Images/playerpng.png"; // Import the default image
 import About from './About';
 const PlayerDetails = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-    const { academyId, id ,role} = useParams();
+    const { academyId, id, role } = useParams();
     const [totalPlayers, setTotalPlayers] = useState(0);
     const [playerData, setPlayerData] = useState({});
 
@@ -111,7 +111,7 @@ const PlayerDetails = () => {
                                 </div>
 
                                 {/* Second Column */}
-                                <div style={{ textAlign: "center" , margin:"5px"}}>
+                                <div style={{ textAlign: "center", margin: "5px" }}>
                                     <img
                                         src={playerData.profile_pic || defaultImage}
                                         // src={defaultImage}
@@ -125,15 +125,17 @@ const PlayerDetails = () => {
 
                                 {/* Third Column */}
                                 <div>
-                                    <table style={tableStyle}>
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Matches:</strong> 10</td>
-                                                <td><strong>Runs:</strong> 120</td>
-                                                <td><strong>Wickets:</strong> 12</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div className="table-wrapper">
+                                        <table style={tableStyle}>
+                                            <tbody>
+                                                <tr>
+                                                    <td><strong>Matches:</strong> 10</td>
+                                                    <td><strong>Runs:</strong> 120</td>
+                                                    <td><strong>Wickets:</strong> 12</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     <button style={buttonStyle}>Collect Fee</button>
                                 </div>
                             </div>

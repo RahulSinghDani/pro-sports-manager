@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import FinancialSummary from "./FinancialSummary";
 import './Style.css';
@@ -10,9 +10,9 @@ const ManagePayment = () => {
 
     const navigate = useNavigate();
 
-    const location = useLocation();
-    const { coachId } = location.state || {};
-    console.log( coachId);
+    // const location = useLocation();
+    // const { coachId } = location.state || {};
+    // console.log(coachId);
 
     const { academyId, role } = useParams();
 
@@ -175,7 +175,7 @@ const ManagePayment = () => {
 
                         {/* Search by Player */}
                         <div className="search-box-managepayment">
-                            <label style={{ display: 'flex', flexDirection: 'row' }}>
+                            <label style={{ display: 'flex', flexDirection: 'row' ,gap:'5px'}}>
                                 Player ID: {" "}
                                 <input
                                     type="text"
@@ -184,7 +184,7 @@ const ManagePayment = () => {
                                     onChange={handleInputChange}
                                 />
                             </label>
-                            <label style={{ marginLeft: "10px", display: 'flex', flexDirection: 'row' }}>
+                            <label style={{ marginLeft: "10px", display: 'flex', flexDirection: 'row' ,gap:'5px'}}>
                                 Player Name: {" "}
                                 <input
                                     type="text"
@@ -213,49 +213,51 @@ const ManagePayment = () => {
                         </div>
                     </div>
                     {/* Results Table */}
-                    <table
-                        className="table-main"
-                    >
-                        <thead>
-                            <tr style={{ background: "#f4f4f4", textAlign: "left" }}>
-                                <th style={{ padding: "8px", border: "1px solid #ddd" }}>Player ID</th>
-                                <th style={{ padding: "8px", border: "1px solid #ddd" }}>Player Name</th>
-                                <th style={{ padding: "8px", border: "1px solid #ddd" }}>Total Fee</th>
-                                <th style={{ padding: "8px", border: "1px solid #ddd" }}>Paid Amount</th>
-                                <th style={{ padding: "8px", border: "1px solid #ddd" }}>Due Amount</th>
-                                <th style={{ padding: "8px", border: "1px solid #ddd" }}>Due Date</th>
-                                <th style={{ padding: "8px", border: "1px solid #ddd" }}>Status</th>
-                                <th style={{ padding: "8px", border: "1px solid #ddd" }}>Remarks</th>
-                                <th style={{ padding: "8px", border: "1px solid #ddd" }}>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {records.length > 0 ? (
-                                records.map((record) => (
-                                    <tr key={record.id}>
-                                        <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.player_id}</td>
-                                        <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.player_name}</td>
-                                        <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.total_fee}</td>
-                                        <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.paid_amount}</td>
-                                        <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.due_amount}</td>
-                                        <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.due_date}</td>
-                                        <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.status}</td>
-                                        <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.remarks}</td>
-                                        <td>
-                                            <button onClick={() => handleEditPayment(record.id)}>Edit</button>
-                                            <button onClick={() => deletePaymentData(record.id)}>Delete</button>
+                    <div className="table-wrapper">
+                        <table
+                            className="table-main"
+                        >
+                            <thead>
+                                <tr style={{ background: "#f4f4f4", textAlign: "left" }}>
+                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Player ID</th>
+                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Player Name</th>
+                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Total Fee</th>
+                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Paid Amount</th>
+                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Due Amount</th>
+                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Due Date</th>
+                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Status</th>
+                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Remarks</th>
+                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {records.length > 0 ? (
+                                    records.map((record) => (
+                                        <tr key={record.id}>
+                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.player_id}</td>
+                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.player_name}</td>
+                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.total_fee}</td>
+                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.paid_amount}</td>
+                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.due_amount}</td>
+                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.due_date}</td>
+                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.status}</td>
+                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.remarks}</td>
+                                            <td>
+                                                <button onClick={() => handleEditPayment(record.id)}>Edit</button>
+                                                <button onClick={() => deletePaymentData(record.id)}>Delete</button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="8" style={{ padding: "8px", border: "1px solid #ddd", textAlign: "center" }}>
+                                            No Records Found
                                         </td>
                                     </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="8" style={{ padding: "8px", border: "1px solid #ddd", textAlign: "center" }}>
-                                        No Records Found
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <About />

@@ -5,7 +5,7 @@ import AcademyNavbar from './AcademyNavbar.js';
 import { Link } from 'react-router-dom';
 import About from './About.js';
 const Courses = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const { academyId, role } = useParams(); // Get the academy_id from the URL
   const [courses, setCourses] = useState([]);
@@ -64,26 +64,28 @@ const Courses = () => {
         {courses.length === 0 ? (
           <p>No courses found for this academy.</p>
         ) : (
-          <table border="1" width="700px">
-            <thead>
-              <tr>
-                <th>Course ID</th>
-                <th>Course Name</th>
-                <th>Timing</th>
-                <th>Fee</th>
-              </tr>
-            </thead>
-            <tbody>
-              {courses.map(course => (
-                <tr key={course.course_id}>
-                  <td>{course.course_id}</td>
-                  <td>{course.course_name}</td>
-                  <td>{course.timing}</td>
-                  <td>{course.fee}</td>
+          <div className="table-wrapper">
+            <table border="1" width="700px">
+              <thead>
+                <tr>
+                  <th>Course ID</th>
+                  <th>Course Name</th>
+                  <th>Timing</th>
+                  <th>Fee</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {courses.map(course => (
+                  <tr key={course.course_id}>
+                    <td>{course.course_id}</td>
+                    <td>{course.course_name}</td>
+                    <td>{course.timing}</td>
+                    <td>{course.fee}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
       <About />
