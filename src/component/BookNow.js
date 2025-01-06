@@ -116,7 +116,7 @@ const BookNow = () => {
             booked_by: name,
             contact_number: contactNumber,
             status: 'Confirmed',
-            
+
         };
 
         // Post booking data to backend
@@ -139,7 +139,7 @@ const BookNow = () => {
             [field]: value,
         }));
     };
-  
+
     return (
         <div>
             <div className='nav'>
@@ -147,115 +147,163 @@ const BookNow = () => {
             </div>
 
             <div className='below-navbar'>
-                <form onSubmit={handleBooking} style={{ width: "340px", gap: '15px' }}>
-                    <h1>Book Now</h1>
+                <div style={{display:'flex'}}>
+                    <form onSubmit={handleBooking} style={{ width: "340px", gap: '15px' }}>
+                        <h1>Book Now</h1>
 
-                    {/* Render bookable details if available */}
-                    {bookableDetails && (
-                        <div>
-                            <p>Item ID: {bookableDetails.id}</p>
-                            <p>Ground Name: {bookableDetails.name}</p>
-                            {/* Display other details if needed */}
-                        </div>
-                    )}
+                        {/* Render bookable details if available */}
+                        {bookableDetails && (
+                            <div>
+                                <p>Item ID: {bookableDetails.id}</p>
+                                <p>Ground Name: {bookableDetails.name}</p>
+                                {/* <p>Fee: {bookableDetails.fee}</p> */}
+                                {/* Display other details if needed */}
+                            </div>
+                        )}
 
-                    <input
-                        type="text"
-                        placeholder="Enter your name"
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                    />
-                    <input
-                        type="number"
-                        placeholder="Enter your contact number without +91"
-                        value={contactNumber}
-                        onChange={e => setContactNumber(e.target.value)}
-                    />
-                    Enter Booking Date
-                    <input
-                        type="date"
-                        value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
-                        onChange={(e) => handleDateChange(e.target.value)}
-                        className="custom-date-input"
-                    />
-                    <div>
-                        <div style={{ marginBottom: '1em', display: 'flex', flexDirection: 'row', width: '300px' }}>
-                            <label>Start Time: </label>
-                            <select
-                                value={startTime.hours}
-                                onChange={(e) => handleTimeChange(setStartTime, 'hours', e.target.value)}
-                            >
-                                {Array.from({ length: 12 }, (_, i) => {
-                                    const hour = (i + 1).toString().padStart(2, '0');
-                                    return <option key={hour} value={hour}>{hour}</option>;
-                                })}
-                            </select>
-                            :
-                            <select
-                                value={startTime.minutes}
-                                onChange={(e) => handleTimeChange(setStartTime, 'minutes', e.target.value)}
-                            >
-                                {Array.from({ length: 60 }, (_, i) => {
-                                    const minute = i.toString().padStart(2, '0');
-                                    return <option key={minute} value={minute}>{minute}</option>;
-                                })}
-                            </select>
-                            <select
-                                value={startTime.period}
-                                onChange={(e) => handleTimeChange(setStartTime, 'period', e.target.value)}
-                            >
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                        </div>
-
-                        <div style={{ display: 'flex', flexDirection: 'row', width: '300px' }}>
-                            <label>End Time: </label>
-                            <select
-                                value={endTime.hours}
-                                onChange={(e) => handleTimeChange(setEndTime, 'hours', e.target.value)}
-                            >
-                                {Array.from({ length: 12 }, (_, i) => {
-                                    const hour = (i + 1).toString().padStart(2, '0');
-                                    return <option key={hour} value={hour}>{hour}</option>;
-                                })}
-                            </select>
-                            :
-                            <select
-                                value={endTime.minutes}
-                                onChange={(e) => handleTimeChange(setEndTime, 'minutes', e.target.value)}
-                            >
-                                {Array.from({ length: 60 }, (_, i) => {
-                                    const minute = i.toString().padStart(2, '0');
-                                    return <option key={minute} value={minute}>{minute}</option>;
-                                })}
-                            </select>
-                            <select
-                                value={endTime.period}
-                                onChange={(e) => handleTimeChange(setEndTime, 'period', e.target.value)}
-                            >
-                                <option value="AM">AM</option>
-                                <option value="PM">PM</option>
-                            </select>
-                            {/* <p>Selected End Time: {formatTime(endTime)}</p> */}
-                        </div>
-                    </div>
-                    <div>
                         <input
-                            placeholder="Enter Number of Players"
-                            type="number"
-                            value={numberOfPlayers}
-                            onChange={ e => setNumberOfPlayers(e.target.value)} // Update state on change
-                          
+                            type="text"
+                            placeholder="Enter your name"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
                         />
-                    </div>
-                    {/* <p>Pay Rs.{bookableDetails.amount} /player</p>
+                        <input
+                            type="number"
+                            placeholder="Enter your contact number without +91"
+                            value={contactNumber}
+                            onChange={e => setContactNumber(e.target.value)}
+                        />
+                        Enter Booking Date
+                        <input
+                            type="date"
+                            value={selectedDate ? selectedDate.toISOString().split('T')[0] : ''}
+                            onChange={(e) => handleDateChange(e.target.value)}
+                            className="custom-date-input"
+                        />
+                        <div>
+                            <div style={{ marginBottom: '1em', display: 'flex', flexDirection: 'row', width: '300px' }}>
+                                <label>Start Time: </label>
+                                <select
+                                    value={startTime.hours}
+                                    onChange={(e) => handleTimeChange(setStartTime, 'hours', e.target.value)}
+                                >
+                                    {Array.from({ length: 12 }, (_, i) => {
+                                        const hour = (i + 1).toString().padStart(2, '0');
+                                        return <option key={hour} value={hour}>{hour}</option>;
+                                    })}
+                                </select>
+                                :
+                                <select
+                                    value={startTime.minutes}
+                                    onChange={(e) => handleTimeChange(setStartTime, 'minutes', e.target.value)}
+                                >
+                                    {Array.from({ length: 60 }, (_, i) => {
+                                        const minute = i.toString().padStart(2, '0');
+                                        return <option key={minute} value={minute}>{minute}</option>;
+                                    })}
+                                </select>
+                                <select
+                                    value={startTime.period}
+                                    onChange={(e) => handleTimeChange(setStartTime, 'period', e.target.value)}
+                                >
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'row', width: '300px' }}>
+                                <label>End Time: </label>
+                                <select
+                                    value={endTime.hours}
+                                    onChange={(e) => handleTimeChange(setEndTime, 'hours', e.target.value)}
+                                >
+                                    {Array.from({ length: 12 }, (_, i) => {
+                                        const hour = (i + 1).toString().padStart(2, '0');
+                                        return <option key={hour} value={hour}>{hour}</option>;
+                                    })}
+                                </select>
+                                :
+                                <select
+                                    value={endTime.minutes}
+                                    onChange={(e) => handleTimeChange(setEndTime, 'minutes', e.target.value)}
+                                >
+                                    {Array.from({ length: 60 }, (_, i) => {
+                                        const minute = i.toString().padStart(2, '0');
+                                        return <option key={minute} value={minute}>{minute}</option>;
+                                    })}
+                                </select>
+                                <select
+                                    value={endTime.period}
+                                    onChange={(e) => handleTimeChange(setEndTime, 'period', e.target.value)}
+                                >
+                                    <option value="AM">AM</option>
+                                    <option value="PM">PM</option>
+                                </select>
+                                {/* <p>Selected End Time: {formatTime(endTime)}</p> */}
+                            </div>
+                        </div>
+                        <div>
+                            <input
+                                placeholder="Enter Number of Players"
+                                type="number"
+                                value={numberOfPlayers}
+                                onChange={e => setNumberOfPlayers(e.target.value)} // Update state on change
+
+                            />
+                        </div>
+                        {/* <p>Pay Rs.{bookableDetails.amount} /player</p>
                     <p>Final amount Pay Rs.{bookableDetails.amount * numberOfPlayers} </p> */}
-                    <button className="heading" type="submit" disabled={isDateBooked} // Disable if date is booked
-                    >
-                        BOOK NOW
-                    </button>
-                </form>
+                        <button className="heading" type="submit" disabled={isDateBooked} // Disable if date is booked
+                        >
+                            BOOK NOW
+                        </button>
+                    </form>
+                    <div style={{
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    border: '1px solid #ccc',
+    borderRadius: '8px',
+    padding: '20px',
+    backgroundColor: '#f9f9f9',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    maxWidth: '400px',
+    margin: '20px auto'
+}}>
+    <h3 style={{
+        fontSize: '1.5rem',
+        color: '#333',
+        marginBottom: '10px',
+        textAlign: 'center',
+        borderBottom: '2px solid #007bff',
+        paddingBottom: '5px',
+        width: '100%'
+    }}>
+        Booked Dates
+    </h3>
+    {bookedDates.length > 0 ? (
+        <ul style={{
+            listStyle: 'none',
+            padding: '0',
+            width: '100%',
+            textAlign: 'center',
+            margin: '0',
+        }}>
+            {bookedDates.map((date, index) => (
+                <li key={index} style={{ padding: '10px 0', fontSize: '1rem', color: '#555',borderBottom: index < bookedDates.length - 1 ? '1px solid #ddd' : 'none',
+                }}>
+                    {date.toISOString().split('T')[0]}
+                </li>
+            ))}
+        </ul>
+    ) : (
+        <p style={{fontSize: '1rem', color: '#666', textAlign: 'center', marginTop: '10px' }}> No booked dates available.</p>
+    )}
+</div>
+
+
+                </div>
             </div>
             <About />
         </div>

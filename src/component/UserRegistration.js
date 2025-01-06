@@ -54,7 +54,7 @@ const UserRegistration = () => {
 
       <div className="user-register-container" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
 
-        <h2 className="heading" style={{ textAlign: "center", width: "100%" }}>User Data Form</h2>
+        <h2 className="heading" style={{ textAlign: "center", width: "100%" }}>User Registration Form</h2>
         <form style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '300px' }}>
           <label htmlFor="role-select">Role:</label>
           <select id="role-select" value={role} onChange={(e) => setRole(e.target.value)}>

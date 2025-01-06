@@ -11,6 +11,7 @@ const Player = () => {
 
 
   const [players, setPlayers] = useState([]);
+  // const [courses, setCourses] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true); // Add a loading state
 
@@ -46,6 +47,21 @@ const Player = () => {
       });
   }, [API_BASE_URL, academyId]);
 
+  // useEffect(() => {
+  //   // Fetch course data from the backend
+  //   axios
+  //     .get(`${API_BASE_URL}/api/courses/${academyId}`)
+  //     .then(response => {
+  //       setCourses(response.data); // Set the fetched courses data
+  //       setLoading(false); // Set loading to false after data is fetched
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching data:', error);
+  //       setError('Failed to load course details.');
+  //       setLoading(false); // Set loading to false even on error
+  //     });
+  // }, [API_BASE_URL, academyId]);
+
   // Show loading spinner or message while fetching data
   if (loading) {
     return <div>Loading...</div>;
@@ -65,7 +81,7 @@ const Player = () => {
     <div>
       <AcademyNavbar role={role} academyId={academyId} /> {/* Pass the academyId correctly */}
 
-      <div className='container'>
+      <div className='below-navbar'>
         <h2>Player Information</h2>
         <div id="dashboard-boxes" style={{ display: "flex", gap: "20px", justifyContent: 'center', alignItems: 'center', marginBottom: "20px" }}>
           {/* Total Players Box */}
@@ -106,9 +122,14 @@ const Player = () => {
             <table border="1" width="800px">
               <thead>
                 <tr>
+                  <th>Manage</th>
                   <th>Player ID</th>
                   <th>Name</th>
-                  <th>DOB</th>
+                  <th>Batch</th>
+                  <th>Fee</th>
+
+                  <th>Fee Type</th>
+                  <th>DOB (d-m-y)</th>
                   <th>Gender</th>
                   <th>School Name</th>
                   <th>Sports Expertise</th>
@@ -117,13 +138,13 @@ const Player = () => {
                   <th>Father's Name</th>
                   <th>Mother's Name</th>
                   <th>Phone Number</th>
-                  <th>Batch</th>
                   {/* <th>Profile Picture</th> */}
                 </tr>
               </thead>
               <tbody>
                 {players.map(player => (
                   <tr key={player.id}>
+                    <td><Link to={`/financialform/${role}/${academyId}/${player.id}/${player.name}/${player.fee}`}>Payment</Link></td>
                     <td>
                       <Link to={`/AcademyDetails/${role}/${academyId}/${player.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                         <b> {player.id}</b>
@@ -131,6 +152,9 @@ const Player = () => {
                     <td><Link to={`/AcademyDetails/${role}/${academyId}/${player.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                       <b> {player.name}</b>
                     </Link></td>
+                    <td>{player.batch}</td>
+                    <td>{player.fee}</td>
+                    <td>{player.fee_type}</td>
                     <td>{player.dob}</td>
                     <td>{player.gender}</td>
                     <td>{player.school_name}</td>
@@ -140,7 +164,7 @@ const Player = () => {
                     <td>{player.father_name}</td>
                     <td>{player.mother_name}</td>
                     <td>{player.phone_number}</td>
-                    <td>{player.batch}</td>
+                    
                     {/* <td> */}
                     {/* Uncomment and replace the placeholder with the real profile image URL */}
                     {/* <img

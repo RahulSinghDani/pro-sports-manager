@@ -71,7 +71,9 @@ const Courses = () => {
                   <th>Course ID</th>
                   <th>Course Name</th>
                   <th>Timing</th>
-                  <th>Fee</th>
+                  <th>Quarterly</th>
+                  <th>Half Yearly</th>
+                  <th>Yearly</th>
                 </tr>
               </thead>
               <tbody>
@@ -80,7 +82,9 @@ const Courses = () => {
                     <td>{course.course_id}</td>
                     <td>{course.course_name}</td>
                     <td>{course.timing}</td>
-                    <td>{course.fee}</td>
+                    <td>{course.fee }</td>
+                    <td>{course.fee * 3}</td>
+                    <td>{course.fee * 6}</td>
                   </tr>
                 ))}
               </tbody>

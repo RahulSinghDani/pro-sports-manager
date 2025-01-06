@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate,Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import About from "./About";
 
 const AddPlayer = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const { academyId, role } = useParams(); // Get academyId from URL
   const navigate = useNavigate(); // To navigate after adding a player
@@ -22,11 +23,18 @@ const AddPlayer = () => {
   const [profilePic, setProfilePic] = useState(null);
 
   const [batches, setBatches] = useState([]);
+  const [feeType, setFeeType] = useState("");
   const [playerId, setPlayerId] = useState(""); // For unique player ID
+  const [courses, setCourses] = useState([]);
+  const [fee, setFee] = useState(null);
+
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+
+  // console.log("fee type : ", feeType, " | Fee : ", fee);
   useEffect(() => {
+
     // Fetch available batches for the selected academy
     const fetchBatches = async () => {
       try {
@@ -51,7 +59,40 @@ const AddPlayer = () => {
       fetchBatches();
       fetchPlayerId();
     }
-  }, [API_BASE_URL ,academyId]);
+  }, [API_BASE_URL, academyId]);
+
+  useEffect(() => {
+    // Fetch course data from the backend
+    axios
+      .get(`${API_BASE_URL}/api/courses/${academyId}`)
+      .then(response => {
+        setCourses(response.data); // Set the fetched courses data
+        setLoading(false); // Set loading to false after data is fetched
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        // setError('Failed to load course details.');
+        setLoading(false); // Set loading to false even on error
+      });
+  }, [API_BASE_URL, academyId]);
+
+  // Update fee whenever feeType or batch changes
+  useEffect(() => {
+    const course = courses.find(c => c.timing === batch); // Find the course that matches the batch
+    if (course) {
+      let calculatedFee = course.fee;
+
+      if (feeType === 'Quarterly') {
+        calculatedFee = course.fee;
+      } else if (feeType === 'Half Yearly') {
+        calculatedFee = course.fee * 3;
+      } else if (feeType === 'Yearly') {
+        calculatedFee = course.fee * 6;
+      }
+
+      setFee(calculatedFee); // Update the fee state
+    }
+  }, [courses , feeType, batch]); // Re-run whenever feeType or batch changes
 
   // Handle form submission to add a new player
   const handleSubmit = async (e) => {
@@ -84,6 +125,8 @@ const AddPlayer = () => {
       if (profilePic) {
         formData.append("profile_pic", profilePic);
       }
+      formData.append("fee_type", feeType);
+      formData.append("fee", fee);
 
       const response = await axios.post(
         `${API_BASE_URL}/api/addPlayer/${academyId}`,
@@ -106,131 +149,160 @@ const AddPlayer = () => {
   };
 
   return (
-    <div className="add-player-container">
-      <h2>Add New Player</h2>
-      <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0"}}/> {/*  adjust margin to set into column line */}
+    <div>
+      <div className="nav">
+        <p className="logo">Pro Sports Manager</p>
 
-      <p>{academyId ? `Academy ID: ${academyId}` : "Academy ID not available"}</p>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Player ID (Unique):</label>
-          <input type="text" value={playerId} disabled />
-        </div>
-        <div className="form-group">
-          <label>Name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Date of Birth:</label>
-          <input
-            type="date"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Gender:</label>
-          <select value={gender} onChange={(e) => setGender(e.target.value)} required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label>School Name:</label>
-          <input
-            type="text"
-            value={schoolName}
-            onChange={(e) => setSchoolName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Sports Expertise:</label>
-          <input
-            type="text"
-            value={sportsExpertise}
-            onChange={(e) => setSportsExpertise(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Address:</label>
-          <textarea
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Previous Academy:</label>
-          <input
-            type="text"
-            value={previousAcademy}
-            onChange={(e) => setPreviousAcademy(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Father's Name:</label>
-          <input
-            type="text"
-            value={fatherName}
-            onChange={(e) => setFatherName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Mother's Name:</label>
-          <input
-            type="text"
-            value={motherName}
-            onChange={(e) => setMotherName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Phone Number:</label>
-          <input
-            type="text"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Batch:</label>
-          <select value={batch} onChange={(e) => setBatch(e.target.value)} required>
-            <option value="">Select Batch</option>
-            {batches.map((batch) => (
-              <option key={batch.batch_name} value={batch.batch_name}>
-                {batch.batch_name}
-              </option>
+      </div>
+      <div className="below-navbar">
+        <h2>Add New Player</h2>
+        <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
+
+        <p>{academyId ? `Academy ID: ${academyId}` : "Academy ID not available"}</p>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Player ID (Unique):</label>
+            <input type="text" value={playerId} disabled />
+          </div>
+          <div className="form-group">
+            <label>Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Date of Birth:</label>
+            <input
+              type="date"
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Gender:</label>
+            <select value={gender} onChange={(e) => setGender(e.target.value)} required>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>School Name:</label>
+            <input
+              type="text"
+              value={schoolName}
+              onChange={(e) => setSchoolName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Sports Expertise:</label>
+            <input
+              type="text"
+              value={sportsExpertise}
+              onChange={(e) => setSportsExpertise(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Address:</label>
+            <textarea
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Previous Academy:</label>
+            <input
+              type="text"
+              value={previousAcademy}
+              onChange={(e) => setPreviousAcademy(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Father's Name:</label>
+            <input
+              type="text"
+              value={fatherName}
+              onChange={(e) => setFatherName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Mother's Name:</label>
+            <input
+              type="text"
+              value={motherName}
+              onChange={(e) => setMotherName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Phone Number:</label>
+            <input
+              type="text"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+
+            <label>Batch:</label>
+            <select value={batch} onChange={(e) => setBatch(e.target.value)} required>
+              <option value="">Select Batch</option>
+              {batches.map((batch) => (
+                <option key={batch.timing} value={batch.timing}>
+                  {batch.timing}
+                </option>
+              ))}
+            </select>
+
+          </div>
+          <div className="form-group">
+            <label>Fee Type</label>
+            <select value={feeType} onChange={(e) => setFeeType(e.target.value)} required>
+              <option>Select</option>
+              <option value="Quarterly">Quarterly</option>
+              <option value="Half Yearly">Half Yearly</option>
+              <option value="Yearly">Yearly</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Fees: </label>
+            {courses.map(course => (
+              <div key={course.course_id}>
+                {feeType && batch && (
+                  <p>{fee}</p>
+                )}
+              </div>
             ))}
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Profile Picture:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setProfilePic(e.target.files[0])}
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Adding..." : "Add Player"}
-        </button>
-        <Link to={`/AcademyDetails/${role}/${academyId}/Player`} style={{ textDecoration: 'none', color: 'inherit' }}>
-        <button>Back</button>
-      </Link>
-      </form>
-      {message && <p>{message}</p>}
+          </div>
+
+          <div className="form-group">
+            <label>Profile Picture:</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setProfilePic(e.target.files[0])}
+            />
+          </div>
+          <button type="submit" disabled={loading}>
+            {loading ? "Adding..." : "Add Player"}
+          </button>
+          <Link to={`/AcademyDetails/${role}/${academyId}/Player`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <button>Back</button>
+          </Link>
+        </form>
+        {message && <p>{message}</p>}
+      </div>
+      <About />
     </div>
   );
 };

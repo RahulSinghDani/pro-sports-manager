@@ -55,6 +55,7 @@ import AcademyAssets from "./component/AcademyAssets";
 import BookableDashboard from "./component/BookableDashboard";
 import About from "./component/About";
 import BookNow from "./component/BookNow";
+import PlayerFinancialForm from "./component/PlayerFinancialForm";
 
 
 function App() {
@@ -110,6 +111,7 @@ function App() {
           <Route path="/edit-booking/:role/:academyId/:id" element={<EditBooking />} />
           <Route path="/new-booking/:role/:academyId" element={<NewBooking />} />
           <Route path="/financialsummary/:role/:academyId" element={<FinancialSummary />} />
+          <Route path="/financialform/:role/:academyId/:id/:name/:fee" element={<PlayerFinancialForm />} />
 
           <Route path="/all-bookings/:role/:academyId/:id" element={<AllBookings />} />
           <Route path="/bookable-dashboard/:role/:academyId/:id" element={<BookableDashboard/>} />

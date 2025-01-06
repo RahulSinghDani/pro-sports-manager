@@ -124,7 +124,8 @@ const Home = () => {
   };
 
   return (
-    <div>
+    // <div className='body1'>
+    <div >
       <div>
         {role !== 'admin' && (
           <nav className='nav'>
@@ -141,7 +142,7 @@ const Home = () => {
                 {/* Dropdown Menu (Mobile view) */}
                 {isDropdownOpen && (
                   <ul className='navLinks'>
-                    <li><Link to={`/HomeAllPlayerDashboard`}><button style={styles.btn}>Players</button></Link></li>
+                    {/* <li><Link to={`/HomeAllPlayerDashboard`}><button style={styles.btn}>Players</button></Link></li> */}
                     {/* <li><Link to={`/PublicBookings`}><button style={styles.btn}>Bookings</button></Link></li> */}
 
                     <li><Link to="/UserRegistration"><button style={styles.btnSignup}>Sign Up</button></Link></li>
@@ -153,7 +154,7 @@ const Home = () => {
               // Desktop Navigation
               <ul className='navLinks'>
                 <li className='navLink' id='navLinkIdHome'>
-                  <Link to={`/HomeAllPlayerDashboard`}><button style={styles.btn}>Players</button></Link>
+                  {/* <Link to={`/HomeAllPlayerDashboard`}><button style={styles.btn}>Players</button></Link> */}
                 </li>
                 {/* <li><Link to={`/PublicBookings`}><button style={styles.btn}>Bookings</button></Link></li> */}
 
@@ -176,55 +177,10 @@ const Home = () => {
 
       {/* Hero Section */}
       {/* Hero Section as About Section */}
-      <div className='mainHeading'>
-        <h1 className='h1Style'>ProSportsManager</h1>
-        <h3 className='h3Style'>Your Sports Venue & Player <span style={styles.hubSpan}>Hub</span></h3>
-        <Link to="/UserRegistration">
-          <button
-            style={{
-              backgroundColor: 'blue',
-              color: 'white',
-              padding: '12px 30px',
-              borderRadius: '5px',
-              fontSize: '1rem',
-              marginTop: '20px',
-              border: 'none',
-              cursor: 'pointer',
-              marginBottom: '150px',
-
-            }}
-          >
-            Get Started
-          </button>
-        </Link>
-      </div>
-      <div className="homeImgWithText" >
-        <div className='homeImage' alt="Ground"
-          style={{
-            // width: '60%', // Makes the image responsive and fills the width of its container
-            height: 'auto', // Maintains aspect ratio
-            borderRadius: '10px', // Optional: Adds rounded corners to the image
-            // boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
-            objectFit: 'cover', // Optional: Ensures the image covers the container area without stretching
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '12px 12px',
-          }}>
-          <img src={HomeImage} alt='Loading img...' style={{ width: '600px' }}></img>
-        </div>
-        <section id='aboutHome'
-          style={{
-            // width: '40%',
-            textAlign: 'center',
-            padding: '50px 20px', // Increased padding for better visibility
-            backgroundColor: '#f4f4f4',
-            color: '#333', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'
-          }}
-        >
-
-          <p style={{ fontSize: '1.2rem', width: '90%', textAlign: 'left' }}>
-            Efficiently manage player details, coaches, batches, and more with our comprehensive Sports Academy Management System. Our platform provides a centralized space to streamline every aspect of your academy’s operations. From tracking player progress and performance to scheduling batches and managing coaches, we empower academies to optimize their workflow, improve training efficiency, and ensure smooth day-to-day management. Whether you're a coach, admin, or academy owner, our system simplifies and elevates your management experience, making it easier to focus on what matters most—developing athletes and achieving success.  </p>
+      <div className='below-navbar-home'>
+        <div className='mainHeadingHome'>
+          <h1 className='h1StyleHome'>Pro Sports Manager</h1>
+          <h3 className='h3StyleAcademyHome'>Your Sports Venue & Player <span style={styles.hubSpan}>Hub</span></h3>
           <Link to="/UserRegistration">
             <button
               style={{
@@ -236,135 +192,181 @@ const Home = () => {
                 marginTop: '20px',
                 border: 'none',
                 cursor: 'pointer',
+                marginBottom: '20px',
+
               }}
             >
               Get Started
             </button>
           </Link>
+        </div>
+
+        <div className="homeImgWithText" >
+          <div className='homeImage' alt="Ground"
+            style={{
+              // width: '60%', // Makes the image responsive and fills the width of its container
+              height: 'auto', // Maintains aspect ratio
+              borderRadius: '10px', // Optional: Adds rounded corners to the image
+              // boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
+              objectFit: 'cover', // Optional: Ensures the image covers the container area without stretching
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <img src={HomeImage} alt='Loading img...' style={{ width: '650px' }}></img>
+          </div>
+          <section id='aboutHome'
+            style={{
+              // width: '40%',
+              textAlign: 'center',
+              padding: '30px 20px', // Increased padding for better visibility
+              backgroundColor: '#f4f4f4',
+              color: '#333', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'
+            }}
+          >
+
+            <p style={{ fontSize: '1.2rem', width: '100%', textAlign: 'left' }}>
+              Efficiently manage player details, coaches, batches, and more with our comprehensive Sports Academy Management System. Our platform provides a centralized space to streamline every aspect of your academy’s operations. From tracking player progress and performance to scheduling batches and managing coaches, we empower academies to optimize their workflow, improve training efficiency, and ensure smooth day-to-day management. Whether you're a coach, admin, or academy owner, our system simplifies and elevates your management experience, making it easier to focus on what matters most—developing athletes and achieving success.  </p>
+            <Link to="/UserRegistration">
+              <button
+                style={{
+                  backgroundColor: 'blue',
+                  color: 'white',
+                  padding: '12px 30px',
+                  borderRadius: '5px',
+                  fontSize: '1rem',
+                  marginTop: '20px',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                Get Started
+              </button>
+            </Link>
+          </section>
+
+
+
+
+
+        </div>
+        {/* Features Section */}
+        <section style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', gap: '20px', padding: '40px 20px' }}>
+          <div style={{ textAlign: 'center', width: '200px' }}>
+            <h3>Manage Players</h3>
+            <p>Add, edit, and view player details seamlessly.</p>
+          </div>
+          <div style={{ textAlign: 'center', width: '200px' }}>
+            <h3>Coaches</h3>
+            <p>Assign coaches to players and manage coaching schedules.</p>
+          </div>
+          <div style={{ textAlign: 'center', width: '200px' }}>
+            <h3>Batches</h3>
+            <p>Create and manage different training batches.</p>
+          </div>
+        </section>
+
+        {/* display sports training data boxes */}
+        <div className="sports-container">
+          {sportsData.map((sport, index) => (
+            <a href={sport.link} key={index} className="sports-box">
+              <img src={sport.image} alt={`${sport.name}`} className="sports-image" />
+              <h3 className="sports-name">{sport.name}</h3>
+              <p className="sports-description">{sport.description}</p>
+            </a>
+          ))}
+        </div>
+
+
+        {/* Call to Action Section */}
+        <section style={{ backgroundColor: '#333', color: 'white', padding: '40px 20px', textAlign: 'center' }}>
+          <h2>Ready to get started?</h2>
+          <p>Join now to manage your academy’s data efficiently.</p>
+          <Link to='/PlayerRegistration'><button style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', borderRadius: '5px' }}>
+            Sign Up Now
+          </button></Link>
         </section>
 
 
+        {/* Testimonials Section */}
+        <section style={{ padding: '50px 20px', backgroundColor: '#f9f9f9', textAlign: 'center' }}>
+          <h2>User Testimonials</h2>
+          <p>"This platform has made managing our academy’s data so much easier!"</p>
+          <p>- Coach John, XYZ Academy</p>
+        </section>
 
+        {/* Contact us*/}
+        <section id="contact" style={{ backgroundColor: '#f0f8ff', padding: '20px 20px', textAlign: 'center' }}>
+          <h2>Contact Us</h2>
+          <p>We'd love to hear from you! Feel free to reach out for any inquiries or support.</p>
 
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '35px', flexWrap: 'wrap' }}>
+            {/* Contact Form */}
+            <div className='home-contactus'>
+              <h3>Send us a message</h3>
+              <form>
+                <div style={{ marginBottom: '12px' }}>
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    style={{ width: '100%', padding: '10px', borderRadius: '5px' }}
+                    required
+                  />
+                </div>
+                <div style={{ marginBottom: '12px' }}>
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    style={{ width: '100%', padding: '10px', borderRadius: '5px' }}
+                    required
+                  />
+                </div>
+                <div style={{ marginBottom: '12px' }}>
+                  <textarea
+                    placeholder="Your Message"
+                    style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ddd', height: '100px' }}
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  style={{ backgroundColor: '#007BFF', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}
+                >
+                  Send Message
+                </button>
+              </form>
+            </div>
 
-      </div>
-      {/* Features Section */}
-      <section style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', gap: '20px', padding: '40px 20px' }}>
-        <div style={{ textAlign: 'center', width: '200px' }}>
-          <h3>Manage Players</h3>
-          <p>Add, edit, and view player details seamlessly.</p>
-        </div>
-        <div style={{ textAlign: 'center', width: '200px' }}>
-          <h3>Coaches</h3>
-          <p>Assign coaches to players and manage coaching schedules.</p>
-        </div>
-        <div style={{ textAlign: 'center', width: '200px' }}>
-          <h3>Batches</h3>
-          <p>Create and manage different training batches.</p>
-        </div>
-      </section>
+            {/* Contact Information */}
+            <div style={{ flex: '1', justifyContent: 'center', alignItems: 'center', maxWidth: '300px', padding: '20px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+              <h3>Our Contact Information</h3>
 
-      {/* display sports training data boxes */}
-      <div className="sports-container">
-        {sportsData.map((sport, index) => (
-          <a href={sport.link} key={index} className="sports-box">
-            <img src={sport.image} alt={`${sport.name}`} className="sports-image" />
-            <h3 className="sports-name">{sport.name}</h3>
-            <p className="sports-description">{sport.description}</p>
-          </a>
-        ))}
-      </div>
-
-
-      {/* Call to Action Section */}
-      <section style={{ backgroundColor: '#333', color: 'white', padding: '40px 20px', textAlign: 'center' }}>
-        <h2>Ready to get started?</h2>
-        <p>Join now to manage your academy’s data efficiently.</p>
-        <Link to='/PlayerRegistration'><button style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', borderRadius: '5px' }}>
-          Sign Up Now
-        </button></Link>
-      </section>
-
-
-      {/* Testimonials Section */}
-      <section style={{ padding: '50px 20px', backgroundColor: '#f9f9f9', textAlign: 'center' }}>
-        <h2>User Testimonials</h2>
-        <p>"This platform has made managing our academy’s data so much easier!"</p>
-        <p>- Coach John, XYZ Academy</p>
-      </section>
-
-      {/* Contact us*/}
-      <section id="contact" style={{ backgroundColor: '#f0f8ff', padding: '20px 20px', textAlign: 'center' }}>
-        <h2>Contact Us</h2>
-        <p>We'd love to hear from you! Feel free to reach out for any inquiries or support.</p>
-
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '35px', flexWrap: 'wrap' }}>
-          {/* Contact Form */}
-          <div className='home-contactus'>
-            <h3>Send us a message</h3>
-            <form>
-              <div style={{ marginBottom: '12px' }}>
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  style={{ width: '100%', padding: '10px', borderRadius: '5px' }}
-                  required
-                />
-              </div>
-              <div style={{ marginBottom: '12px' }}>
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  style={{ width: '100%', padding: '10px', borderRadius: '5px' }}
-                  required
-                />
-              </div>
-              <div style={{ marginBottom: '12px' }}>
-                <textarea
-                  placeholder="Your Message"
-                  style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ddd', height: '100px' }}
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                style={{ backgroundColor: '#007BFF', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}
-              >
-                Send Message
-              </button>
-            </form>
+              <p><strong>Email:</strong>support@prosportsmanager.in</p>
+              <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+              <p><strong>Address:</strong> 123 Academy St, Cityville, State, 12345</p>
+            </div>
           </div>
+        </section>
 
-          {/* Contact Information */}
-          <div style={{ flex: '1', justifyContent: 'center', alignItems: 'center', maxWidth: '300px', padding: '20px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-            <h3>Our Contact Information</h3>
 
-            <p><strong>Email:</strong> support@sportsacademy.com</p>
-            <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-            <p><strong>Address:</strong> 123 Academy St, Cityville, State, 12345</p>
+        {/* Footer */}
+        <footer style={{ backgroundColor: '#333', color: 'white', padding: '20px 0', textAlign: 'center' }}>
+          <p>&copy; 2024 Pro Sports Academy Management. All rights reserved.</p>
+          <div>
+
+            <a href="/#" style={{ color: 'white', margin: '0 10px' }}
+              onClick={(e) => {
+                e.preventDefault();
+                showPrivacyPolicy();
+              }}>Privacy Policy</a>
+
+
+
+            <a href="/terms" style={{ color: 'white', margin: '0 10px' }}>Terms of Service</a>
+            <a href="#contact" style={{ color: 'white', margin: '0 10px' }}>Contact</a>
           </div>
-        </div>
-      </section>
-
-
-      {/* Footer */}
-      <footer style={{ backgroundColor: '#333', color: 'white', padding: '20px 0', textAlign: 'center' }}>
-        <p>&copy; 2024 Pro Sports Academy Management. All rights reserved.</p>
-        <div>
-
-          <a href="/#" style={{ color: 'white', margin: '0 10px' }}
-            onClick={(e) => {
-              e.preventDefault();
-              showPrivacyPolicy();
-            }}>Privacy Policy</a>
-
-
-
-          <a href="/terms" style={{ color: 'white', margin: '0 10px' }}>Terms of Service</a>
-          <a href="#contact" style={{ color: 'white', margin: '0 10px' }}>Contact</a>
-        </div>
-      </footer>
-
+        </footer>
+      </div>
     </div >
 
   )

@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.1b579368.css",
-    "main.js": "/static/js/main.f6da0731.js",
+    "main.css": "/static/css/main.bd291bb0.css",
+    "main.js": "/static/js/main.0cadd1d0.js",
     "static/js/453.d855a71b.chunk.js": "/static/js/453.d855a71b.chunk.js",
     "static/media/homeimage.jpg": "/static/media/homeimage.34a9b943ac39d85dd648.jpg",
     "static/media/map-png.png": "/static/media/map-png.f99a17a1215a1b1db397.png",
@@ -15,14 +15,15 @@
     "static/media/ytpng.png": "/static/media/ytpng.3671fd12106de65ef027.png",
     "static/media/dashboardBg.jpg": "/static/media/dashboardBg.f3c9259670818e459d07.jpg",
     "static/media/swimmingImg.jpg": "/static/media/swimmingImg.863851cda9d19be9d3c8.jpg",
+    "static/media/ground1.jpg": "/static/media/ground1.561e5d4959a76dea0f4d.jpg",
     "static/media/bowling-machine.jpg": "/static/media/bowling-machine.60fb00058053a90d8a84.jpg",
     "index.html": "/index.html",
-    "main.1b579368.css.map": "/static/css/main.1b579368.css.map",
-    "main.f6da0731.js.map": "/static/js/main.f6da0731.js.map",
+    "main.bd291bb0.css.map": "/static/css/main.bd291bb0.css.map",
+    "main.0cadd1d0.js.map": "/static/js/main.0cadd1d0.js.map",
     "453.d855a71b.chunk.js.map": "/static/js/453.d855a71b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1b579368.css",
-    "static/js/main.f6da0731.js"
+    "static/css/main.bd291bb0.css",
+    "static/js/main.0cadd1d0.js"
   ]
 }

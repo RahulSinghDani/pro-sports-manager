@@ -64,26 +64,55 @@ const EditPlayer = () => {
     }
   };
 
-  // Handle Player Data Update
+  // // Handle Player Data Update
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setPlayerData({
+  //     ...playerData,
+  //     [name]: value,
+  //   });
+  // };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setPlayerData({
-      ...playerData,
-      [name]: value,
-    });
+  
+    setPlayerData((prevData) => ({
+      ...prevData,
+      [name]: name === "dob" ? value : value, // Simply update the value as-is
+    }));
   };
-
+  
+  
+  // Format the date before rendering in the input field
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    // Manually format the date in the local format (YYYY-MM-DD)
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    // Return the formatted date as 'YYYY-MM-DD'
+    return `${year}-${month}-${day}`;
+  };
+  
+  
   // Handle Save Changes Request
   const saveChanges = async (e) => {
     e.preventDefault();
 
+   // To avoid shifting by one day, store the date in the format YYYY-MM-DD
+   const formattedData = {
+    ...playerData,
+    dob: playerData.dob ? new Date(playerData.dob).toLocaleDateString("en-CA") : "", // Use local date format (YYYY-MM-DD)
+  };
     try {
       const response = await axios.put(
         `${API_BASE_URL}/api/editPlayer/${academyId}/${playerId}`,
-        playerData
+        formattedData
       );
       if (response.status === 200) {
         setMessage("Player details updated successfully!");
+        // alert("Player Updated..");
         setTimeout(() => {
           navigate(`/AcademyDetails/${role}/${academyId}/Player`); // Redirect to Player Page
         }, 2000);
@@ -94,10 +123,11 @@ const EditPlayer = () => {
     }
   };
 
+
   return (
     <div className="edit-player-container">
       <h2 className='heading'>Edit Player</h2>
-      {message && <p>{message}</p>}
+      
       
       <div className="form-group">
         <label>Player ID:</label>
@@ -130,7 +160,7 @@ const EditPlayer = () => {
             <input
               type="date"
               name="dob"
-              value={playerData.dob}
+              value={formatDate(playerData.dob)}
               onChange={handleInputChange}
             />
           </div>
@@ -227,8 +257,8 @@ const EditPlayer = () => {
             >
               <option value="">Select Batch</option>
               {batchList.map((batch) => (
-                <option key={batch.batch_name} value={batch.batch_name}>
-                  {batch.batch_name}
+                <option key={batch.timing} value={batch.timing}>
+                  {batch.timing}
                 </option>
               ))}
             </select>
@@ -245,6 +275,7 @@ const EditPlayer = () => {
           </div>
 
           <button type="submit">Save Changes</button>
+          {message && <p style={{color:"green"}}>{message}</p>}
           <Link to={`/AcademyDetails/${role}/${academyId}/Player`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <button>Back</button>
       </Link>

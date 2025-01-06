@@ -98,15 +98,17 @@ const LoginHome = () => {
   ];
 
   return (
-    <div>
+    // <div className='body1'>
+    <div >
+
       <AcademyNavbar role={role} academyId={academyId} />
-      <div className='below-navbar'>
+      <div className='below-navbar-home'>
 
         {/* Hero Section */}
         {/* Hero Section as About Section */}
-        <div className='mainHeading'>
-          <h1 className='h1Style' >ProSportsManager</h1>
-          <h3 className='h3StyleAcademy' style={styles.h3StyleAcademy}>Your Sports Venue & Player <span style={styles.hubSpan}>Hub</span></h3>
+        <div className='mainHeadingHome'>
+          <h1 className='h1StyleHome' >Pro Sports Manager</h1>
+          <h3 className='h3StyleAcademyHome'>Your Sports Venue & Player <span style={styles.hubSpan}>Hub</span></h3>
 
         </div>
         <div className="homeImgWithText" >
@@ -120,7 +122,6 @@ const LoginHome = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '12px 12px',
             }}>
             <img src={HomeImage} alt='Loading img...' style={{ width: '600px' }}></img>
           </div>
@@ -128,7 +129,7 @@ const LoginHome = () => {
             style={{
               // width: '40%',
               textAlign: 'center',
-              padding: '50px 20px', // Increased padding for better visibility
+              padding: '20px 20px', // Increased padding for better visibility
               backgroundColor: '#f4f4f4',
               color: '#333', display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center'
             }}

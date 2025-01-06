@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+// import {useLocation} from 'react-router-dom';
 import axios from "axios";
 // import FinancialSummary from "./FinancialSummary";
 import './Style.css';
@@ -14,7 +15,7 @@ const ManagePayment = () => {
     // const { coachId } = location.state || {};
     // console.log(coachId);
 
-    const { academyId, role } = useParams();
+    const { academyId } = useParams();
 
     const [searchParams, setSearchParams] = useState({
         fromDate: "",
@@ -28,7 +29,7 @@ const ManagePayment = () => {
     useEffect(() => {
         const fetchAllRecords = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/api/financial-records/all`);
+                const response = await axios.get(`${API_BASE_URL}/api/financial-records/${academyId}`);
                 setRecords(response.data);
             } catch (error) {
                 console.error("Error fetching all records:", error);
@@ -36,7 +37,7 @@ const ManagePayment = () => {
         };
 
         fetchAllRecords();
-    }, [API_BASE_URL]);
+    }, [API_BASE_URL ,academyId]);
 
     const handleSearch = async () => {
         try {
@@ -54,7 +55,7 @@ const ManagePayment = () => {
 
     const handleQuickSearch = async (filter) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/financial-records/${filter}`);
+            const response = await axios.get(`${API_BASE_URL}/api/financial-records/${filter}/${academyId}`);
             setRecords(response.data);
         } catch (error) {
             console.error("Error fetching quick search data:", error);
@@ -63,7 +64,7 @@ const ManagePayment = () => {
 
     const handlePlayerSearch = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/financial-records/player`, {
+            const response = await axios.get(`${API_BASE_URL}/api/financial-records/player/${academyId}`, {
                 params: {
                     playerId: searchParams.playerId,
                     playerName: searchParams.playerName,
@@ -112,13 +113,13 @@ const ManagePayment = () => {
 
             <nav className='nav'>
                 <h1 className='logo'>Pro Sports Manager</h1>
-                {(role === "admin" || role === "academy") &&
+                {/* {(role === "admin" || role === "academy") &&
                     <Link to={`/AcademyDetails/${role}/${academyId}`}>
                         <button style={{ background: "rgb(14, 56, 27)", float: "right" }}>Back</button>
                     </Link>
-                }
+                } */}
             </nav>
-            <div className="below-navbar" style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
+            <div className="below-navbar">
                 {/* {
                     (role === 'academy' || role === 'admin') && (
                         <div>
@@ -138,7 +139,7 @@ const ManagePayment = () => {
 
 
 
-                <h2>Player payment Record</h2>
+                <h2>Player Payment Record</h2>
 
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', gap: '10px' }}>
 
@@ -175,7 +176,7 @@ const ManagePayment = () => {
 
                         {/* Search by Player */}
                         <div className="search-box-managepayment">
-                            <label style={{ display: 'flex', flexDirection: 'row' ,gap:'5px'}}>
+                            <label style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
                                 Player ID: {" "}
                                 <input
                                     type="text"
@@ -184,7 +185,7 @@ const ManagePayment = () => {
                                     onChange={handleInputChange}
                                 />
                             </label>
-                            <label style={{ marginLeft: "10px", display: 'flex', flexDirection: 'row' ,gap:'5px'}}>
+                            <label style={{ marginLeft: "10px", display: 'flex', flexDirection: 'row', gap: '5px' }}>
                                 Player Name: {" "}
                                 <input
                                     type="text"
@@ -208,7 +209,7 @@ const ManagePayment = () => {
                                 This Year
                             </button>
                             <button style={styles.quickSearch} onClick={handleRefresh}>All Payments</button>
-                            <button style={styles.quickSearch} onClick={() => handleQuickSearch("notpaid")}>Unpaid / Pending Records</button>
+                            <button style={styles.quickSearch} onClick={() => handleQuickSearch("pending")}>Pending Records</button>
 
                         </div>
                     </div>
@@ -219,6 +220,7 @@ const ManagePayment = () => {
                         >
                             <thead>
                                 <tr style={{ background: "#f4f4f4", textAlign: "left" }}>
+                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Actions</th>
                                     <th style={{ padding: "8px", border: "1px solid #ddd" }}>Player ID</th>
                                     <th style={{ padding: "8px", border: "1px solid #ddd" }}>Player Name</th>
                                     <th style={{ padding: "8px", border: "1px solid #ddd" }}>Total Fee</th>
@@ -227,25 +229,30 @@ const ManagePayment = () => {
                                     <th style={{ padding: "8px", border: "1px solid #ddd" }}>Due Date</th>
                                     <th style={{ padding: "8px", border: "1px solid #ddd" }}>Status</th>
                                     <th style={{ padding: "8px", border: "1px solid #ddd" }}>Remarks</th>
-                                    <th style={{ padding: "8px", border: "1px solid #ddd" }}>Actions</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 {records.length > 0 ? (
                                     records.map((record) => (
                                         <tr key={record.id}>
+                                            <td>
+                                                <button onClick={() => handleEditPayment(record.id)}>Edit</button>
+                                                <button onClick={() => deletePaymentData(record.id)}>Delete</button>
+                                            </td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.player_id}</td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.player_name}</td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.total_fee}</td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.paid_amount}</td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.due_amount}</td>
-                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.due_date}</td>
+                                            {/* <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.due_date}</td> */}
+                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>
+                                                {new Date(record.due_date).toLocaleDateString()}
+                                            </td>
+
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.status}</td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.remarks}</td>
-                                            <td>
-                                                <button onClick={() => handleEditPayment(record.id)}>Edit</button>
-                                                <button onClick={() => deletePaymentData(record.id)}>Delete</button>
-                                            </td>
+
                                         </tr>
                                     ))
                                 ) : (

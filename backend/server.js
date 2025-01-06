@@ -312,7 +312,9 @@ app.get('/api/players/:academyId', (req, res) => {
     mother_name, 
     phone_number, 
     batch, 
-    profile_pic 
+    profile_pic,
+    fee_type ,
+    fee
   FROM player 
   WHERE academy_id = ?`;
 
@@ -791,7 +793,7 @@ app.delete('/api/deleteCourse/:academyId/:courseId', (req, res) => {
 app.get("/api/getDistinctBatches/:academyId", (req, res) => {
   const { academyId } = req.params;
   db.query(
-    "SELECT DISTINCT batch_name FROM employee",
+    "SELECT DISTINCT timing FROM courses WHERE academy_id = ?",
     [academyId],
     (err, results) => {
       if (err) {
@@ -834,6 +836,8 @@ app.post("/api/addPlayer/:academyId", upload.single("profile_pic"), (req, res) =
     phone_number,
     batch,
     user_id,
+    fee_type,
+    fee
   } = req.body;
 
   const academyId = req.params.academyId;
@@ -851,10 +855,11 @@ app.post("/api/addPlayer/:academyId", upload.single("profile_pic"), (req, res) =
 
     // Insert new player data into the database
     const query = `
-      INSERT INTO player (academy_id, id, name, dob, gender, school_name, sports_expertise, address, previous_academy, 
-      father_name, mother_name, phone_number, batch, profile_pic ,user_id) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
-    `;
+  INSERT INTO player (academy_id, id, name, dob, gender, school_name, sports_expertise, address, previous_academy, 
+  father_name, mother_name, phone_number, batch, profile_pic, user_id, fee_type, fee) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
+
 
     db.query(
       query,
@@ -874,6 +879,8 @@ app.post("/api/addPlayer/:academyId", upload.single("profile_pic"), (req, res) =
         batch || null, // batch
         profilePicPath || null, // profile_pic
         user_id || null,
+        fee_type || null,
+        fee || null,
       ],
       (err, results) => {
         if (err) {
@@ -1173,11 +1180,11 @@ app.get("/api/playerDetailsByName/:name", (req, res) => {
 //-------------------------------
 //financial payment management 
 //fetch all financial record of player
-app.get("/api/financial-records/all", (req, res) => {
+app.get("/api/financial-records/:academyId", (req, res) => {
+  const { academyId } = req.params;
+  const query = ` SELECT * FROM playerfinancial WHERE academy_id = ?`;
 
-  const query = ` SELECT * FROM player_financial`;
-
-  db.query(query, (err, results) => {
+  db.query(query, [academyId], (err, results) => {
     if (err) {
       console.error("Error fetching data:", err);
       return res.status(500).json({ error: "Database error." });
@@ -1195,7 +1202,7 @@ app.get("/api/financial-records", (req, res) => {
   }
 
   const query = `
-    SELECT * FROM player_financial 
+    SELECT * FROM playerfinancial 
     WHERE due_date BETWEEN ? AND ? 
     ORDER BY due_date ASC
   `;
@@ -1211,14 +1218,16 @@ app.get("/api/financial-records", (req, res) => {
 
 
 // 2. Fetch records for this week
-app.get("/api/financial-records/week", (req, res) => {
+app.get("/api/financial-records/week/:academyId", (req, res) => {
+  const { academyId } = req.params;
+
   const query = `
-    SELECT * FROM player_financial 
-    WHERE WEEK(due_date, 1) = WEEK(CURDATE(), 1) 
+    SELECT * FROM playerfinancial 
+    WHERE academy_id = ? AND WEEK(due_date, 1) = WEEK(CURDATE(), 1) 
     AND YEAR(due_date) = YEAR(CURDATE())
     ORDER BY due_date ASC
   `;
-  db.query(query, (err, results) => {
+  db.query(query, [academyId], (err, results) => {
     if (err) {
       console.error("Error fetching weekly data:", err);
       return res.status(500).json({ error: "Database error." });
@@ -1228,14 +1237,16 @@ app.get("/api/financial-records/week", (req, res) => {
 });
 
 // 3. Fetch records for this month
-app.get("/api/financial-records/month", (req, res) => {
+app.get("/api/financial-records/month/:academyId", (req, res) => {
+  const { academyId } = req.params;
+
   const query = `
-    SELECT * FROM player_financial 
-    WHERE MONTH(due_date) = MONTH(CURDATE()) 
+    SELECT * FROM playerfinancial 
+    WHERE academy_id = ? AND MONTH(due_date) = MONTH(CURDATE()) 
     AND YEAR(due_date) = YEAR(CURDATE())
     ORDER BY due_date ASC
   `;
-  db.query(query, (err, results) => {
+  db.query(query, [academyId], (err, results) => {
     if (err) {
       console.error("Error fetching monthly data:", err);
       return res.status(500).json({ error: "Database error." });
@@ -1245,13 +1256,14 @@ app.get("/api/financial-records/month", (req, res) => {
 });
 
 // 4. Fetch records for this year
-app.get("/api/financial-records/year", (req, res) => {
+app.get("/api/financial-records/year/:academyId", (req, res) => {
+  const { academyId } = req.params;
   const query = `
-    SELECT * FROM player_financial 
-    WHERE YEAR(due_date) = YEAR(CURDATE())
+    SELECT * FROM playerfinancial 
+    WHERE academyId = ? AND YEAR(due_date) = YEAR(CURDATE())
     ORDER BY due_date ASC
   `;
-  db.query(query, (err, results) => {
+  db.query(query, [academyId], (err, results) => {
     if (err) {
       console.error("Error fetching yearly data:", err);
       return res.status(500).json({ error: "Database error." });
@@ -1261,19 +1273,20 @@ app.get("/api/financial-records/year", (req, res) => {
 });
 
 // 5. Search by player ID or name
-app.get("/api/financial-records/player", (req, res) => {
+app.get("/api/financial-records/player/:academyId", (req, res) => {
+  const { academyId } = req.params;
   const { playerId, playerName } = req.query;
 
-  let query = "SELECT * FROM player_financial WHERE 1=1";
+  let query = "SELECT * FROM playerfinancial WHERE 1=1";
   const params = [];
 
   if (playerId) {
-    query += " AND player_id = ?";
-    params.push(playerId);
+    query += " AND academy_id = ? AND player_id = ?";
+    params.push(academyId, playerId);
   }
   if (playerName) {
-    query += " AND player_name LIKE ?";
-    params.push(`%${playerName}%`);
+    query += " AND academy_id = ? AND player_name LIKE ?";
+    params.push(academyId, `%${playerName}%`);
   }
 
   db.query(query, params, (err, results) => {
@@ -1285,12 +1298,13 @@ app.get("/api/financial-records/player", (req, res) => {
   });
 });
 //6 not paid or pending data 
-app.get("/api/financial-records/notpaid", (req, res) => {
+app.get("/api/financial-records/pending/:academyId", (req, res) => {
+  const { academyId } = req.params;
   const query = `
-    SELECT * FROM player_financial 
-    WHERE status = 'not-paid' OR status = 'pending';
+    SELECT * FROM playerfinancial 
+    WHERE status = 'pending';
   `;
-  db.query(query, (err, results) => {
+  db.query(query, [academyId], (err, results) => {
     if (err) {
       console.error("Error fetching monthly data:", err);
       return res.status(500).json({ error: "Database error." });
@@ -1305,7 +1319,7 @@ app.get("/api/financial-records/notpaid", (req, res) => {
 // Delete a player payment record
 app.delete('/api/delete-player-payment-info/:id', (req, res) => {
   const { id } = req.params;
-  const query = 'DELETE FROM player_financial WHERE id = ?';
+  const query = 'DELETE FROM playerfinancial WHERE id = ?';
   db.query(query, [id], (err) => {
     if (err) {
       console.error('Error deleting player payment record:', err);
@@ -1316,6 +1330,50 @@ app.delete('/api/delete-player-payment-info/:id', (req, res) => {
   });
 });
 //-----------------------------------------------------------
+// Form submission for player payments
+app.post('/api/playerfinancial', (req, res) => {
+  const {
+    player_id,
+    player_name,
+    total_fee,
+    paid_amount,
+    due_amount,
+    due_date,
+    status,
+    remarks,
+    academy_id
+  } = req.body;
+
+  const query = `
+      INSERT INTO playerfinancial (
+          player_id, 
+          player_name, 
+          total_fee, 
+          paid_amount, 
+          due_amount, 
+          due_date, 
+          status, 
+          remarks, 
+          academy_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  db.query(
+    query,
+    [player_id, player_name, total_fee, paid_amount, due_amount, due_date, status, remarks, academy_id],
+    (err, result) => {
+      if (err) {
+        console.error('Error inserting data:', err.message);
+        return res.status(500).json({ error: 'Database error', details: err.message });
+      }
+      res.status(200).json({ message: 'Data inserted successfully', id: result.insertId });
+    }
+  );
+});
+
+
+
+//-------------------------------------------------------
 // booking role here 
 // display all assets for booking 
 app.get('/assets-bookings/:academyId', (req, res) => {
@@ -1491,6 +1549,7 @@ app.post('/api/bookings-book-now', (req, res) => {
 // API to fetch booked data
 app.get('/api/booked/:academy_id', (req, res) => {
   const { academy_id } = req.params;
+  console.log('Received request for academy_id:', academy_id);
 
   const query = `
       SELECT booking_id, item_type, item_id, booking_date, start_time, end_time, booked_by, contact_number, status 
@@ -1500,20 +1559,22 @@ app.get('/api/booked/:academy_id', (req, res) => {
 
   db.query(query, [academy_id], (err, results) => {
     if (err) {
-      console.error('Error fetching bookings:', err);
-      return res.status(500).json({ message: 'Error fetching bookings' });
+      console.error('Database error:', err); // Log detailed error
+      return res.status(500).json({ message: 'Error fetching bookings', error: err });
     }
 
+    console.log('Query executed successfully:', results);
     res.status(200).json(results);
   });
 });
+
 //--------------------------------------------------
 //booked date fetch academyid 
 
 app.get('/api/bookings/dates/:id', (req, res) => {
-  const {id } = req.params;
+  const { id } = req.params;
   const query = 'SELECT DATE(booking_date) AS booking_date FROM bookings WHERE item_id = ?';
-  db.query(query,[id], (err, result) => {
+  db.query(query, [id], (err, result) => {
     if (err) {
       console.error('Error fetching booked dates:', err);
       return res.status(500).json({ message: 'Failed to fetch booked dates' });
