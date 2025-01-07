@@ -15,7 +15,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
-const { useParams } = require('react-router-dom');
+// const { useParams } = require('react-router-dom');
 
 const app = express();
 const port = process.env.PORT || 5000;

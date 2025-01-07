@@ -52,7 +52,7 @@ const Dashboard = () => {
 
             <div>
 
-                <div className='below-navbar'>
+                <div className='below-navbar-home'>
                     <h2>Welcome to the Academic Dashboard</h2>
                     <div id="dashboard-boxes" style={{ display: "flex", gap: "20px", justifyContent: 'center', alignItems: 'center', marginBottom: "20px" }}>
                         {/* Total Players Box */}
