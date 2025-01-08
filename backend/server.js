@@ -1193,6 +1193,70 @@ app.get("/api/financial-records/:academyId", (req, res) => {
   });
 });
 
+//-----------------------------------------------
+// fetch player payment info by id 
+app.get("/api/edit-financial-records/:id", (req, res) => {
+  const { id } = req.params;  // id is fetched from the URL parameter
+  const query = `SELECT * FROM playerfinancial WHERE id = ?`;
+
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Error fetching data:", err);
+      return res.status(500).json({ error: "Database error." });
+    }
+    // If no results found
+    if (results.length === 0) {
+      return res.status(404).json({ error: "No record found for the given ID." });
+    }
+
+    res.json(results); // Return the results
+  });
+});
+//---------------------------------------------------------------
+// edit player payment record from id 
+// Route to update the player payment record
+app.put('/api/edit-player-payment-record/:id', (req, res) => {
+  const { id } = req.params;  // The ID of the payment record to update
+  const { player_name, total_fee, paid_amount, due_amount, due_date, status, remarks } = req.body;
+
+  // Convert the due_date to local date format 'YYYY-MM-DD HH:MM:SS'
+  const localDueDate = new Date(due_date);
+
+  // Adjust to local timezone by extracting the date part and formatting
+  const formattedDueDate = localDueDate
+    .toLocaleString("en-CA", { timeZone: "Asia/Kolkata" }) // Use appropriate timezone
+    .slice(0, 19)
+    .replace('T', ' ');
+    
+  // Update the payment record in the database
+  const updateQuery = `
+      UPDATE playerfinancial
+      SET 
+          player_name = ?, 
+          total_fee = ?, 
+          paid_amount = ?, 
+          due_amount = ?,
+          due_date = ? , 
+          status = ?, 
+          remarks = ?
+      WHERE id = ?
+  `;
+  const values = [player_name, total_fee, paid_amount, due_amount, formattedDueDate, status, remarks, id];
+
+  db.query(updateQuery, values, (err, results) => {
+    if (err) {
+      console.error('Error updating player payment record:', err);
+      return res.status(500).json({ message: 'Failed to update record' });
+    }
+
+    if (results.affectedRows > 0) {
+      return res.status(200).json({ message: 'Player payment record updated successfully!' });
+    } else {
+      return res.status(404).json({ message: 'Player payment record not found.' });
+    }
+  });
+});
+//------------------------------------------------------
 // Fetch records by date range
 app.get("/api/financial-records", (req, res) => {
   const { from, to } = req.query;
@@ -1326,6 +1390,38 @@ app.delete('/api/delete-player-payment-info/:id', (req, res) => {
       res.status(500).send('Error deleting player payment record');
     } else {
       res.send('Player payment record deleted successfully');
+    }
+  });
+});
+//---------------------------------------------------
+// Edit player financial record with id
+// Update a financial record
+app.put('/playerfinancial/:id', (req, res) => {
+  const { id } = req.params;
+  const {
+    player_id,
+    player_name,
+    total_fee,
+    paid_amount,
+    due_amount,
+    due_date,
+    status,
+    remarks,
+    academy_id,
+  } = req.body;
+
+  const query = `UPDATE playerfinancial 
+        SET player_id = ?, player_name = ?, total_fee = ?, paid_amount = ?, due_amount = ?, due_date = ?, status = ?, remarks = ?, academy_id = ?
+        WHERE id = ?`;
+
+  const values = [player_id, player_name, total_fee, paid_amount, due_amount, due_date, status, remarks, academy_id, id];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Error updating record' });
+    } else {
+      res.json({ message: 'Record updated successfully' });
     }
   });
 });

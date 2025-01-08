@@ -64,7 +64,7 @@ const BookNow = () => {
         }
 
         // Perform additional actions here if needed for a valid, non-booked date
-        console.log('Valid selected date:', newDate);
+        // console.log('Valid selected date:', newDate);
     };
 
 

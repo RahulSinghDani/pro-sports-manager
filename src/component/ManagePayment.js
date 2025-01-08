@@ -15,7 +15,7 @@ const ManagePayment = () => {
     // const { coachId } = location.state || {};
     // console.log(coachId);
 
-    const { academyId } = useParams();
+    const {role, academyId } = useParams();
 
     const [searchParams, setSearchParams] = useState({
         fromDate: "",
@@ -84,8 +84,8 @@ const ManagePayment = () => {
         window.location.reload(); // Reloads the page
     };
 
-    const handleEditPayment = (id) => {
-        navigate(`/edit-player-record/${id}`); // Adjust path as needed
+    const handleEditPayment = (role , academyId,id) => {
+        navigate(`/edit-player-record/${role}/${academyId}/${id}`); // Adjust path as needed
     };
 
     // Delete Player payment info handler with confirmation
@@ -237,7 +237,7 @@ const ManagePayment = () => {
                                     records.map((record) => (
                                         <tr key={record.id}>
                                             <td>
-                                                <button onClick={() => handleEditPayment(record.id)}>Edit</button>
+                                                <button onClick={() => handleEditPayment(role, academyId,record.id)}>Edit</button>
                                                 <button onClick={() => deletePaymentData(record.id)}>Delete</button>
                                             </td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.player_id}</td>

@@ -106,7 +106,7 @@ function App() {
           <Route path="/playerRegistration" element={<PlayerRegistration />} />
           <Route path="/AcademyRegistration" element={<AcademyRegistration />} />
           <Route path="/AcademyDetails/:role/:academyId/ManagePayment" element={<ManagePayment />} />
-          <Route path="/edit-player-record/:id" element={EditPlayerPaymentRecord}></Route>
+          <Route path="/edit-player-record/:role/:academyId/:id" element={<EditPlayerPaymentRecord />} />
           <Route path="/ManagePayment/:role/:academyId/Bookings" element={<Bookings />} />
           <Route path="/edit-booking/:role/:academyId/:id" element={<EditBooking />} />
           <Route path="/new-booking/:role/:academyId" element={<NewBooking />} />

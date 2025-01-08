@@ -14,7 +14,7 @@ const BookableDashboard = () => {
 
 
 
-    console.log('Role:', role, 'Academy ID:', academyId, 'Ground ID:', id);
+    // console.log('Role:', role, 'Academy ID:', academyId, 'Ground ID:', id);
     const capitalizeFirstLetter = (text) => {
         if (!text) return '';
         return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
