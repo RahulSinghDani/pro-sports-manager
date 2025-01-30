@@ -314,7 +314,8 @@ app.get('/api/players/:academyId', (req, res) => {
     batch, 
     profile_pic,
     fee_type ,
-    fee
+    fee,
+    status
   FROM player 
   WHERE academy_id = ?`;
 
@@ -334,7 +335,8 @@ app.get('/api/players/:academyId', (req, res) => {
 
 //Add New Academy ------------------------------
 // Endpoint to add a new academy
-app.post('/api/addacademies', (req, res) => {
+app.post('/api/addacademies', upload.single('images'), (req, res) => {
+  const images = req.file ? req.file.filename : null;
   const {
     name,
     address,
@@ -343,7 +345,6 @@ app.post('/api/addacademies', (req, res) => {
     email,
 
     website,
-    images,
     logo,
     youtube,
     instagram,
@@ -369,22 +370,7 @@ app.post('/api/addacademies', (req, res) => {
   // Execute the query
   db.query(
     query,
-    [
-      name,
-      address,
-      owner_name,
-      phone_num,
-      email,
-      website,
-      images,
-      logo,
-      youtube,
-      instagram,
-      facebook,
-      user_id,
-      latitude,
-      longitude,
-    ],
+    [ name, address, owner_name, phone_num, email, website, images,logo, youtube, instagram, facebook, user_id, latitude, longitude ],
     (err, result) => {
       if (err) {
         console.error('Error inserting data into the database:', err.stack);
@@ -399,7 +385,7 @@ app.post('/api/addacademies', (req, res) => {
     }
   );
 });
-
+//--------------------------------------------------------
 // Endpoint to view all academies id
 app.get('/api/academies', (req, res) => {
   const query = 'SELECT * FROM academy';
@@ -724,7 +710,7 @@ app.put('/api/editCourse/:academyId/:courseId', (req, res) => {
 //add new course adge code add course
 app.post('/api/addCourse/:academyId', (req, res) => {
   const academyId = req.params.academyId;
-  const { course_name, timing, fee } = req.body;  // Extract data from the request body
+  const { course_name, timing, fee , half_yearly , yearly } = req.body;  // Extract data from the request body
 
   // Generate course_id (Assuming we have a pattern like cr001, cr002...)
   const query = 'SELECT MAX(CAST(SUBSTRING(course_id, 3) AS UNSIGNED)) AS last_id FROM courses';
@@ -740,9 +726,9 @@ app.post('/api/addCourse/:academyId', (req, res) => {
     const newCourseId = `cr${String(lastId + 1).padStart(3, '0')}`;
 
     // Prepare the SQL INSERT query to add the new course
-    const insertQuery = 'INSERT INTO courses (academy_id, course_id, course_name, timing, fee) VALUES (?, ?, ?, ?, ?)';
+    const insertQuery = 'INSERT INTO courses (academy_id, course_id, course_name, timing, fee, half_yearly , yearly) VALUES (? , ?, ?, ?, ?, ?, ?)';
 
-    db.query(insertQuery, [academyId, newCourseId, course_name, timing, fee], (err, result) => {
+    db.query(insertQuery, [academyId, newCourseId, course_name, timing, fee, half_yearly , yearly], (err, result) => {
       if (err) {
         console.error('Error inserting course:', err);
         return res.status(500).json({ message: 'Failed to add course' });
@@ -1111,7 +1097,181 @@ app.get("/api/totalPlayers", (req, res) => {
   });
 });
 //-------------------------------------------------------
+// Get total player count
+app.get("/api/totalPlayers/:academyId", (req, res) => {
+  const { academyId } = req.params;
+  const query = "SELECT COUNT(id) AS total FROM player WHERE academy_id = ?";
 
+  db.query(query,[academyId], (err, results) => {
+    if (err) {
+      console.error("Error fetching total player count:", err);
+      return res.status(500).json({ message: "Error fetching total player count." });
+    }
+    res.status(200).json({ total: results[0].total });
+  });
+});
+//-------------------------------------------------
+// Get revenue from academy
+app.get("/api/revenue/:academyId", (req, res) => {
+  const { academyId } = req.params;
+  const query = "SELECT SUM(paid_amount) AS YTD_Revenue FROM playerfinancial WHERE YEAR(created_at) = YEAR(CURDATE()) AND academy_id = ?";
+
+  db.query(query, [academyId], (err, results) => {
+    if (err) {
+      console.error("Error fetching revenue:", err);
+      return res.status(500).json({ message: "Error fetching revenue." });
+    }
+    
+    res.status(200).json({ YTD_Revenue: results[0]?.YTD_Revenue || 0 });  // Fixed key name
+  });
+});
+//----------------------------------------------------
+//fetch by age under 10 , 12, 14, 16 players 
+app.get("/api/player-count/:academyId", (req, res) => {
+  const {academyId} = req.params;
+  const query = `
+    SELECT 
+      SUM(CASE WHEN TIMESTAMPDIFF(YEAR, DOB, CURDATE()) < 10 THEN 1 ELSE 0 END) AS Under_10,
+      SUM(CASE WHEN TIMESTAMPDIFF(YEAR, DOB, CURDATE()) BETWEEN 10 AND 11 THEN 1 ELSE 0 END) AS Under_12,
+      SUM(CASE WHEN TIMESTAMPDIFF(YEAR, DOB, CURDATE()) BETWEEN 12 AND 13 THEN 1 ELSE 0 END) AS Under_14,
+      SUM(CASE WHEN TIMESTAMPDIFF(YEAR, DOB, CURDATE()) BETWEEN 14 AND 15 THEN 1 ELSE 0 END) AS Under_16,
+      SUM(CASE WHEN TIMESTAMPDIFF(YEAR, DOB, CURDATE()) > 16 THEN 1 ELSE 0 END) AS Above_16
+    FROM player WHERE academy_id= ?`;
+
+  db.query(query,[academyId], (err, results) => {
+    if (err) {
+      console.error("Error fetching player counts:", err);
+      return res.status(500).json({ message: "Error fetching player counts." });
+    }
+
+    res.status(200).json(results[0]); // Return the player counts
+  });
+});
+//----------------------------
+// fetch coach count for academy dashboard
+
+app.get("/api/coach-count/:academyId", (req, res) => {
+  const {academyId} = req.params;
+  const query = `
+    SELECT count(id) AS totalCoach FROM employee WHERE academy_id= ?`;
+
+  db.query(query,[academyId], (err, results) => {
+    if (err) {
+      console.error("Error fetching coach counts:", err);
+      return res.status(500).json({ message: "Error fetching coach counts." });
+    }
+
+    res.status(200).json(results[0]); // Return the player counts
+  });
+});
+//------------------------------------
+// fetch courses count for academy dashboard
+
+app.get("/api/total-courses/:academyId", (req, res) => {
+  const {academyId} = req.params;
+  const query = `
+    SELECT count(course_id) AS countTotalCourses FROM courses WHERE academy_id= ?`;
+
+  db.query(query,[academyId], (err, results) => {
+    if (err) {
+      console.error("Error fetching courses counts:", err);
+      return res.status(500).json({ message: "Error fetching courses counts." });
+    }
+
+    res.status(200).json(results[0]); // Return the player counts
+  });
+});
+//---------------------------------------------
+//fetch outstanding fee
+app.get("/api/outstanding-fee/:academyId/:id", (req, res) => {
+  const {academyId ,id} = req.params;
+  const query = `
+    SELECT SUM(total_fee) AS playerOutstandingFee FROM playerfinancial WHERE academy_id= ? AND player_id = ?`;
+
+  db.query(query,[academyId ,id], (err, results) => {
+    if (err) {
+      console.error("Error fetching outstanding fee:", err);
+      return res.status(500).json({ message: "Error fetching outstanding fee." });
+    }
+
+    res.status(200).json(results[0]); // Return the player counts
+  });
+});
+//------------------------------------------
+// player active or deactive toogle button
+app.post("/updatePlayerStatus", async (req, res) => {
+  const { playerId, status } = req.body;
+
+  try {
+    db.query("UPDATE player SET status = ? WHERE id = ?", [status, playerId]);
+    res.status(200).json({ message: "Player status updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+//-------------------------------------------
+app.post("/updateCoachStatus", async (req, res) => {
+  const { coachId, status } = req.body;
+
+  try {
+    db.query("UPDATE employee SET status = ? WHERE id = ?", [status, coachId]);
+    res.status(200).json({ message: "Coach status updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database error" });
+  }
+});
+//-------------------------------------
+// add player cricket record 
+app.post('/api/cricket-data', (req, res) => {
+  const { player_id,name, matches_played, runs, wickets } = req.body;
+
+  if (!player_id) {
+      return res.status(400).json({ message: 'Player ID is required' });
+  }
+
+  const sql = 'INSERT INTO cricket_data (player_id,name, matches_played, runs, wickets) VALUES (?, ?, ?, ?)';
+  const values = [player_id,name, matches_played, runs, wickets];
+
+  db.query(sql, values, (err, result) => {
+      if (err) {
+          console.error('Error inserting data:', err);
+          return res.status(500).json({ message: 'Database error' });
+      }
+      res.status(201).json({ message: 'Data added successfully', id: result.insertId });
+  });
+});
+//--------------------------------------------
+// fetch cricket score data 
+app.get("/api/cricket-data/graph/:academyId", (req, res) => {
+  const {academyId} = req.params;
+  const sql = "SELECT * FROM cricket_data WHERE academy_id = ?";
+  db.query(sql,[academyId], (err, result) => {
+      if (err) {
+          console.error("Error fetching data:", err);
+          return res.status(500).json({ message: "Database error" });
+      }
+      res.json(result);
+  });
+});
+//-----------------------------------------
+  //fetch player total count 
+  app.get("/api/count-total-player/:academyId", (req, res) => {
+    const {academyId} = req.params;
+    const query = `
+      SELECT count(id) AS countTotalPlayer FROM player WHERE academy_id= ?`;
+  
+    db.query(query,[academyId], (err, results) => {
+      if (err) {
+        console.error("Error fetching player counts:", err);
+        return res.status(500).json({ message: "Error fetching player counts." });
+      }
+      res.status(200).json(results[0]); // Return the player counts
+    });
+  });
+
+//-------------------------------------------------
 //fetch particular player info by academy id AND id
 app.get("/api/allPlayers/:academyId/:id", (req, res) => {
   const { academyId, id } = req.params;
@@ -1366,7 +1526,7 @@ app.get("/api/financial-records/pending/:academyId", (req, res) => {
   const { academyId } = req.params;
   const query = `
     SELECT * FROM playerfinancial 
-    WHERE status = 'pending';
+    WHERE status = 'pending' AND academy_id=?;
   `;
   db.query(query, [academyId], (err, results) => {
     if (err) {

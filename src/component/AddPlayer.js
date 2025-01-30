@@ -85,9 +85,9 @@ const AddPlayer = () => {
       if (feeType === 'Quarterly') {
         calculatedFee = course.fee;
       } else if (feeType === 'Half Yearly') {
-        calculatedFee = course.fee * 3;
+        calculatedFee = course.half_yearly;
       } else if (feeType === 'Yearly') {
-        calculatedFee = course.fee * 6;
+        calculatedFee = course.yearly;
       }
 
       setFee(calculatedFee); // Update the fee state
@@ -276,13 +276,14 @@ const AddPlayer = () => {
           </div>
           <div className="form-group">
             <label>Fees: </label>
-            {courses.map(course => (
+            {/* {courses.map(course => (
               <div key={course.course_id}>
                 {feeType && batch && (
                   <p>{fee}</p>
                 )}
               </div>
-            ))}
+            ))} */}
+            <p>{fee}</p>
           </div>
 
           <div className="form-group">

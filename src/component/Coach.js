@@ -12,6 +12,7 @@ const Coach = () => {
   const [coaches, setCoaches] = useState([]);
   const [error, setError] = useState('');
 
+
   useEffect(() => {
     // Fetch coach data using the academyId
     axios.get(`${API_BASE_URL}/api/coaches/${academyId}`)
@@ -23,6 +24,41 @@ const Coach = () => {
         console.error('Error fetching coach data:', error);
       });
   }, [API_BASE_URL, academyId]);
+
+  //----------------------------------
+  //toggle button active or inactive 
+  const [status, setStatus] = useState(coaches.status);
+
+  useEffect(() => {
+    setStatus(coaches.status); // Set initial status when component mounts
+  }, [coaches.status]);
+  //toggle button for active and deactive player
+  const toggleStatus = async (coachId, currentStatus) => {
+    const newStatus = currentStatus === "active" ? "inactive" : "active";
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/updateCoachStatus`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ coachId, status: newStatus }),
+      });
+
+      if (response.ok) {
+        // Update players array to reflect the status change
+        setCoaches(prevCoaches =>
+          prevCoaches.map(coaches =>
+            coaches.id === coachId ? { ...coaches, status: newStatus } : coaches
+          )
+        );
+      } else {
+        console.error("Failed to update status");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <div >
@@ -38,10 +74,10 @@ const Coach = () => {
 
             <button>Add Coach</button>
           </Link>
-          <Link to={`/delete-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+          {/* <Link to={`/delete-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
 
             <button>Delete Coach</button>
-          </Link>
+          </Link> */}
         </div>
         {error && <p>{error}</p>}
         {coaches.length === 0 ? (
@@ -51,6 +87,7 @@ const Coach = () => {
             <table className='table-main'>
               <thead>
                 <tr>
+                <th>Status</th>
                   <th>ID</th>
                   <th>Name</th>
                   <th>Designation</th>
@@ -64,6 +101,17 @@ const Coach = () => {
               <tbody>
                 {coaches.map(coach => (
                   <tr key={coach.id}>
+                    {/* Toggle Button */}
+                    <td>
+                      <label className="toggle">
+                        <input
+                          type="checkbox"
+                          checked={coach.status === "active"}
+                          onChange={() => toggleStatus(coach.id, coach.status)}
+                        />
+                        <span className="slider"></span>
+                      </label>
+                    </td>
                     <td>{coach.id}</td>
                     <td>{coach.name}</td>
                     <td>{coach.designation}</td>

@@ -60,7 +60,7 @@ const UserRegistration = () => {
           <select id="role-select" value={role} onChange={(e) => setRole(e.target.value)}>
             <option>Select Role</option>
             <option value="academy">Academy</option>
-            <option value="coach">Coach</option>
+            {/* <option value="coach">Coach</option> */}
           </select>
           <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
 

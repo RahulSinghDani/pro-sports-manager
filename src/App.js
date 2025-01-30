@@ -56,6 +56,8 @@ import BookableDashboard from "./component/BookableDashboard";
 import About from "./component/About";
 import BookNow from "./component/BookNow";
 import PlayerFinancialForm from "./component/PlayerFinancialForm";
+import CricketData from "./component/CricketData";
+import CricketGraph from "./component/CricketGraph";
 
 
 function App() {
@@ -143,6 +145,8 @@ function App() {
           <Route path="/edit-asset/:role/:academyId" element={<EditAsset />} />
           <Route path="/delete-asset/:role/:academyId" element={<DeleteAsset />} />
           <Route path="/academy-asset/:role/:academyId" element={<AcademyAssets />} />
+          <Route path="/player-cricket-data/:role/:academyId/:id/:name" element={<CricketData />} />
+          <Route path="/player-cricket-data/graph" element={<CricketGraph />} />
 
 
 

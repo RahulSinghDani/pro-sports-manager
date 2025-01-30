@@ -3,9 +3,9 @@ import axios from 'axios';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
 const EditBooking = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
-    
-    const { academyId, role,id } = useParams(); // Get booking ID from URL
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+    const { academyId, role, id } = useParams(); // Get booking ID from URL
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -28,7 +28,7 @@ const EditBooking = () => {
             .catch((error) => {
                 console.error('Error fetching booking details:', error);
             });
-    }, [API_BASE_URL ,id]);
+    }, [API_BASE_URL, id]);
 
     // Handle input changes
     const handleChange = (e) => {
@@ -52,24 +52,44 @@ const EditBooking = () => {
 
     return (
         <div>
-            <h1>Edit Booking</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Name: <input type="text" name="name" value={formData.name} onChange={handleChange} /></label>
-                <label>Date of Booking: <input type="date" name="date_of_booking" value={formData.date_of_booking} onChange={handleChange} /></label>
-                <label>Time: <input type="time" name="time" value={formData.time} onChange={handleChange} /></label>
-                <label>Amount: <input type="number" step="0.01" name="amount" value={formData.amount} onChange={handleChange} /></label>
-                <label>Customer Name: <input type="text" name="customer_name" value={formData.customer_name} onChange={handleChange} /></label>
-                <label>Contact: <input type="text" name="contact" value={formData.contact} onChange={handleChange} /></label>
-                <label>Status: 
-                    <select name="status" value={formData.status} onChange={handleChange}>
-                        <option value="confirmed">Confirmed</option>
-                        <option value="pending">Pending</option>
-                    </select>
-                </label>
-                <label>Remarks: <textarea name="remarks" value={formData.remarks} onChange={handleChange}></textarea></label>
-                <button type="submit">Update Booking</button>
-                <Link to={`/ManagePayment/${role}/${academyId}/Bookings`}><button >Back</button></Link>
-            </form>
+            <div className='nav'>
+                <p className='logo'>Pro Sports Manager</p>
+            </div>
+            <div className='below-navbar'>
+                <h2>Edit Booking</h2>
+                <form onSubmit={handleSubmit}>
+                    <div style={{ display: 'flex' }}>
+                        <div>
+                            <label>Name: </label><input type="text" name="name" value={formData.name} onChange={handleChange} />
+                        </div>
+                        <div>
+                            <label>Date of Booking: </label><input type="date" name="date_of_booking" value={formData.date_of_booking} onChange={handleChange} />
+                        </div>
+                        <div>
+                            <label>Time: </label><input type="time" name="time" value={formData.time} onChange={handleChange} />
+                        </div><div>
+                            <label>Amount: </label><input type="number" step="0.01" name="amount" value={formData.amount} onChange={handleChange} /></div>
+                        <div>
+                            <label>Customer Name: </label><input type="text" name="customer_name" value={formData.customer_name} onChange={handleChange} /></div>
+                        <div>
+                            <label>Contact:</label> <input type="text" name="contact" value={formData.contact} onChange={handleChange} />
+                        </div>
+                        <div id="radio-edit-booking" onChange={handleChange} style={{ display: "flex", flexWrap: 'nowrap', gap: "10px", alignItems: "center" }}>
+                            <label>Status:</label>
+                            <input type="radio" name="status" value="confirmed" checked={formData.status === "confirmed"} style={{ transform: "scale(0.8)" }} />
+                            Confirmed
+                            <input type="radio" name="status" value="pending" checked={formData.status === "pending"} style={{ transform: "scale(0.8)" }} />
+                            Pending
+                        </div>
+                        <div>
+                            <label>Remarks: </label><textarea name="remarks" value={formData.remarks} onChange={handleChange}></textarea>
+                        </div>
+                    </div>
+                    <button type="submit">Update Booking</button>
+                    <Link to={`/ManagePayment/${role}/${academyId}/Bookings`}><button >Back</button></Link>
+
+                </form>
+            </div>
         </div>
     );
 };

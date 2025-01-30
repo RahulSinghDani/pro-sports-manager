@@ -83,8 +83,8 @@ const Courses = () => {
                     <td>{course.course_name}</td>
                     <td>{course.timing}</td>
                     <td>{course.fee }</td>
-                    <td>{course.fee * 3}</td>
-                    <td>{course.fee * 6}</td>
+                    <td>{course.half_yearly}</td>
+                    <td>{course.yearly}</td>
                   </tr>
                 ))}
               </tbody>

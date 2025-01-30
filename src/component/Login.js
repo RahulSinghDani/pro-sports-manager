@@ -35,9 +35,9 @@ const Login = () => {
         }else if (role === 'player') {
           navigate(`/LoginPlayerDashboard/${role}/${academy_id}/${id}`); // Player dashboard
         } else if (role === 'academy') {
-          navigate(`/LoginAcademyDashboard/${role}/${id}`); // Academy dashboard
+          // navigate(`/LoginAcademyDashboard/${role}/${id}`); // Academy dashboard
           const academyId= id;
-          navigate(`/LoginHome/${role}/${academyId}`);
+          navigate(`/AcademyDetails/${role}/${academyId}`);
         } else {
           setErrorMessage('Unknown role. Contact admin.');
         }

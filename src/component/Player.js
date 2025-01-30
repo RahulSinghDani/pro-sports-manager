@@ -3,14 +3,16 @@ import axios from 'axios';
 import AcademyNavbar from './AcademyNavbar.js';
 import { Link, useParams } from 'react-router-dom';
 import About from './About.js';
+
+
 const Player = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const { academyId, role } = useParams(); // Get the academy_id from the URL
   const [totalPlayers, setTotalPlayers] = useState(0);
 
-
   const [players, setPlayers] = useState([]);
+  const [revenue, setRevenue] = useState(0);
   // const [courses, setCourses] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true); // Add a loading state
@@ -20,7 +22,7 @@ const Player = () => {
     const fetchTotalPlayers = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/totalPlayers`
+          `${API_BASE_URL}/api/totalPlayers/${academyId}`
         );
         setTotalPlayers(response.data.total);
       } catch (error) {
@@ -29,8 +31,18 @@ const Player = () => {
     };
 
     fetchTotalPlayers();
-  }, [API_BASE_URL]);
-
+  }, [API_BASE_URL, academyId]);
+  useEffect(() => {
+    axios
+      .get(`${API_BASE_URL}/api/revenue/${academyId}`)
+      .then(response => {
+        setRevenue(response.data.YTD_Revenue || 0);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError('Failed to load revenue details.');
+      });
+  })
 
   useEffect(() => {
     // Fetch player data from the backend
@@ -46,6 +58,43 @@ const Player = () => {
         setLoading(false); // Stop loading even on error
       });
   }, [API_BASE_URL, academyId]);
+
+  const [status, setStatus] = useState(players.status);
+
+  useEffect(() => {
+    setStatus(players.status); // Set initial status when component mounts
+  }, [players.status]);
+  //toggle button for active and deactive player
+  const toggleStatus = async (playerId, currentStatus) => {
+    const newStatus = currentStatus === "active" ? "inactive" : "active";
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/updatePlayerStatus`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ playerId, status: newStatus }),
+      });
+
+      if (response.ok) {
+        // Update players array to reflect the status change
+        setPlayers(prevPlayers =>
+          prevPlayers.map(player =>
+            player.id === playerId ? { ...player, status: newStatus } : player
+          )
+        );
+      } else {
+        console.error("Failed to update status");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+
+
+
 
   // useEffect(() => {
   //   // Fetch course data from the backend
@@ -94,16 +143,16 @@ const Player = () => {
             <p>{totalPlayers}</p>
           </div>
           <div style={boxStyle}>
-            <h3>Total Fees Outstanding</h3>
-            <p>--</p>
+            <h3>YTD Revenue</h3>
+            <p>₹ {revenue}</p>
           </div>
         </div>
         <Link to={`/edit-player/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
           <button>Edit Player</button>
         </Link>
-        <Link to={`/delete-player/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        {/* <Link to={`/delete-player/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
           <button>Delete Player</button>
-        </Link>
+        </Link> */}
         {/* <Link to={`/search-player/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <button>Search Player</button>
       </Link> */}
@@ -122,49 +171,52 @@ const Player = () => {
             <table border="1" width="800px">
               <thead>
                 <tr>
+                  <th>Status</th>
                   <th>Manage</th>
-                  <th>Player ID</th>
+                  {/* <th>Player ID</th> */}
                   <th>Name</th>
-                  <th>Batch</th>
-                  <th>Fee</th>
-
-                  <th>Fee Type</th>
-                  <th>DOB (d-m-y)</th>
-                  <th>Gender</th>
+                  <th>Batch & Fee</th>
+                  <th>Gender &<br /> DOB (D-M-Y)</th>
+                  <th>Phone Number</th>
                   <th>School Name</th>
                   <th>Sports Expertise</th>
-                  <th>Address</th>
-                  <th>Previous Academy</th>
-                  <th>Father's Name</th>
-                  <th>Mother's Name</th>
-                  <th>Phone Number</th>
+                  <th>Parent & Address</th>
+                  <th>Add Score</th>
                   {/* <th>Profile Picture</th> */}
                 </tr>
               </thead>
               <tbody>
                 {players.map(player => (
                   <tr key={player.id}>
-                    <td><Link to={`/financialform/${role}/${academyId}/${player.id}/${player.name}/${player.fee}`}>Payment</Link></td>
+                    {/* Toggle Button */}
                     <td>
-                      <Link to={`/AcademyDetails/${role}/${academyId}/${player.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <b> {player.id}</b>
-                      </Link></td>
+                      <label className="toggle">
+                        <input
+                          type="checkbox"
+                          checked={player.status === "active"}
+                          onChange={() => toggleStatus(player.id, player.status)}
+                        />
+                        <span className="slider"></span>
+                      </label>
+                    </td>
+                    <td><Link to={`/financialform/${role}/${academyId}/${player.id}/${player.name}/${player.fee}`}>Payment <br /><b> {player.id}</b></Link></td>
+
                     <td><Link to={`/AcademyDetails/${role}/${academyId}/${player.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                       <b> {player.name}</b>
                     </Link></td>
-                    <td>{player.batch}</td>
-                    <td>{player.fee}</td>
-                    <td>{player.fee_type}</td>
-                    <td>{player.dob}</td>
-                    <td>{player.gender}</td>
-                    <td>{player.school_name}</td>
-                    <td>{player.sports_expertise}</td>
-                    <td>{player.address}</td>
-                    <td>{player.previous_academy}</td>
-                    <td>{player.father_name}</td>
-                    <td>{player.mother_name}</td>
+                    <td> <b>Batch:</b> {player.batch} <br /> {player.fee_type}<br />Rs. <span style={{ color: "blue", fontSize: "1rem" }}> {player.fee}</span></td>
+                    <td>{player.gender} <br /><b>DOB:</b> {player.dob} </td>
                     <td>{player.phone_number}</td>
-                    
+                    <td><b> School Name:</b> {player.school_name} <br /><b> Previous Academy:</b> {player.previous_academy}</td>
+                    <td>{player.sports_expertise}</td>
+                    {/* <td>{player.address}</td> */}
+                    {/* <td>{player.previous_academy}</td> */}
+                    <td><b>Father:</b> {player.father_name} <br /><b>Mother:</b> {player.mother_name} <br /> <b>Address: </b>{player.address}</td>
+                    <td>
+                      <Link to={`/player-cricket-data/${role}/${academyId}/${player.id}/${player.name}`}> Score </Link>
+                    </td>
+
+
                     {/* <td> */}
                     {/* Uncomment and replace the placeholder with the real profile image URL */}
                     {/* <img

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate,Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import About from './About';
 
 const DeleteCourse = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-  const { academyId ,role} = useParams(); // Getting academyId from URL params
+  const { academyId, role } = useParams(); // Getting academyId from URL params
   const [courseId, setCourseId] = useState('');
   const [courseName, setCourseName] = useState('');
+  const [timing, setTiming] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [courseFound, setCourseFound] = useState(false);
@@ -25,8 +27,11 @@ const DeleteCourse = () => {
       .get(`${API_BASE_URL}/api/courses/${academyId}/${courseId}`)
       .then((response) => {
         const { course_name } = response.data;
+        const {timing} = response.data;
         setCourseName(course_name);
+        setTiming(timing);
         setCourseFound(true); // Mark course found
+
         setMessage(''); // Clear the message if course found
       })
       .catch((error) => {
@@ -63,39 +68,46 @@ const DeleteCourse = () => {
   };
 
   return (
-    <div className="delete-course-container">
-      <h2 className='heading'>Delete Course</h2>
-      <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0"}}/> {/*  adjust margin to set into column line */}
+    <div>
+      <div className='nav'>
+        <h3 className='logo'>Pro Sports Manager</h3>
+      </div>
+      <div className="below-navbar">
+        <h2 className='heading'>Delete Course</h2>
+        <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} />
 
-      <p>{academyId ? `Academy ID: ${academyId}` : 'Academy ID not available'}</p>
+        <p>{academyId ? `Academy ID: ${academyId}` : 'Academy ID not available'}</p>
 
-      {/* Step 1: Input for courseId */}
-      {!courseFound ? (
-        <div>
-          <label>Course ID:</label>
-          <input
-            type="text"
-            value={courseId}
-            onChange={(e) => setCourseId(e.target.value)}
-            placeholder="Enter Course ID"
-          />
-          <button onClick={handleCourseIdSubmit}>Find Course</button>
-        </div>
-      ) : (
-        <div>
-          {/* Step 2: Display course details and delete confirmation */}
-          <p>Are you sure you want to delete the course: {courseName} (ID: {courseId})?</p>
-          {message && <p>{message}</p>}
+        {/* Step 1: Input for courseId */}
+        {!courseFound ? (
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:'12px'}}>
+            <label>Course ID:</label>
+            <input
+              type="text"
+              value={courseId}
+              onChange={(e) => setCourseId(e.target.value)}
+              placeholder="Enter Course ID"
+            />
+            <button onClick={handleCourseIdSubmit}>Find Course</button>
+          </div>
+        ) : (
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:'12px'}}>
+            {/* Step 2: Display course details and delete confirmation */}
+            <p style={{color:"red"}}>Are you sure you want to delete the course:<b>{courseName}</b>    (ID: {courseId})?</p>
+            <p>Timing ( {timing}  )</p>
+            {message && <p>{message}</p>}
 
-          <button onClick={handleDelete} disabled={loading}>
-            {loading ? 'Deleting...' : 'Delete Course'}
-          </button>
-          <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} style={{ textDecoration: 'none', color: 'inherit' }}>
-        <button>Back</button>
-      </Link>
-        </div>
-        
-      )}
+            <button onClick={handleDelete} disabled={loading}>
+              {loading ? 'Deleting...' : 'Delete Course'}
+            </button>
+            <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <button>Back</button>
+            </Link>
+          </div>
+
+        )}
+      </div>
+      <About />
     </div>
   );
 };

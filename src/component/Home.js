@@ -10,7 +10,8 @@ import TennisImg from './Images/tennisImage.jpg';
 import SwimmingImg from './Images/swimmingImg.jpg';
 import YogaImg from "./Images/yogaImage.jpg"; // Replace with the actual path
 import FitnessTrainerImg from "./Images/fitnessimg.jpg";
-
+import homeCricket from "./Images/home-cricket-icon.png";
+import { motion } from "framer-motion";
 
 const Home = () => {
   const { role } = useParams();
@@ -123,84 +124,91 @@ const Home = () => {
     navbarDropdown.classList.toggle('open', isDropdownOpen);
   };
 
+  const pageVariants = {
+    initial: { x: "-100vw", opacity: 0 },
+    animate: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
+    exit: { x: "100vw", opacity: 0, transition: { ease: "easeInOut", duration: 0.5 } }
+  };
   return (
     // <div className='body1'>
     <div >
-      <div>
+      <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} >
         {role !== 'admin' && (
           <nav className='nav'>
             <h1 className='logo'>Pro Sports Manager</h1>
 
-            {/* For Mobile View (Dropdown on small screens) */}
             {isMobile ? (
               <div className="navbar-dropdown">
-                {/* Hamburger Menu (Mobile view) */}
                 <button className="navbar-toggle" onClick={toggleDropdown}>
-                  &#9776; {/* Hamburger icon */}
+                  &#9776;
                 </button>
-
-                {/* Dropdown Menu (Mobile view) */}
                 {isDropdownOpen && (
                   <ul className='navLinks'>
-                    {/* <li><Link to={`/HomeAllPlayerDashboard`}><button style={styles.btn}>Players</button></Link></li> */}
-                    {/* <li><Link to={`/PublicBookings`}><button style={styles.btn}>Bookings</button></Link></li> */}
-
                     <li><Link to="/UserRegistration"><button style={styles.btnSignup}>Sign Up</button></Link></li>
                     <li><Link to="/Login"><button style={styles.btnLogin}>Log In</button></Link></li>
                   </ul>
                 )}
               </div>
             ) : (
-              // Desktop Navigation
               <ul className='navLinks'>
-                <li className='navLink' id='navLinkIdHome'>
-                  {/* <Link to={`/HomeAllPlayerDashboard`}><button style={styles.btn}>Players</button></Link> */}
-                </li>
-                {/* <li><Link to={`/PublicBookings`}><button style={styles.btn}>Bookings</button></Link></li> */}
-
                 <li>
-                  <Link to="/UserRegistration">
-                    <button style={styles.btnSignup}>Sign Up</button>
-                  </Link>
+                  <Link to="/UserRegistration"><button style={styles.btnSignup}>Sign Up</button></Link>
                 </li>
                 <li>
-                  <Link to="/Login">
-                    <button style={styles.btnLogin}>Log In</button>
-                  </Link>
+                  <Link to="/Login"><button style={styles.btnLogin}>Log In</button></Link>
                 </li>
               </ul>
             )}
           </nav>
         )}
-      </div>
+      </motion.div>
 
 
       {/* Hero Section */}
       {/* Hero Section as About Section */}
+
       <div className='below-navbar-home'>
-        <div className='mainHeadingHome'>
-          <h1 className='h1StyleHome'>Pro Sports Manager</h1>
-          <h3 className='h3StyleAcademyHome'>Your Sports Venue & Player <span style={styles.hubSpan}>Hub</span></h3>
-          <Link to="/UserRegistration">
-            <button
-              style={{
-                backgroundColor: 'blue',
-                color: 'white',
-                padding: '12px 30px',
-                borderRadius: '5px',
-                fontSize: '1rem',
-                marginTop: '20px',
-                border: 'none',
-                cursor: 'pointer',
-                marginBottom: '20px',
 
-              }}
-            >
-              Get Started
-            </button>
-          </Link>
+        <div className='home-top-content'>
+          <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} >
+
+            <div style={{
+              paddingTop: '50px',
+              // width: '60%', // Makes the image responsive and fills the width of its container
+              height: 'auto', // Maintains aspect ratio
+              borderRadius: '10px', // Optional: Adds rounded corners to the image
+              // boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
+              objectFit: 'cover', // Optional: Ensures the image covers the container area without stretching
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <img src={homeCricket} alt='home icon loading...' className='home-top-img' />
+            </div>
+          </motion.div>
+          <div className='mainHeadingHome'>
+            <h1 className='h1StyleHome'>Pro Sports Manager</h1>
+            <h3 className='h3StyleAcademyHome'>Your Sports Venue & Player <span style={styles.hubSpan}>Hub</span></h3>
+            <Link to="/UserRegistration">
+              <button
+                style={{
+                  backgroundColor: 'blue',
+                  color: 'white',
+                  padding: '12px 30px',
+                  borderRadius: '5px',
+                  fontSize: '1rem',
+                  marginTop: '20px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  marginBottom: '20px',
+
+                }}
+              >
+                Get Started
+              </button>
+            </Link>
+          </div>
         </div>
-
         <div className="homeImgWithText" >
           <div className='homeImage' alt="Ground"
             style={{

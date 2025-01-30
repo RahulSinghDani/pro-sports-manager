@@ -50,12 +50,12 @@ const AcademyNavbar = ({ role, academyId }) => {
                 <li><Link to={`/Dashboard/${role}`}>All Academy</Link></li>
               )}
               <li> <Link to={`/AcademyDetails/${role}/${academyId}/ManagePayment`}>
-                  Manage Payment </Link>
+                  Payments </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to={`/AcademyDetails/${role}/${academyId}`}>
                   AcademyDetails </Link>
-              </li>
+              </li> */}
               <li>
                 <Link to={`/AcademyDetails/${role}/${academyId}/Coach`}>
                   Coach </Link>
@@ -83,9 +83,9 @@ const AcademyNavbar = ({ role, academyId }) => {
             <Link to={`/Dashboard/${role}`}><button style={styles.btn}>All Academy</button></Link>
 
           )}
-          <Link to={`/AcademyDetails/${role}/${academyId}/ManagePayment`} ><button style={styles.btn}>Manage Payment</button></Link>
+          <Link to={`/AcademyDetails/${role}/${academyId}/ManagePayment`} ><button style={styles.btn}>Payments</button></Link>
 
-          <Link to={`/AcademyDetails/${role}/${academyId}`} ><button style={styles.btn}>AcademyDetails</button></Link>
+          {/* <Link to={`/AcademyDetails/${role}/${academyId}`} ><button style={styles.btn}>AcademyDetails</button></Link> */}
           <Link to={`/AcademyDetails/${role}/${academyId}/Coach`} ><button style={styles.btn}>Coach</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} ><button style={styles.btn}>Courses</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Asset`} ><button style={styles.btn}>Assets</button></Link>

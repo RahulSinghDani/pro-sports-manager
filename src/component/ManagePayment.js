@@ -6,6 +6,8 @@ import axios from "axios";
 import './Style.css';
 import { styles } from "./Style";
 import About from "./About";
+// import { Button, Card, CardContent, Input, Label, Select, SelectItem } from "@/components/ui";
+
 const ManagePayment = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -15,7 +17,7 @@ const ManagePayment = () => {
     // const { coachId } = location.state || {};
     // console.log(coachId);
 
-    const {role, academyId } = useParams();
+    const { role, academyId } = useParams();
 
     const [searchParams, setSearchParams] = useState({
         fromDate: "",
@@ -24,7 +26,7 @@ const ManagePayment = () => {
         playerName: "",
     });
     const [records, setRecords] = useState([]);
-
+    // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     // Fetch all records on component mount
     useEffect(() => {
         const fetchAllRecords = async () => {
@@ -37,7 +39,7 @@ const ManagePayment = () => {
         };
 
         fetchAllRecords();
-    }, [API_BASE_URL ,academyId]);
+    }, [API_BASE_URL, academyId]);
 
     const handleSearch = async () => {
         try {
@@ -84,7 +86,7 @@ const ManagePayment = () => {
         window.location.reload(); // Reloads the page
     };
 
-    const handleEditPayment = (role , academyId,id) => {
+    const handleEditPayment = (role, academyId, id) => {
         navigate(`/edit-player-record/${role}/${academyId}/${id}`); // Adjust path as needed
     };
 
@@ -144,11 +146,11 @@ const ManagePayment = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', gap: '10px' }}>
 
 
-
+                    {/* search ways  */}
                     <div className="managepayment-search-main">
-
+                        {/* <div> */}
                         {/* Date Filters */}
-                        <div className="search-box-managepayment">
+                        <div className="search-box-managepayment" id="search-by-date">
                             <label style={{ display: 'flex', flexDirection: 'row' }}>
                                 From: {" "}
                                 <input
@@ -175,7 +177,7 @@ const ManagePayment = () => {
                         {/* <div style={{ width: '4px', height: '100%', background: 'black' }}></div> */}
 
                         {/* Search by Player */}
-                        <div className="search-box-managepayment">
+                        <div className="search-box-managepayment" id="search-by-player-id-name">
                             <label style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
                                 Player ID: {" "}
                                 <input
@@ -198,7 +200,7 @@ const ManagePayment = () => {
                                 Search Player
                             </button>
                         </div>
-
+                        {/* </div> */}
                         {/* Quick Filters */}
                         <div className="search-by-year-month">
                             <button style={styles.quickSearch} onClick={() => handleQuickSearch("week")}>This Week</button>
@@ -237,20 +239,39 @@ const ManagePayment = () => {
                                     records.map((record) => (
                                         <tr key={record.id}>
                                             <td>
-                                                <button onClick={() => handleEditPayment(role, academyId,record.id)}>Edit</button>
-                                                <button onClick={() => deletePaymentData(record.id)}>Delete</button>
+                                                <button onClick={() => handleEditPayment(role, academyId, record.id)}><b>Edit </b> {record.player_id}</button>
+                                                {/* <button onClick={() => deletePaymentData(record.id)}>Delete</button> */}
                                             </td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.player_id}</td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.player_name}</td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.total_fee}</td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.paid_amount}</td>
-                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.due_amount}</td>
+                                            <td style={{
+                                                    padding: "8px",
+                                                    border: "1px solid #ddd",
+                                                    color: record.due_amount === 0 ? "green" : "orange",
+                                                     // Ensure text is visible
+                                                    fontWeight: "bold", // Make text stand out
+                                                    textAlign: "center" // Center text
+                                                }}>{record.due_amount}</td>
                                             {/* <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.due_date}</td> */}
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>
                                                 {new Date(record.due_date).toLocaleDateString()}
                                             </td>
 
-                                            <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.status}</td>
+                                            <td
+                                                style={{
+                                                    padding: "8px",
+                                                    border: "1px solid #ddd",
+                                                    backgroundColor: record.status === "paid" ? "green" : "orange",
+                                                    color: "white", // Ensure text is visible
+                                                    fontWeight: "bold", // Make text stand out
+                                                    textAlign: "center" // Center text
+                                                }}
+                                            >
+                                                {record.status}
+                                            </td>
+
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.remarks}</td>
 
                                         </tr>

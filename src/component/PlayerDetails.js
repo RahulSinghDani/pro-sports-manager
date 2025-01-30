@@ -9,26 +9,41 @@ const PlayerDetails = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
     const { academyId, id, role } = useParams();
-    const [totalPlayers, setTotalPlayers] = useState(0);
+    // const [totalPlayers, setTotalPlayers] = useState(0);
     const [playerData, setPlayerData] = useState({});
+    const [outstandingFee, setOutstandingFee] = useState(0);
 
 
 
+    // useEffect(() => {
+    //     const fetchTotalPlayers = async () => {
+    //         try {
+    //             const response = await axios.get(
+    //                 `${API_BASE_URL}/api/totalPlayers`
+    //             );
+    //             setTotalPlayers(response.data.total);
+    //         } catch (error) {
+    //             console.error("Error fetching total players count:", error);
+    //         }
+    //     };
+
+    //     fetchTotalPlayers();
+    // }, [API_BASE_URL]);
+
+
+    //player outstanding fee 
     useEffect(() => {
-        const fetchTotalPlayers = async () => {
+        const fetchPlayerOutstandingFee = async () => {
             try {
-                const response = await axios.get(
-                    `${API_BASE_URL}/api/totalPlayers`
-                );
-                setTotalPlayers(response.data.total);
+                const response = await axios.get(`${API_BASE_URL}/api/outstanding-fee/${academyId}/${id}`);
+                setOutstandingFee(response.data);
             } catch (error) {
-                console.error("Error fetching total players count:", error);
+                console.error("Error fetching outstanding fee records:", error);
             }
         };
-
-        fetchTotalPlayers();
-    }, [API_BASE_URL]);
-
+      
+        fetchPlayerOutstandingFee();
+      }, [API_BASE_URL, academyId , id]);
 
     //Player by academy id AND id
     useEffect(() => {
@@ -65,21 +80,7 @@ const PlayerDetails = () => {
 
             <div className="container" style={{ display: "flex", justifyContent: "center" }}>
                 <div>
-                    <div id="dashboard-boxes" style={{ display: "flex", gap: "20px", justifyContent: 'center', alignItems: 'center', marginBottom: "20px" }}>
-                        {/* Total Players Box */}
-                        <div style={boxStyle}>
-                            <h3>Total Players</h3>
-                            <p>{totalPlayers}</p>
-                        </div>
-                        <div style={boxStyle}>
-                            <h3>New Players MTD</h3>
-                            <p>{totalPlayers}</p>
-                        </div>
-                        <div style={boxStyle}>
-                            <h3>Total Fees Outstanding</h3>
-                            <p>--</p>
-                        </div>
-                    </div>
+                    
 
 
                     {/* Player Details Section */}
@@ -120,7 +121,7 @@ const PlayerDetails = () => {
                                     />
 
                                     <p><strong>School:</strong> {playerData.school_name}</p>
-                                    <p><strong>Outstanding Fee:</strong> 10000</p>
+                                    <p><strong>Outstanding Fee:</strong> {outstandingFee.playerOutstandingFee || 0}</p>
                                 </div>
 
                                 {/* Third Column */}
@@ -130,13 +131,13 @@ const PlayerDetails = () => {
                                             <tbody>
                                                 <tr>
                                                     <td><strong>Matches:</strong> 10</td>
-                                                    <td><strong>Runs:</strong> 120</td>
+                                                    <td><strong>Runs:</strong> 220</td>
                                                     <td><strong>Wickets:</strong> 12</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <button style={buttonStyle}>Collect Fee</button>
+                                    <button style={buttonStyle}>Add Sports Details</button>
                                 </div>
                             </div>
                         </div>
@@ -149,19 +150,6 @@ const PlayerDetails = () => {
         </div>
     );
 }
-const boxStyle = {
-    border: "1px solid #ddd",
-    padding: "20px",
-    borderRadius: "8px",
-    width: "200px",
-    height: "100px",
-    alignItems: "center",
-    textAlign: "center",
-    background: "#f9f9f9",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-};
-
-
 
 const buttonStyle = {
     margin: "8px",

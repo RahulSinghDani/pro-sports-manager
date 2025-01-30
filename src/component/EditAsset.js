@@ -3,9 +3,9 @@ import axios from 'axios';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
 const EditAsset = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-  const { academyId ,role} = useParams(); // Getting academyId from URL params
+  const { academyId, role } = useParams(); // Getting academyId from URL params
   const [assetId, setAssetId] = useState('');
   const [assetName, setAssetName] = useState('');  // Corrected from 'setAsssetName'
   const [quantity, setQuantity] = useState('');
@@ -73,71 +73,76 @@ const EditAsset = () => {
   };
 
   return (
-    <div className="edit-asset-container">
-      <h2 className='heading'>Edit Asset</h2>
-      <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0"}}/> {/*  adjust margin to set into column line */}
+    <div>
+      <div className='nav'>
+        <p className='logo'>Pro Sports Manager</p>
+      </div>
+      <div className="edit-asset-container">
+        <h2 className='heading'>Edit Asset</h2>
+        <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
 
-      <p>{academyId ? `Academy ID: ${academyId}` : 'Academy ID not available'}</p>
+        <p>{academyId ? `Academy ID: ${academyId}` : 'Academy ID not available'}</p>
 
-      {/* Step 1: Input for courseId */}
-      {!assetFound ? (
-        <div>
-          <label>Asset ID:</label>
-          <input
-            type="text"
-            value={assetId}
-            onChange={(e) => setAssetId(e.target.value)}
-            placeholder="Enter Asset ID"
-          />
-          <button onClick={handleAssetIdSubmit}>Find Asset</button>
-          <Link to={`/AcademyDetails/${role}/${academyId}/Asset`}>
-            <button type="button">Back</button>
-          </Link>
-        </div>
-      ) : (
-        <div>
-          {/* Step 2: Display course edit form if courseId is found */}
-          <p>Editing Asset ID: {assetId}</p>
-
-          {message && <p>{message}</p>}
-
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Asset Name:</label>
-              <input
-                type="text"
-                value={assetName}
-                onChange={(e) => setAssetName(e.target.value)}  // Corrected from 'setAsssetName'
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Quantity:</label>
-              <input
-                type="text"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Cost:</label>
-              <input
-                type="number"
-                value={cost}
-                onChange={(e) => setCost(e.target.value)}
-                required
-              />
-            </div>
-            <button type="submit" disabled={loading}>
-              {loading ? 'Updating...' : 'Update Asset'}
-            </button>
-            <Link to={`/AcademyDetails/${role}/${academyId}/Asset`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <button>Back</button>
+        {/* Step 1: Input for courseId */}
+        {!assetFound ? (
+          <div>
+            <label>Asset ID:</label>
+            <input
+              type="text"
+              value={assetId}
+              onChange={(e) => setAssetId(e.target.value)}
+              placeholder="Enter Asset ID"
+            />
+            <button onClick={handleAssetIdSubmit}>Find Asset</button>
+            <Link to={`/AcademyDetails/${role}/${academyId}/Asset`}>
+              <button type="button">Back</button>
             </Link>
-          </form>
-        </div>
-      )}
+          </div>
+        ) : (
+          <div>
+            {/* Step 2: Display course edit form if courseId is found */}
+            <p>Editing Asset ID: {assetId}</p>
+
+            {message && <p>{message}</p>}
+
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Asset Name:</label>
+                <input
+                  type="text"
+                  value={assetName}
+                  onChange={(e) => setAssetName(e.target.value)}  // Corrected from 'setAsssetName'
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Quantity:</label>
+                <input
+                  type="text"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Cost:</label>
+                <input
+                  type="number"
+                  value={cost}
+                  onChange={(e) => setCost(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit" disabled={loading}>
+                {loading ? 'Updating...' : 'Update Asset'}
+              </button>
+              <Link to={`/AcademyDetails/${role}/${academyId}/Asset`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <button>Back</button>
+              </Link>
+            </form>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
