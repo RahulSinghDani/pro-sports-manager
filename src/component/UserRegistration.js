@@ -54,9 +54,11 @@ const UserRegistration = () => {
 
       <div className="user-register-container" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
 
+        <div className="user-registration-form">
         <h2 className="heading" style={{ textAlign: "center", width: "100%" }}>User Registration Form</h2>
-        <form style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '300px' }}>
-          <label htmlFor="role-select">Role:</label>
+        <form >
+          
+          {/* <label htmlFor="role-select">Role:</label> */}
           <select id="role-select" value={role} onChange={(e) => setRole(e.target.value)}>
             <option>Select Role</option>
             <option value="academy">Academy</option>
@@ -69,6 +71,7 @@ const UserRegistration = () => {
           <button style={{ width: '100%' }} onClick={handleNext}>Next</button>
           <Link to={`/`}><button style={{ background: 'black' }}>Go Back</button></Link>
         </form>
+        </div>
       </div>
       <About />
     </div>

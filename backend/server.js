@@ -386,6 +386,43 @@ app.post('/api/addacademies', upload.single('images'), (req, res) => {
   );
 });
 //--------------------------------------------------------
+// Route: Get news by academy_id
+app.get('/api/getNews/:academyId', (req, res) => {
+  const { academyId } = req.params;
+  const query = 'SELECT * FROM news WHERE academy_id = ? ';
+
+  db.query(query, [academyId], (err, results) => {
+      if (err) {
+          console.error('Error fetching news:', err);
+          res.status(500).send('Database error' );
+      }
+      if (results.length === 0) {
+          return res.status(404).json({ message: 'No news found' });
+      }else {
+          res.json(results);
+        }
+  });
+});
+//-----------------------------------------------
+// Route: Publish news (Insert into MySQL)
+app.post('/api/publishNews', upload.single('image'), (req, res) => {
+  const { academy_id, title } = req.body;
+  const image = req.file ? `${req.file.filename}` : null;
+
+  if (!academy_id || !title) {
+      return res.status(400).json({ error: 'academy_id and title are required' });
+  }
+
+  const query = 'INSERT INTO news (academy_id, title, image) VALUES (?, ?, ?)';
+  db.query(query, [academy_id, title, image], (err, result) => {
+      if (err) {
+          console.error('Error inserting news:', err);
+          return res.status(500).json({ error: 'Database error' });
+      }
+      res.json({ message: 'News published successfully', newsId: result.insertId });
+  });
+});
+//----------------------------------------------
 // Endpoint to view all academies id
 app.get('/api/academies', (req, res) => {
   const query = 'SELECT * FROM academy';

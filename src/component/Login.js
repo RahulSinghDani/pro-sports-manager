@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import CryptoJS from 'crypto-js';  // Import CryptoJS for hashing
 import About from './About';
 const Login = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -13,15 +13,15 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-        // Hash the password using SHA256 (or another algorithm of your choice)
-        const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
-        
+    // Hash the password using SHA256 (or another algorithm of your choice)
+    const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
+
 
     try {
       const response = await axios.post(`${API_BASE_URL}/login`, {
         username,
         password: hashedPassword  // Send the hashed password to the backend
-        
+
       });
 
       if (response.data.message === 'Login successful') {
@@ -32,11 +32,11 @@ const Login = () => {
           const coachId = role === 'coach' ? id : null;
 
           navigate(`/LoginCoachDashboard/${role}/${academy_id}/${coachId}`); //coach dashboard
-        }else if (role === 'player') {
+        } else if (role === 'player') {
           navigate(`/LoginPlayerDashboard/${role}/${academy_id}/${id}`); // Player dashboard
         } else if (role === 'academy') {
           // navigate(`/LoginAcademyDashboard/${role}/${id}`); // Academy dashboard
-          const academyId= id;
+          const academyId = id;
           navigate(`/AcademyDetails/${role}/${academyId}`);
         } else {
           setErrorMessage('Unknown role. Contact admin.');
@@ -60,34 +60,33 @@ const Login = () => {
       </nav>
 
 
+      <div className="login-container" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }} >
+        {/* <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} />  { /*Adjust margin to position the line */}
+        <div className="user-registration-form">
 
-      {/* <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} />  { /*Adjust margin to position the line */} 
-      <div className="login-container" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
-
-
-      <h2 className="heading" style={{ textAlign: "center", width: "100%"}}>Login</h2>
-
-
-        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '300px' }}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-          <button type="submit" style={{ width: "100%" }}>Login</button>
-          <p style={{ width: "100%", textAlign: "center", color: "#555555" }}>New user, Click on Register </p>
-          <Link to="/UserRegistration"><button style={{ width: "100%", backgroundColor: "gray" }}>Register</button></Link>
-        </form>
+          <h2 className="heading" style={{ textAlign: "center", width: "100%" }}>Login</h2>
+          <div className='blue-line'></div>
+          <form onSubmit={handleLogin} >
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            <button type="submit" style={{ width: "100%" }}>Login</button>
+            <p style={{ width: "100%", textAlign: "center", color: "#555555" }}>New user, Click on Register </p>
+            <Link to="/UserRegistration"><button style={{ width: "100%", backgroundColor: "gray" }}>Register</button></Link>
+          </form>
+        </div>
       </div>
       <About />
     </div>

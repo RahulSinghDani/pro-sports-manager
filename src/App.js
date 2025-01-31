@@ -58,6 +58,7 @@ import BookNow from "./component/BookNow";
 import PlayerFinancialForm from "./component/PlayerFinancialForm";
 import CricketData from "./component/CricketData";
 import CricketGraph from "./component/CricketGraph";
+import NewsForm from "./component/NewsForm";
 
 
 function App() {
@@ -147,6 +148,7 @@ function App() {
           <Route path="/academy-asset/:role/:academyId" element={<AcademyAssets />} />
           <Route path="/player-cricket-data/:role/:academyId/:id/:name" element={<CricketData />} />
           <Route path="/player-cricket-data/graph" element={<CricketGraph />} />
+          <Route path="/academy-news/:academyId" element={<NewsForm />} />
 
 
 

@@ -759,6 +759,7 @@ input[type="radio"] {
 /* ------------------------- */
 .dashboard-container {
   display: flex;
+  width: 30%;
   justify-content: center;
   align-items: center;
   gap: 20px;
@@ -868,6 +869,157 @@ input:checked + .slider:before {
   text-align: left;
 }
 
+/* home page features styling  */
+.features-section {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+  padding: 40px 20px;
+  flex-wrap: wrap;
+}
+
+.feature-card {
+  text-align: center;
+  width: 220px;
+  padding: 20px;
+  background: linear-gradient(135deg, #9fc0fe, #5292ff);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.feature-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* news styling ------------------------- */
+/* -------- */
+.news-container {
+  height: 350px; /* Fixed height */
+  overflow-y: auto; /* Enables vertical scrolling */
+  padding: 10px;
+  background: #f5f5f5; /* Light gray background */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  scrollbar-width: thin; /* Firefox scrollbar */
+  scrollbar-color: #888 #f5f5f5; /* Scrollbar thumb and track colors */
+}
+
+/* Custom scrollbar for Webkit browsers (Chrome, Safari) */
+.news-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.news-container::-webkit-scrollbar-track {
+  background: #f5f5f5; /* Scrollbar track color */
+  border-radius: 10px;
+}
+
+.news-container::-webkit-scrollbar-thumb {
+  background: #888; /* Scrollbar thumb color */
+  border-radius: 10px;
+}
+
+.news-container::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker shade on hover */
+}
+
+/* -----  */
+.news-main{
+  padding-left: 5px;
+  padding-top: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  
+}
+.announcements-title {
+  font-size: 1.5rem; /* Slightly bigger text */
+  font-weight: bold; /* Makes it stand out */
+  color: #333; /* Darker shade for readability */
+  text-transform: uppercase; /* Converts text to uppercase */
+  letter-spacing: 1px; /* Adds spacing for a sleek look */
+  text-align: center; /* Centers the text */
+  padding: 10px 0; /* Adds spacing */
+  border-bottom: 3px solid #007bff; /* Underline effect with a primary color */
+  width: fit-content;
+  margin: 10px auto; /* Centers the title horizontally */
+}
+
+.input-news-section{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.news-input-textarea{
+  width: 90%;
+  padding: 5px;
+}
+.display-news-section {
+  width: 100%;
+  padding: 8px;
+  background: #f9f9f9; /* Light background */
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin-bottom: 20px;
+}
+.display-news-section2{
+  display: flex;
+  flex-direction: row;
+}
+.display-news-content {
+  display: flex;
+  justify-content: space-between; /* Moves image to the end */
+  align-items: center; /* Aligns items in a row */
+  padding: 10px;
+}
+
+.news-text {
+  flex: 1; /* Takes remaining space */
+  font-size: 16px;
+  color: #333; /* Dark text */
+}
+
+.news-text p {
+  margin: 5px 0;
+}
+
+.news-image {
+  width: 120px; /* Set a fixed width */
+  height: 70px; /* Maintain aspect ratio */
+  object-fit: cover; /* Ensures the image looks good */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2); /* Adds depth */
+  margin-left: 15px;
+}
+
+
+/* ------------------------------------------ */
+.feature-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+ /* --------------------------- */
+ .news-form{
+  background-color: #358980;
+  padding: 4px 4px;
+  /* display: flex; */
+  /* flex-direction: column; */
+ }
+
+ /* ------------------------ */
 .detail-box h3 {
   font-size: 1.2rem;
   color: #444;
@@ -1022,7 +1174,34 @@ p {
 div {
   flex-wrap: wrap;
 }
-
+.user-registration-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  width: 100%;
+  max-width: 400px;
+}
+#role-select{
+  width: 100%;
+}
+.center-div{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.blue-line{
+  height: 2px;
+  width: 100%;
+  background-color: rgb(122, 122, 122);
+}
 .switches {
   border: 1px solid rgb(212, 212, 212);
   padding: 5px 5px;
@@ -1094,8 +1273,6 @@ div {
   text-align: center;
 }
 
-.sports-container-row {}
-
 .playerBoxStyle {
   display: flex;
   text-align: center;
@@ -1144,11 +1321,12 @@ div {
 
 .home-top-img{
   width: 500px;
+  height: auto;
 }
 
 /* performer css  */
 .graph-container-academy-page{
-  width: 70%;
+  width: 50%;
 }
 .graph-container-academy-details {
   max-width: 800px; /* Set a fixed width */

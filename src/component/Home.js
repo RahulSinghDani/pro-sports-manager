@@ -49,6 +49,21 @@ const Home = () => {
     `;
     alert(policy);
   };
+
+  const features = [
+    {
+      title: "Manage Players",
+      description: "Add, edit, and view player details seamlessly.",
+    },
+    {
+      title: "Coaches",
+      description: "Assign coaches to players and manage coaching schedules.",
+    },
+    {
+      title: "Batches",
+      description: "Create and manage different training batches.",
+    },
+  ];
   //--------------------------------------------
   // sports training boxes 
   //sports data here shadow boxes 
@@ -259,20 +274,19 @@ const Home = () => {
 
         </div>
         {/* Features Section */}
-        <section style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', gap: '20px', padding: '40px 20px' }}>
-          <div style={{ textAlign: 'center', width: '200px' }}>
-            <h3>Manage Players</h3>
-            <p>Add, edit, and view player details seamlessly.</p>
-          </div>
-          <div style={{ textAlign: 'center', width: '200px' }}>
-            <h3>Coaches</h3>
-            <p>Assign coaches to players and manage coaching schedules.</p>
-          </div>
-          <div style={{ textAlign: 'center', width: '200px' }}>
-            <h3>Batches</h3>
-            <p>Create and manage different training batches.</p>
-          </div>
-        </section>
+        <section className="features-section">
+      {features.map((feature, index) => (
+        <motion.div
+          key={index}
+          className="feature-card"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <h3>{feature.title}</h3>
+          <p>{feature.description}</p>
+        </motion.div>
+      ))}
+    </section>
 
         {/* display sports training data boxes */}
         <div className="sports-container">

@@ -15,6 +15,7 @@ import About from './About.js';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { motion } from "framer-motion";
 import CricketGraph from './CricketGraph.js';
+import NewsForm from './NewsForm.js';
 
 const useIncrementalCount = (targetValue, duration = 1000) => {
   const [count, setCount] = useState(0);
@@ -41,7 +42,7 @@ const AcademyDetails = () => {
 
   const { role, academyId } = useParams(); // Get the academy_id from the URL
 
-  const [academyData, setAcademy] = useState(null); // Use an object for a single academy
+  const [academyData, setAcademy] = useState(null);
   const [error, setError] = useState();
   // const [totalPlayers, setTotalPlayers] = useState(0);
   const [revenue, setRevenue] = useState(0);
@@ -214,7 +215,9 @@ const AcademyDetails = () => {
             onError={(e) => { e.target.src = GroundImage; }} // Fallback image
           />
 
-
+          <div>
+            <NewsForm role={role} academyId={academyId} />
+          </div>
         </div>
         <h2 style={styles.heading}>{academyData.name}</h2>
 
@@ -223,6 +226,9 @@ const AcademyDetails = () => {
 
           {/* Academy Details */}
           <div className="academy-details">
+            <div className='graph-container-academy-page'>
+              <CricketGraph academyId={academyId} />
+            </div>
             {/* display under 10 ,12, 14, and 16 players  */}
             <div className="dashboard-container">
               <div className="category-card">
@@ -250,14 +256,11 @@ const AcademyDetails = () => {
                   <p className="info-count">{animatedTotalCourses}</p>
                 </div>
               </div>
-            </div>
-            <div className='graph-container-academy-page'>
-              <CricketGraph academyId={academyId} />
-            </div>
 
-
+            </div>
 
           </div>
+
           <div className='academy-details-home'>
             <div className="detail-box">
               <h3>Academy ID</h3>

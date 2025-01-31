@@ -62,6 +62,8 @@ const Asset = () => {
         axios
             .get(`${API_BASE_URL}/api/assets/${academyId}`)
             .then(response => {
+                console.log("Fetched News Data:", response.data); // Console log the data
+
                 setAsset(response.data); // Set assets data from the response
                 setLoading(false); // Set loading to false when data is fetched
             })
