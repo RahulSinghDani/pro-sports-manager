@@ -1,31 +1,32 @@
 {
   "files": {
-    "main.css": "/static/css/main.34707acf.css",
-    "main.js": "/static/js/main.d32244fc.js",
+    "main.css": "/static/css/main.745de897.css",
+    "main.js": "/static/js/main.37bfb3d9.js",
     "static/js/453.d855a71b.chunk.js": "/static/js/453.d855a71b.chunk.js",
     "static/media/homeimage.jpg": "/static/media/homeimage.34a9b943ac39d85dd648.jpg",
     "static/media/map-png.png": "/static/media/map-png.f99a17a1215a1b1db397.png",
-    "static/media/home-cricket-icon.png": "/static/media/home-cricket-icon.1edb465f650330e86760.png",
     "static/media/instapng.png": "/static/media/instapng.7e4fc55c90a30d4a833f.png",
+    "static/media/home-cricket-icon.png": "/static/media/home-cricket-icon.9c3cd19d278a24691841.png",
     "static/media/fitnessimg.jpg": "/static/media/fitnessimg.72be0c133e414a77b8bd.jpg",
     "static/media/yogaImage.jpg": "/static/media/yogaImage.8f6e69820621045a763b.jpg",
     "static/media/ground2.jpg": "/static/media/ground2.4619fb38226780537648.jpg",
     "static/media/cricketBg.jpg": "/static/media/cricketBg.f4e80d32629ffe6658d2.jpg",
     "static/media/cricket-gear.jpg": "/static/media/cricket-gear.cf4e12108e75e4cad785.jpg",
+    "static/media/logo.png": "/static/media/logo.65bbc9bfd35c736aa63d.png",
     "static/media/playerpng.png": "/static/media/playerpng.970f7320c83f41efa79e.png",
     "static/media/ytpng.png": "/static/media/ytpng.3671fd12106de65ef027.png",
-    "static/media/dashboardBg.jpg": "/static/media/dashboardBg.f3c9259670818e459d07.jpg",
+    "static/media/favicon.ico": "/static/media/favicon.fa37dbbda9fd7ebac4a1.ico",
     "static/media/phone-call.png": "/static/media/phone-call.b76498e5c124d5213615.png",
     "static/media/swimmingImg.jpg": "/static/media/swimmingImg.863851cda9d19be9d3c8.jpg",
     "static/media/ground1.jpg": "/static/media/ground1.561e5d4959a76dea0f4d.jpg",
     "static/media/bowling-machine.jpg": "/static/media/bowling-machine.60fb00058053a90d8a84.jpg",
     "index.html": "/index.html",
-    "main.34707acf.css.map": "/static/css/main.34707acf.css.map",
-    "main.d32244fc.js.map": "/static/js/main.d32244fc.js.map",
+    "main.745de897.css.map": "/static/css/main.745de897.css.map",
+    "main.37bfb3d9.js.map": "/static/js/main.37bfb3d9.js.map",
     "453.d855a71b.chunk.js.map": "/static/js/453.d855a71b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.34707acf.css",
-    "static/js/main.d32244fc.js"
+    "static/css/main.745de897.css",
+    "static/js/main.37bfb3d9.js"
   ]
 }

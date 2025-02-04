@@ -4,6 +4,7 @@ import ytimg from "./Images/ytpng.png";
 import instapng from "./Images/instapng.png";
 import fbpng from "./Images/fbpng.png";
 import { Link } from 'react-router-dom';
+import logo from './Images/logo.png';
 
 const About = () => {
     const showPrivacyPolicy = () => {
@@ -45,6 +46,7 @@ const About = () => {
 
 
                 <div className="about-content" style={{ width: '70%' }} >
+                    <img src={logo} alt="ProSportsManager" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
                     <h2>About ProSportsManager (PSM)</h2>
                     <p>
                         Welcome to <strong>ProSportsManager</strong> (PSM), your one-stop solution for managing venues, grounds, and players efficiently. We are dedicated to helping sports enthusiasts and professionals streamline their operations and focus on what truly matters—excelling in sports!

@@ -63,6 +63,10 @@ const Home = () => {
       title: "Batches",
       description: "Create and manage different training batches.",
     },
+    {
+      title: "Top Players",
+      description: "Track and highlight the top-performing players in the academy.",
+    },
   ];
   //--------------------------------------------
   // sports training boxes 
@@ -275,18 +279,18 @@ const Home = () => {
         </div>
         {/* Features Section */}
         <section className="features-section">
-      {features.map((feature, index) => (
-        <motion.div
-          key={index}
-          className="feature-card"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <h3>{feature.title}</h3>
-          <p>{feature.description}</p>
-        </motion.div>
-      ))}
-    </section>
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              className="feature-card"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <h3>{feature.title}</h3>
+              <p>{feature.description}</p>
+            </motion.div>
+          ))}
+        </section>
 
         {/* display sports training data boxes */}
         <div className="sports-container">

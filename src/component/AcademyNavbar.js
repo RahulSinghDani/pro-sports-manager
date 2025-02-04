@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { styles } from './Style';
+import LogoIcon from './Images/favicon.ico';
 
 
 const AcademyNavbar = ({ role, academyId }) => {
@@ -36,8 +37,10 @@ const AcademyNavbar = ({ role, academyId }) => {
 
   return (
     <nav className='nav'>
-      <Link to={`/LoginHome/${role}/${academyId}`} className="logo" >Pro Sports Manager</Link>
-
+      <div className='logo-container'>
+      <img style={{width:'50px' , borderRadius:'50%'}} src={LogoIcon} alt='logo' />
+      <Link to={`/AcademyDetails/${role}/${academyId}`} className="logo" >Pro Sports Manager</Link>
+      </div>
       {/* For Mobile View (Dropdown on small screens) */}
       {isMobile ? (
         <div className="navbar-dropdown">

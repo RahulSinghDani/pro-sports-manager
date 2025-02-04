@@ -389,7 +389,7 @@ app.post('/api/addacademies', upload.single('images'), (req, res) => {
 // Route: Get news by academy_id
 app.get('/api/getNews/:academyId', (req, res) => {
   const { academyId } = req.params;
-  const query = 'SELECT * FROM news WHERE academy_id = ? ';
+  const query = 'SELECT * FROM news WHERE academy_id = ? ORDER BY created_at DESC ';
 
   db.query(query, [academyId], (err, results) => {
       if (err) {

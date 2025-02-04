@@ -20,7 +20,7 @@ const CricketGraph = ({academyId}) => {
             }
         };
         fetchData();
-    }, []);
+    }, [API_BASE_URL , academyId]);
 
     // Extract data for the graph
     const playerNames = players.map(player => player.name);
@@ -48,7 +48,7 @@ const CricketGraph = ({academyId}) => {
     };
 
     return (
-        <div className="container-graph mx-auto p-6">
+        <div className="container-graph">
             <h2>Cricket Player Performance</h2>
 
             {/* Bar Chart */}
@@ -62,7 +62,7 @@ const CricketGraph = ({academyId}) => {
                 <div className="top-performers-container">
                     {topPerformers.map((player, index) => (
                         <div key={index} className="top-performer-card">
-                            <h3 className="player-rank">#{index + 1} {player.name}</h3>
+                            <h3 className="player-rank">🙍‍♂️ #{index + 1} {player.name}</h3>
                             <p className="player-stat">🏏 Runs: <span>{player.runs}</span></p>
                             <p className="player-stat">🎯 Wickets: <span>{player.wickets}</span></p>
                         </div>

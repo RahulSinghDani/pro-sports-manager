@@ -4,7 +4,7 @@ import axios from 'axios';
 import Navbar from './Navbar';
 import './Style.css';
 import { styles } from './Style';
-import dashboardBg from "./Images/dashboardBg.jpg"; // Import the background image
+import academyIcon from "./Images/academy_png.png"; // Import the academy image
 import About from './About';
 
 const Dashboard = () => {
@@ -96,7 +96,7 @@ const Dashboard = () => {
                             {academicData.map((item, index) => (
                                 <div key={item.academy_id} className='playerBoxStyle'>
                                     <Link to={`/AcademyDetails/${role}/${item.academy_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <p ><img src={dashboardBg} alt='Loading...' style={{ width: '50px', height: 'auto', borderRadius: '50%' }}></img></p>
+                                        <p > <img src={academyIcon} alt='Loading...' style={{ width: '100px', height: '50px', borderRadius: '50%' }}></img></p>
 
 
                                         <h3>{item.academy_name}</h3>
@@ -122,8 +122,9 @@ const Dashboard = () => {
                     )}
                 </div>
                 <div style={styles.tableDiv}></div>
-                <p style={{ textAlign: 'center', color: 'blue' }}>Click on <span style={{ color: 'red' }}>(Academy Id or Academy Name)</span> to view the information.</p>
                 <div className="table-wrapper">
+                <p style={{ textAlign: 'center', color: 'blue' }}>Click on <span style={{ color: 'red' }}>(Academy Id or Academy Name)</span> to view the information.</p>
+
                     <table border="1" className='table-main'>
                         <thead>
                             <tr>

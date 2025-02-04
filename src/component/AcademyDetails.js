@@ -163,14 +163,14 @@ const AcademyDetails = () => {
   //--------------------------------------------
   return (
     <div >
-      <motion.div
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        variants={pageVariants}
-      >
-        <AcademyNavbar role={role} academyId={academyId} />
-      </motion.div>
+      {/* <aside className="w-64 bg-gray-900 text-white h-screen p-5 sticky top-0 md:block hidden"> */}
+        <motion.div
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={pageVariants} >
+          <AcademyNavbar role={role} academyId={academyId} />
+        </motion.div>
       <div className='below-navbar'>
         {/* Dashboard Boxes */}
         <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} >
@@ -210,12 +210,12 @@ const AcademyDetails = () => {
                 ? academyData.images // Use the provided link if valid
                 : `${API_BASE_URL}/uploads/${academyData.images}` // Construct the file path
             }
-            style={{ width: '50%' }}
+            style={{ width: '50%',borderRadius:'20px' }}
             alt="Loading..."
             onError={(e) => { e.target.src = GroundImage; }} // Fallback image
           />
 
-          <div>
+          <div className='news-form-div'>
             <NewsForm role={role} academyId={academyId} />
           </div>
         </div>
