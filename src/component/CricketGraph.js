@@ -107,7 +107,7 @@ const CricketGraph = ({ academyId }) => {
 
                                 <img src={playerData[player.player_id]?.profile_pic ? `${API_BASE_URL}/uploads/${playerData[player.player_id]?.profile_pic}` : defaultImage}
                                     alt="Player"
-                                    style={{ width: "55px", height: '80px', borderRadius: "10px", marginBottom: "10px", pointerEvents: "none", userSelect: "none", cursor: 'not-allowed' }}
+                                    style={{ width: "80px", height: '80px', borderRadius: "10px", marginBottom: "10px", pointerEvents: "none", userSelect: "none", cursor: 'not-allowed' }}
                                     onDoubleClick={(e) => e.preventDefault()} // Prevents double-click
                                     onContextMenu={(e) => e.preventDefault()} // Disables right-click (prevents download)
                                     draggable="false" // Prevents drag & drop 

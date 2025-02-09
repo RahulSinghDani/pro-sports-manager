@@ -74,14 +74,35 @@ const EditPlayer = () => {
   // };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
 
-    setPlayerData((prevData) => ({
-      ...prevData,
-      [name]: name === "dob" ? value : value, // Simply update the value as-is
-    }));
+    if (name === "profile_pic" && files && files[0]) {
+      const file = files[0];
+      setPlayerData((prevData) => ({
+        ...prevData,
+        profile_pic: file, // Store file object
+      }));
+    } else {
+      setPlayerData((prevData) => ({
+        ...prevData,
+        [name]: name === "dob" ? value : value, // Keep dob handling as-is
+      }));
+    }
   };
 
+  const [previewImage, setPreviewImage] = useState(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setPreviewImage(imageUrl); // Show preview before uploading
+  
+      // Update playerData state
+      setPlayerData({ ...playerData, profile_pic: file });
+    }
+  };
+  
 
   // Format the date before rendering in the input field
   const formatDate = (dateString) => {
@@ -97,24 +118,73 @@ const EditPlayer = () => {
 
 
   // Handle Save Changes Request
+  // const saveChanges = async (e) => {
+  //   e.preventDefault();
+
+  //   // To avoid shifting by one day, store the date in the format YYYY-MM-DD
+  //   const formattedData = {
+  //     ...playerData,
+  //     dob: playerData.dob ? new Date(playerData.dob).toLocaleDateString("en-CA") : "", // Use local date format (YYYY-MM-DD)
+  //   };
+  //   try {
+  //     const response = await axios.put(
+  //       `${API_BASE_URL}/api/editPlayer/${academyId}/${playerId}`,
+  //       formattedData
+  //     );
+  //     if (response.status === 200) {
+  //       setMessage("Player details updated successfully!");
+  //       // alert("Player Updated..");
+  //       setTimeout(() => {
+  //         navigate(`/AcademyDetails/${role}/${academyId}/Player`); // Redirect to Player Page
+  //       }, 2000);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating player details:", error);
+  //     setMessage("Failed to update player details. Please try again.");
+  //   }
+  // };
+
   const saveChanges = async (e) => {
     e.preventDefault();
-
-    // To avoid shifting by one day, store the date in the format YYYY-MM-DD
-    const formattedData = {
-      ...playerData,
-      dob: playerData.dob ? new Date(playerData.dob).toLocaleDateString("en-CA") : "", // Use local date format (YYYY-MM-DD)
-    };
+  
+    // Format DOB to avoid shifting issues (YYYY-MM-DD format)
+    const formattedDOB = playerData.dob 
+      ? new Date(playerData.dob).toISOString().split("T")[0] 
+      : "";
+  
+    // Create FormData for sending file + other fields
+    const formData = new FormData();
+    formData.append("name", playerData.name);
+    formData.append("dob", formattedDOB);
+    formData.append("gender", playerData.gender);
+    formData.append("school_name", playerData.school_name);
+    formData.append("sports_expertise", playerData.sports_expertise);
+    formData.append("address", playerData.address);
+    formData.append("previous_academy", playerData.previous_academy);
+    formData.append("father_name", playerData.father_name);
+    formData.append("mother_name", playerData.mother_name);
+    formData.append("phone_number", playerData.phone_number);
+    formData.append("batch", playerData.batch);
+  
+    if (playerData.profile_pic) {
+      formData.append("profile_pic", playerData.profile_pic); // Append image file
+    }
+  
     try {
       const response = await axios.put(
         `${API_BASE_URL}/api/editPlayer/${academyId}/${playerId}`,
-        formattedData
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
+  
       if (response.status === 200) {
         setMessage("Player details updated successfully!");
-        // alert("Player Updated..");
         setTimeout(() => {
-          navigate(`/AcademyDetails/${role}/${academyId}/Player`); // Redirect to Player Page
+          navigate(`/AcademyDetails/${role}/${academyId}/Player`);
         }, 2000);
       }
     } catch (error) {
@@ -122,8 +192,7 @@ const EditPlayer = () => {
       setMessage("Failed to update player details. Please try again.");
     }
   };
-
-
+  
   return (
     <div className="edit-player-container">
       <h2 className='heading'>Edit Player</h2>
@@ -265,14 +334,43 @@ const EditPlayer = () => {
           </div>
 
           <div className="form-group">
-            <label>Profile Picture URL:</label>
-            <input
-              type="text"
-              name="profile_pic"
-              value={playerData.profile_pic}
-              onChange={handleInputChange}
-            />
-          </div>
+  <label>Profile Picture:</label>
+  <input
+    type="file"
+    accept="image/*"
+    name="profile_pic"
+    onChange={(e) => handleImageChange(e)}
+  />
+  
+  {/* Show existing image or preview selected image */}
+  {previewImage ? (
+    <img
+      src={previewImage}
+      alt="Profile Preview"
+      style={{
+        width: "100px",
+        height: "100px",
+        borderRadius: "10px",
+        marginTop: "10px",
+        objectFit: "cover"
+      }}
+    />
+  ) : playerData.profile_pic ? (
+    <img
+      src={`${API_BASE_URL}/uploads/${playerData.profile_pic}`} // Adjust path if needed
+      alt="Profile"
+      style={{
+        width: "100px",
+        height: "100px",
+        borderRadius: "10px",
+        marginTop: "10px",
+        objectFit: "cover"
+      }}
+    />
+  ) : null}
+</div>
+
+
 
           <button type="submit">Save Changes</button>
           {message && <p style={{ color: "green" }}>{message}</p>}

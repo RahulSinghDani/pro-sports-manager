@@ -983,12 +983,56 @@ app.get("/api/getPlayerDetails/:academyId/:playerId", (req, res) => {
 
 
 //edit player endpoints / values 
-app.put("/api/editPlayer/:academyId/:playerId", (req, res) => {
+// app.put("/api/editPlayer/:academyId/:playerId",upload.single('profile_pic'), (req, res) => {
+//   const { academyId, playerId } = req.params;
+//   const playerData = req.body;
+//   const profilePicPath = req.file ? `${req.file.filename}` : null;
+//   const query =
+//     "UPDATE player SET name = ?, dob = ?, gender = ?, school_name = ?, sports_expertise = ?, address = ?, previous_academy = ?, father_name = ?, mother_name = ?, phone_number = ?, batch = ?, profile_pic = ? WHERE academy_id = ? AND id = ?";
+
+//   db.query(
+//     query,
+//     [
+//       playerData.name,
+//       playerData.dob,
+//       playerData.gender,
+//       playerData.school_name,
+//       playerData.sports_expertise,
+//       playerData.address,
+//       playerData.previous_academy,
+//       playerData.father_name,
+//       playerData.mother_name,
+//       playerData.phone_number,
+//       playerData.batch,
+//       playerData.profile_pic,
+//       academyId,
+//       playerId,
+//     ],
+//     (err, results) => {
+//       if (err) {
+//         console.error("Error updating player details:", err);
+//         return res.status(500).json({ message: "Failed to update player details." });
+//       }
+//       if (results.affectedRows > 0) {
+//         res.status(200).json({ message: "Player details updated successfully." });
+//       } else {
+//         res.status(404).json({ message: "Player not found." });
+//       }
+//     }
+//   );
+// });
+app.put("/api/editPlayer/:academyId/:playerId", upload.single("profile_pic"), (req, res) => {
   const { academyId, playerId } = req.params;
   const playerData = req.body;
+  const profilePicPath = req.file ? req.file.filename : null;
 
-  const query =
-    "UPDATE player SET name = ?, dob = ?, gender = ?, school_name = ?, sports_expertise = ?, address = ?, previous_academy = ?, father_name = ?, mother_name = ?, phone_number = ?, batch = ?, profile_pic = ? WHERE academy_id = ? AND id = ?";
+  const query = `
+    UPDATE player 
+    SET name = ?, dob = ?, gender = ?, school_name = ?, sports_expertise = ?, 
+        address = ?, previous_academy = ?, father_name = ?, mother_name = ?, 
+        phone_number = ?, batch = ?, profile_pic = COALESCE(?, profile_pic) 
+    WHERE academy_id = ? AND id = ?
+  `;
 
   db.query(
     query,
@@ -1004,7 +1048,7 @@ app.put("/api/editPlayer/:academyId/:playerId", (req, res) => {
       playerData.mother_name,
       playerData.phone_number,
       playerData.batch,
-      playerData.profile_pic,
+      profilePicPath, // Updates profile_pic only if a new file is uploaded, otherwise keeps existing value
       academyId,
       playerId,
     ],
@@ -1021,6 +1065,7 @@ app.put("/api/editPlayer/:academyId/:playerId", (req, res) => {
     }
   );
 });
+
 //--------------------------------------------------------------
 
 
