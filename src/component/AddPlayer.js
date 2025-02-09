@@ -165,7 +165,7 @@ const AddPlayer = () => {
             <input type="text" value={playerId} disabled />
           </div>
           <div className="form-group">
-            <label>Name:</label>
+            <label>Name: <span style={{color:'red'}}>*</span></label>
             <input
               type="text"
               value={name}
@@ -174,7 +174,7 @@ const AddPlayer = () => {
             />
           </div>
           <div className="form-group">
-            <label>Date of Birth:</label>
+            <label>Date of Birth: <span style={{color:'red'}}>*</span></label>
             <input
               type="date"
               value={dob}
@@ -183,7 +183,7 @@ const AddPlayer = () => {
             />
           </div>
           <div className="form-group">
-            <label>Gender:</label>
+            <label>Gender: <span style={{color:'red'}}>*</span></label>
             <select value={gender} onChange={(e) => setGender(e.target.value)} required>
               <option value="">Select Gender</option>
               <option value="Male">Male</option>
@@ -191,7 +191,7 @@ const AddPlayer = () => {
             </select>
           </div>
           <div className="form-group">
-            <label>School Name:</label>
+            <label>School Name: <span style={{color:'red'}}>*</span></label>
             <input
               type="text"
               value={schoolName}
@@ -200,7 +200,7 @@ const AddPlayer = () => {
             />
           </div>
           <div className="form-group">
-            <label>Sports Expertise:</label>
+            <label>Sports Expertise: <span style={{color:'red'}}>*</span></label>
             <input
               type="text"
               value={sportsExpertise}
@@ -209,7 +209,7 @@ const AddPlayer = () => {
             />
           </div>
           <div className="form-group">
-            <label>Address:</label>
+            <label>Address: <span style={{color:'red'}}>*</span></label>
             <textarea
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -217,16 +217,16 @@ const AddPlayer = () => {
             />
           </div>
           <div className="form-group">
-            <label>Previous Academy:</label>
+            <label>Previous Academy: </label>
             <input
               type="text"
               value={previousAcademy}
               onChange={(e) => setPreviousAcademy(e.target.value)}
-              required
+              
             />
           </div>
           <div className="form-group">
-            <label>Father's Name:</label>
+            <label>Father's Name: <span style={{color:'red'}}>*</span></label>
             <input
               type="text"
               value={fatherName}
@@ -235,7 +235,7 @@ const AddPlayer = () => {
             />
           </div>
           <div className="form-group">
-            <label>Mother's Name:</label>
+            <label>Mother's Name: <span style={{color:'red'}}>*</span></label>
             <input
               type="text"
               value={motherName}
@@ -244,7 +244,7 @@ const AddPlayer = () => {
             />
           </div>
           <div className="form-group">
-            <label>Phone Number:</label>
+            <label>Phone Number: <span style={{color:'red'}}>*</span></label>
             <input
               type="text"
               value={phoneNumber}
@@ -254,7 +254,7 @@ const AddPlayer = () => {
           </div>
           <div className="form-group">
 
-            <label>Batch:</label>
+            <label>Batch: <span style={{color:'red'}}>*</span></label>
             <select value={batch} onChange={(e) => setBatch(e.target.value)} required>
               <option value="">Select Batch</option>
               {batches.map((batch) => (
@@ -266,7 +266,7 @@ const AddPlayer = () => {
 
           </div>
           <div className="form-group">
-            <label>Fee Type</label>
+            <label>Fee Type <span style={{color:'red'}}>*</span></label>
             <select value={feeType} onChange={(e) => setFeeType(e.target.value)} required>
               <option>Select</option>
               <option value="Quarterly">Quarterly</option>

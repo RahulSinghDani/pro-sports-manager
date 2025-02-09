@@ -851,6 +851,34 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(26px);
 }
+/* --------------------------- */
+/* i changed motion with css academy navbar animation */
+.fade-page {
+  position: sticky;
+  top: 0; /* Keeps it at the top */
+  opacity: 0;
+  transform: translateX(-100%); /* Start from the left */
+  animation: slideIn 0.5s ease-in-out forwards;
+  background-color: white; /* Optional: Ensure background visibility */
+  z-index: 100; /* Ensures it stays above other content */
+}
+.fade-page-img-home{
+  opacity: 0;
+  transform: translateX(-100%); /* Start from the left */
+  animation: slideIn 0.5s ease-in-out forwards;
+  background-color: white; /* Optional: Ensure background visibility */
+}
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 
 /* --------------------- */
 
@@ -936,6 +964,10 @@ input:checked + .slider:before {
 
 .news-container::-webkit-scrollbar-thumb:hover {
   background: #555; /* Darker shade on hover */
+}
+.logout-btn-png img{
+  width: 40px;
+  height: 40px;
 }
 
 /* -----  */
@@ -1392,7 +1424,7 @@ div {
 }
 
 .player-rank {
-  font-size: 1.3rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #222;
   margin-bottom: 0.5rem;

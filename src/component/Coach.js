@@ -52,11 +52,14 @@ const Coach = () => {
             coaches.id === coachId ? { ...coaches, status: newStatus } : coaches
           )
         );
+        alert(`Coach Status updated successfully!`);
       } else {
         console.error("Failed to update status");
+        alert("Failed to update status");
       }
     } catch (error) {
       console.error("Error:", error);
+      alert("An error occurred while updating the status");
     }
   };
 
@@ -87,7 +90,7 @@ const Coach = () => {
             <table className='table-main'>
               <thead>
                 <tr>
-                <th>Status</th>
+                  <th>Status</th>
                   <th>ID</th>
                   <th>Name</th>
                   <th>Designation</th>

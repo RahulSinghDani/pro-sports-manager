@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { styles } from './Style';
 import LogoIcon from './Images/favicon.ico';
+import LogOutPng from './Images/log-out_1.png';
 
 
 const AcademyNavbar = ({ role, academyId }) => {
@@ -73,7 +74,7 @@ const AcademyNavbar = ({ role, academyId }) => {
                 <Link to={`/AcademyDetails/${role}/${academyId}/Player`}>
                   Player  </Link> </li>
               <li>
-                <Link to="/">LogOut</Link>
+                <Link to="/" className='logout-btn-png'><img src={LogOutPng} /></Link>
               </li>
             </ul>
           )}
@@ -93,7 +94,7 @@ const AcademyNavbar = ({ role, academyId }) => {
           <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} ><button style={styles.btn}>Courses</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Asset`} ><button style={styles.btn}>Assets</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Player`} ><button style={styles.btn}>Player</button></Link>
-          <Link to="/"  className='logout-btn'>LogOut</Link>
+          <Link to="/"  className='logout-btn-png'><img src={LogOutPng} /></Link>
         </ul>
       )}
     </nav>

@@ -5,7 +5,8 @@ import axios from 'axios';
 import './AcademyNavbar.css';
 import AcademyNavbar from './AcademyNavbar.js';
 import { styles } from './Style.js';
-import GroundImage from './Images/ground2.jpg';
+import DefaultImage from './Images/cricket-players.jpg';
+// import GroundImage from './Images/ground2.jpg';
 import InstagramPng from './Images/instapng.png';
 import YoutubePng from './Images/ytpng.png';
 import FacebookPng from './Images/fbpng.png';
@@ -13,30 +14,30 @@ import LocationImg from './Images/locationIcon.jpg';
 import DilarImg from './Images/phone-call.png';
 import About from './About.js';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import CricketGraph from './CricketGraph.js';
 import NewsForm from './NewsForm.js';
 
-const useIncrementalCount = (targetValue, duration = 1000) => {
-  const [count, setCount] = useState(0);
+// const useIncrementalCount = (targetValue, duration = 1000) => {
+//   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    let start = 0;
-    const increment = targetValue / (duration / 10);
-    const interval = setInterval(() => {
-      start += increment;
-      if (start >= targetValue) {
-        setCount(targetValue);
-        clearInterval(interval);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, 10);
-    return () => clearInterval(interval);
-  }, [targetValue, duration]);
+//   useEffect(() => {
+//     let start = 0;
+//     const increment = targetValue / (duration / 10);
+//     const interval = setInterval(() => {
+//       start += increment;
+//       if (start >= targetValue) {
+//         setCount(targetValue);
+//         clearInterval(interval);
+//       } else {
+//         setCount(Math.floor(start));
+//       }
+//     }, 10);
+//     return () => clearInterval(interval);
+//   }, [targetValue, duration]);
 
-  return count;
-};
+//   return count;
+// };
 const AcademyDetails = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -51,10 +52,12 @@ const AcademyDetails = () => {
   const [totalPlayer, setTotalPlayer] = useState(0);
   const [totalCourses, setTotalCourses] = useState(0);
 
-  const animatedRevenue = useIncrementalCount(revenue);
-  const animatedCoachCount = useIncrementalCount(coachCount.totalCoach);
-  const animatedTotalPlayer = useIncrementalCount(totalPlayer.countTotalPlayer);
-  const animatedTotalCourses = useIncrementalCount(totalCourses.countTotalCourses);
+
+  
+  // const animatedRevenue = useIncrementalCount(revenue);
+  // const animatedCoachCount = useIncrementalCount(coachCount.totalCoach);
+  // const animatedTotalPlayer = useIncrementalCount(totalPlayer.countTotalPlayer);
+  // const animatedTotalCourses = useIncrementalCount(totalCourses.countTotalCourses);
   // console.log("total : ",totalCourses.countTotalCourses);
   useEffect(() => {
     axios
@@ -141,11 +144,7 @@ const AcademyDetails = () => {
       });
   }, [API_BASE_URL, academyId]);
 
-  const pageVariants = {
-    initial: { x: "-100vw", opacity: 0 },
-    animate: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
-    exit: { x: "100vw", opacity: 0, transition: { ease: "easeInOut", duration: 0.5 } }
-  };
+
   if (error) {
     return <div>{error}</div>;
   }
@@ -164,32 +163,28 @@ const AcademyDetails = () => {
   return (
     <div >
       {/* <aside className="w-64 bg-gray-900 text-white h-screen p-5 sticky top-0 md:block hidden"> */}
-        <motion.div
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          variants={pageVariants} >
-          <AcademyNavbar role={role} academyId={academyId} />
-        </motion.div>
+      <div className="fade-page">
+        <AcademyNavbar role={role} academyId={academyId} />
+      </div>
+
       <div className='below-navbar'>
         {/* Dashboard Boxes */}
-        <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} >
 
-          <div id="dashboard-boxes">
-            <div className="dashboard-box">
-              <h3>Total Players</h3>
-              <p className='countdown-numbers'>{animatedTotalPlayer}</p>
-            </div>
-            <div className="dashboard-box">
-              <h3>New Players MTD</h3>
-              <p className='countdown-numbers'>{animatedTotalPlayer}</p>
-            </div>
-            <div className="dashboard-box">
-              <h3>YTD Revenue</h3>
-              <p className='countdown-numbers'>₹ {animatedRevenue}</p>
-            </div>
+        <div id="dashboard-boxes">
+          <div className="dashboard-box">
+            <h3>Total Players</h3>
+            <p className='countdown-numbers'>{totalPlayer.countTotalPlayer}</p>
           </div>
-        </motion.div>
+          <div className="dashboard-box">
+            <h3>New Players MTD</h3>
+            <p className='countdown-numbers'>{totalPlayer.countTotalPlayer}</p>
+          </div>
+          <div className="dashboard-box">
+            <h3>YTD Revenue</h3>
+            <p className='countdown-numbers'>₹ {revenue}</p>
+          </div>
+        </div>
+
         <div className='academy-img' alt="Ground"
           style={{
             marginTop: '10px',
@@ -210,9 +205,9 @@ const AcademyDetails = () => {
                 ? academyData.images // Use the provided link if valid
                 : `${API_BASE_URL}/uploads/${academyData.images}` // Construct the file path
             }
-            style={{ width: '50%',borderRadius:'20px' }}
+            style={{ width: '50%', borderRadius: '20px' }}
             alt="Loading..."
-            onError={(e) => { e.target.src = GroundImage; }} // Fallback image
+            onError={(e) => { e.target.src = DefaultImage; }} // Fallback image
           />
 
           <div className='news-form-div'>
@@ -244,16 +239,16 @@ const AcademyDetails = () => {
               <div style={{ display: 'flex', justifyContent: 'center', gap: '5px' }}>
                 <div className="info-card">
                   <h3 className="info-title">Total Coach</h3>
-                  <p className="info-count">{animatedCoachCount}</p>
+                  <p className="info-count">{coachCount.totalCoach}</p>
                 </div>
 
                 <div className="info-card">
                   <h3 className="info-title">Total Player</h3>
-                  <p className="info-count">{animatedTotalPlayer}</p>
+                  <p className="info-count">{totalPlayer.countTotalPlayer}</p>
                 </div>
                 <div className="info-card">
                   <h3 className="info-title">Total Courses</h3>
-                  <p className="info-count">{animatedTotalCourses}</p>
+                  <p className="info-count">{totalCourses.countTotalCourses}</p>
                 </div>
               </div>
 

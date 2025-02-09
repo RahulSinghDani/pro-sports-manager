@@ -8,13 +8,27 @@ import About from './About';
 const PlayerDetails = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-    const { academyId, id, role } = useParams();
+    const { academyId, id, role ,name} = useParams();
+    console.log("player id: ", id);
     // const [totalPlayers, setTotalPlayers] = useState(0);
     const [playerData, setPlayerData] = useState({});
     const [outstandingFee, setOutstandingFee] = useState(0);
+    const [players, setPlayers] = useState({});
 
-
-
+//fetch cricket data
+useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/cricket-data/player/${academyId}/${id}`);
+        // If response is array, take the first element
+        setPlayers(response.data[0] || {});
+      } catch (error) {
+        console.error("Error fetching cricket data:", error);
+      }
+    };
+    fetchData();
+  }, [API_BASE_URL, academyId, id]);
+  
     // useEffect(() => {
     //     const fetchTotalPlayers = async () => {
     //         try {
@@ -41,9 +55,9 @@ const PlayerDetails = () => {
                 console.error("Error fetching outstanding fee records:", error);
             }
         };
-      
+
         fetchPlayerOutstandingFee();
-      }, [API_BASE_URL, academyId , id]);
+    }, [API_BASE_URL, academyId, id]);
 
     //Player by academy id AND id
     useEffect(() => {
@@ -80,7 +94,7 @@ const PlayerDetails = () => {
 
             <div className="container" style={{ display: "flex", justifyContent: "center" }}>
                 <div>
-                    
+
 
 
                     {/* Player Details Section */}
@@ -114,10 +128,12 @@ const PlayerDetails = () => {
                                 {/* Second Column */}
                                 <div style={{ textAlign: "center", margin: "5px" }}>
                                     <img
-                                        src={playerData.profile_pic || defaultImage}
-                                        // src={defaultImage}
+                                        src={playerData.profile_pic ? `${API_BASE_URL}/uploads/${playerData.profile_pic}` : defaultImage}
                                         alt="Player"
-                                        style={{ width: "150px", borderRadius: "10px", marginBottom: "60px" }}
+                                        style={{ width: "150px", borderRadius: "10px", marginBottom: "60px", pointerEvents: "none", userSelect: "none" ,cursor:'not-allowed'}}
+                                        onDoubleClick={(e) => e.preventDefault()} // Prevents double-click
+                                        onContextMenu={(e) => e.preventDefault()} // Disables right-click (prevents download)
+                                        draggable="false" // Prevents drag & drop
                                     />
 
                                     <p><strong>School:</strong> {playerData.school_name}</p>
@@ -130,14 +146,14 @@ const PlayerDetails = () => {
                                         <table style={tableStyle}>
                                             <tbody>
                                                 <tr>
-                                                    <td><strong>Matches:</strong> 10</td>
-                                                    <td><strong>Runs:</strong> 220</td>
-                                                    <td><strong>Wickets:</strong> 12</td>
+                                                    <td><strong>Matches: </strong> {players.matches_played || 0}</td>
+                                                    <td><strong>Runs: </strong> {players.runs || 0}</td>
+                                                    <td><strong>Wickets: </strong>{players.wickets || 0}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <button style={buttonStyle}>Add Sports Details</button>
+                                    <Link to={`/player-cricket-data/${role}/${academyId}/${id}/${name}`} style={buttonStyle}> Add Sports Details</Link>
                                 </div>
                             </div>
                         </div>

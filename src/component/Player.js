@@ -84,11 +84,14 @@ const Player = () => {
             player.id === playerId ? { ...player, status: newStatus } : player
           )
         );
+        alert(`Player Status updated successfully!`);
       } else {
         console.error("Failed to update status");
+        alert("Failed to update status");
       }
     } catch (error) {
       console.error("Error:", error);
+      alert("An error occurred while updating the status");
     }
   };
 
@@ -201,7 +204,7 @@ const Player = () => {
                     </td>
                     <td><Link to={`/financialform/${role}/${academyId}/${player.id}/${player.name}/${player.fee}`}>Payment <br /><b> {player.id}</b></Link></td>
 
-                    <td><Link to={`/AcademyDetails/${role}/${academyId}/${player.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <td><Link to={`/AcademyDetails/${role}/${academyId}/${player.id}/${player.name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                       <b> {player.name}</b>
                     </Link></td>
                     <td> <b>Batch:</b> {player.batch} <br /> {player.fee_type}<br />Rs. <span style={{ color: "blue", fontSize: "1rem" }}> {player.fee}</span></td>

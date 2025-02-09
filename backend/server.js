@@ -864,7 +864,8 @@ app.post("/api/addPlayer/:academyId", upload.single("profile_pic"), (req, res) =
   } = req.body;
 
   const academyId = req.params.academyId;
-  const profilePicPath = req.file ? req.file.path : null;
+  const profilePicPath = req.file ? `${req.file.filename}` : null;
+  // req.file ? req.file.path : null; 
 
   // Generate a new unique player ID
   db.query("SELECT MAX(id) AS maxId FROM player", (err, results) => {
@@ -1261,24 +1262,73 @@ app.post("/updateCoachStatus", async (req, res) => {
 });
 //-------------------------------------
 // add player cricket record 
-app.post('/api/cricket-data', (req, res) => {
-  const { player_id,name, matches_played, runs, wickets } = req.body;
+app.post('/api/cricket-data/:academyId/:id/:name', (req, res) => {
+  const { academyId, id, name } = req.params;
+  const { matches_played, runs, wickets } = req.body;
 
-  if (!player_id) {
-      return res.status(400).json({ message: 'Player ID is required' });
+  if (!id) {
+    return res.status(400).json({ message: 'Player ID is required' });
   }
 
-  const sql = 'INSERT INTO cricket_data (player_id,name, matches_played, runs, wickets) VALUES (?, ?, ?, ?)';
-  const values = [player_id,name, matches_played, runs, wickets];
+  // First, check if the player ID exists
+  const checkSql = 'SELECT * FROM cricket_data WHERE player_id = ? AND academy_id = ?';
+  db.query(checkSql, [id, academyId], (err, results) => {
+    if (err) {
+      console.error('Error checking player:', err);
+      return res.status(500).json({ message: 'Database error' });
+    }
 
-  db.query(sql, values, (err, result) => {
-      if (err) {
-          console.error('Error inserting data:', err);
+    if (results.length > 0) {
+      // Player exists, run UPDATE query
+      const updateSql = `
+        UPDATE cricket_data 
+        SET name = ?, matches_played = ?, runs = ?, wickets = ? 
+        WHERE player_id = ? AND academy_id = ?
+      `;
+      const updateValues = [name, matches_played, runs, wickets, id, academyId];
+
+      db.query(updateSql, updateValues, (updateErr, updateResult) => {
+        if (updateErr) {
+          console.error('Error updating data:', updateErr);
           return res.status(500).json({ message: 'Database error' });
-      }
-      res.status(201).json({ message: 'Data added successfully', id: result.insertId });
+        }
+        res.status(200).json({ message: 'Data updated successfully' });
+      });
+    } else {
+      // Player does not exist, run INSERT query
+      const insertSql = `
+        INSERT INTO cricket_data (player_id, name, matches_played, runs, wickets, academy_id) 
+        VALUES (?, ?, ?, ?, ?, ?)
+      `;
+      const insertValues = [id, name, matches_played, runs, wickets, academyId];
+
+      db.query(insertSql, insertValues, (insertErr, insertResult) => {
+        if (insertErr) {
+          console.error('Error inserting data:', insertErr);
+          return res.status(500).json({ message: 'Database error' });
+        }
+        res.status(201).json({ message: 'Data added successfully', id: insertResult.insertId });
+      });
+    }
   });
 });
+
+//------------------------------------------------
+
+//display player cricket score
+app.get("/api/cricket-data/player/:academyId/:id", (req, res) => {
+
+  const {academyId,id} = req.params;
+  const sql = "SELECT * FROM cricket_data WHERE academy_id = ? AND player_id = ?";
+  db.query(sql,[academyId,id], (err, result) => {
+      if (err) {
+          console.error("Error fetching data:", err);
+          return res.status(500).json({ message: "Database error" });
+      }
+      res.json(result);
+  });
+});
+
 //--------------------------------------------
 // fetch cricket score data 
 app.get("/api/cricket-data/graph/:academyId", (req, res) => {
@@ -1313,7 +1363,7 @@ app.get("/api/cricket-data/graph/:academyId", (req, res) => {
 app.get("/api/allPlayers/:academyId/:id", (req, res) => {
   const { academyId, id } = req.params;
 
-  const query = `SELECT id , name,dob,school_name,sports_expertise,father_name, mother_name , phone_number,batch FROM player WHERE academy_id = ? AND id = ? `;
+  const query = `SELECT * FROM player WHERE academy_id = ? AND id = ? `;
   // const query = `SELECT * FROM player WHERE academy_id = ? AND id = ? `; // it gives error on picture because it also trying to fetch picture
 
   db.query(query, [academyId, id], (err, results) => {

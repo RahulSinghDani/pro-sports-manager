@@ -143,15 +143,11 @@ const Home = () => {
     navbarDropdown.classList.toggle('open', isDropdownOpen);
   };
 
-  const pageVariants = {
-    initial: { x: "-100vw", opacity: 0 },
-    animate: { x: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
-    exit: { x: "100vw", opacity: 0, transition: { ease: "easeInOut", duration: 0.5 } }
-  };
   return (
     // <div className='body1'>
     <div >
-      <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} >
+      
+      <div className="fade-page">
         {role !== 'admin' && (
           <nav className='nav'>
             <h1 className='logo'>Pro Sports Manager</h1>
@@ -180,7 +176,7 @@ const Home = () => {
             )}
           </nav>
         )}
-      </motion.div>
+        </div>
 
 
       {/* Hero Section */}
@@ -189,8 +185,8 @@ const Home = () => {
       <div className='below-navbar-home'>
 
         <div className='home-top-content'>
-          <motion.div initial="initial" animate="animate" exit="exit" variants={pageVariants} >
-
+          
+          <div className="fade-page-img-home">
             <div style={{
               paddingTop: '50px',
               // width: '60%', // Makes the image responsive and fills the width of its container
@@ -204,7 +200,7 @@ const Home = () => {
             }}>
               <img src={homeCricket} alt='home icon loading...' className='home-top-img' />
             </div>
-          </motion.div>
+          </div>
           <div className='mainHeadingHome'>
             <h1 className='h1StyleHome'>Pro Sports Manager</h1>
             <h3 className='h3StyleAcademyHome'>Your Sports Venue & Player <span style={styles.hubSpan}>Hub</span></h3>

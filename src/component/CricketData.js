@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import About from './About';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Player from './Player';
 
 const CricketData = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -9,8 +10,6 @@ const CricketData = () => {
 
     const {role, academyId, id , name } = useParams();
     const [formData, setFormData] = useState({
-        player_id: id,
-        name: name,
         matches_played: 0,
         runs: 0,
         wickets: 0,
@@ -27,7 +26,7 @@ const CricketData = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/cricket-data`, formData);
+            const response = await axios.post(`${API_BASE_URL}/api/cricket-data/${academyId}/${id}/${name}`, formData);
             console.log('Data added:', response.data);
             alert('Sports Data added successfully!');
             navigate(`/AcademyDetails/${role}/${academyId}/Player`);
@@ -48,7 +47,7 @@ const CricketData = () => {
                         <label>Player ID:</label>
                         <input
                             type="text"
-                            name="player_id"
+                            name="id"
                             value={id}
                             onChange={handleChange}
                             required
