@@ -46,7 +46,8 @@ const AddAcademy = () => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      },{ withCredentials: true });
+        withCredentials: true 
+      });
       setSuccess('Academy added successfully!');
       setTimeout(() => {
         navigate(`/Dashboard/${role}`);

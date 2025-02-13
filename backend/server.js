@@ -553,7 +553,57 @@ app.get('/api/players/:academyId',verifyToken, (req, res) => {
 
 //Add New Academy ------------------------------
 // Endpoint to add a new academy
-app.post('/api/addacademies',verifyToken, upload.single('images'), (req, res) => {
+// app.post('/api/addacademies',verifyToken, upload.single('images'), (req, res) => {
+//   const images = req.file ? req.file.filename : null;
+//   const {
+//     name,
+//     address,
+//     owner_name,
+//     phone_num,
+//     email,
+
+//     website,
+//     logo,
+//     youtube,
+//     instagram,
+//     facebook,
+//     user_id,
+//     latitude,
+//     longitude,
+//   } = req.body;
+
+//   // Validate required fields
+//   if (!name || !address || !owner_name || !phone_num || !email) {
+//     return res.status(400).json({ message: 'Missing required fields.' });
+//   }
+
+//   // Prepare the query to insert the new academy into the database
+//   const query = `
+//     INSERT INTO academy (
+//       name, address, owner_name, phone_num, email,
+//       website, images, logo, youtube, instagram, facebook, user_id,latitude,longitude
+//     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+//   `;
+
+//   // Execute the query
+//   db.query(
+//     query,
+//     [ name, address, owner_name, phone_num, email, website, images,logo, youtube, instagram, facebook, user_id, latitude, longitude ],
+//     (err, result) => {
+//       if (err) {
+//         console.error('Error inserting data into the database:', err.stack);
+//         return res.status(500).json({ message: 'Failed to add academy.' });
+//       }
+
+//       console.log('New Academy Added:', result);
+//       res.status(201).json({
+//         message: 'Academy added successfully!',
+//         academyId: result.insertId, // return the ID of the inserted record
+//       });
+//     }
+//   );
+// });
+app.post('/api/addacademies', verifyToken, upload.single('images'), (req, res) => {
   const images = req.file ? req.file.filename : null;
   const {
     name,
@@ -561,7 +611,6 @@ app.post('/api/addacademies',verifyToken, upload.single('images'), (req, res) =>
     owner_name,
     phone_num,
     email,
-
     website,
     logo,
     youtube,
@@ -577,32 +626,56 @@ app.post('/api/addacademies',verifyToken, upload.single('images'), (req, res) =>
     return res.status(400).json({ message: 'Missing required fields.' });
   }
 
-  // Prepare the query to insert the new academy into the database
-  const query = `
-    INSERT INTO academy (
-      name, address, owner_name, phone_num, email,
-      website, images, logo, youtube, instagram, facebook, user_id,latitude,longitude
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
-
-  // Execute the query
-  db.query(
-    query,
-    [ name, address, owner_name, phone_num, email, website, images,logo, youtube, instagram, facebook, user_id, latitude, longitude ],
-    (err, result) => {
-      if (err) {
-        console.error('Error inserting data into the database:', err.stack);
-        return res.status(500).json({ message: 'Failed to add academy.' });
-      }
-
-      console.log('New Academy Added:', result);
-      res.status(201).json({
-        message: 'Academy added successfully!',
-        academyId: result.insertId, // return the ID of the inserted record
-      });
+  // Function to generate new academy id from the last one
+  const generateNewId = (lastId) => {
+    let newNumber = 1;
+    if (lastId) {
+      // Extract numeric part and increment
+      const numPart = parseInt(lastId.replace('aca', ''), 10);
+      newNumber = numPart + 1;
     }
-  );
+    // Format as "aca" followed by a 3-digit number with leading zeros
+    return 'aca' + String(newNumber).padStart(3, '0');
+  };
+
+  // Query to get the last academy id
+  const getLastIdQuery = "SELECT id FROM academy WHERE id LIKE 'aca%' ORDER BY id DESC LIMIT 1";
+  db.query(getLastIdQuery, (err, results) => {
+    if (err) {
+      console.error("Error getting last id:", err);
+      return res.status(500).json({ message: "Error generating new academy id" });
+    }
+    
+    const lastId = results.length > 0 ? results[0].id : null;
+    const newAcademyId = generateNewId(lastId);
+
+    // Prepare the query to insert the new academy, including the generated id
+    const query = `
+      INSERT INTO academy (
+        id, name, address, owner_name, phone_num, email,
+        website, images, logo, youtube, instagram, facebook, user_id, latitude, longitude
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    // Execute the query with newAcademyId as the first parameter
+    db.query(
+      query,
+      [newAcademyId, name, address, owner_name, phone_num, email, website, images, logo, youtube, instagram, facebook, user_id, latitude, longitude],
+      (err, result) => {
+        if (err) {
+          console.error('Error inserting data into the database:', err.stack);
+          return res.status(500).json({ message: 'Failed to add academy.' });
+        }
+        console.log('New Academy Added:', result);
+        res.status(201).json({
+          message: 'Academy added successfully!',
+          academyId: newAcademyId // Return the generated academy id
+        });
+      }
+    );
+  });
 });
+
 //--------------------------------------------------------
 // Route: Get news by academy_id
 app.get('/api/getNews/:academyId',verifyToken, (req, res) => {
