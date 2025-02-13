@@ -17,7 +17,7 @@ const DeletePlayer = () => {
   const fetchPlayerDetails = async () => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/api/getPlayerDetails/${playerId}`
+        `${API_BASE_URL}/api/getPlayerDetails/${playerId}` ,{ withCredentials: true }
       );
       if (response.data) {
         setPlayerName(response.data.name);
@@ -35,7 +35,7 @@ const DeletePlayer = () => {
   const deletePlayer = async () => {
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}/api/deletePlayer/${playerId}`
+        `${API_BASE_URL}/api/deletePlayer/${playerId}` ,{ withCredentials: true }
       );
       if (response.status === 200) {
         setMessage("Player deleted successfully!");

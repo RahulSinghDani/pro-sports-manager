@@ -38,7 +38,7 @@ const AddPlayer = () => {
     // Fetch available batches for the selected academy
     const fetchBatches = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/getDistinctBatches/${academyId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/getDistinctBatches/${academyId}`,{ withCredentials: true });
         setBatches(response.data);
       } catch (error) {
         console.error("Error fetching batches:", error);
@@ -48,7 +48,7 @@ const AddPlayer = () => {
     // Fetch a unique player ID
     const fetchPlayerId = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/getUniquePlayerId`);
+        const response = await axios.get(`${API_BASE_URL}/api/getUniquePlayerId`,{ withCredentials: true });
         setPlayerId(response.data.id);
       } catch (error) {
         console.error("Error fetching player ID:", error);
@@ -64,7 +64,7 @@ const AddPlayer = () => {
   useEffect(() => {
     // Fetch course data from the backend
     axios
-      .get(`${API_BASE_URL}/api/courses/${academyId}`)
+      .get(`${API_BASE_URL}/api/courses/${academyId}`,{ withCredentials: true })
       .then(response => {
         setCourses(response.data); // Set the fetched courses data
         setLoading(false); // Set loading to false after data is fetched
@@ -131,7 +131,8 @@ const AddPlayer = () => {
       const response = await axios.post(
         `${API_BASE_URL}/api/addPlayer/${academyId}`,
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { "Content-Type": "multipart/form-data" } }, 
+        { withCredentials: true }
       );
 
       if (response.status === 200) {

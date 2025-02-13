@@ -16,15 +16,15 @@ const FinancialSummary = () => {
         const fetchFinancialData = async () => {
             try {
                 // Fetch total revenue
-                const revenueResponse = await axios.get(`${API_BASE_URL}/api/booking/totalrevenue/${academyId}`);
+                const revenueResponse = await axios.get(`${API_BASE_URL}/api/booking/totalrevenue/${academyId}`,{ withCredentials: true });
                 const totalRevenue = revenueResponse.data.totalRevenue || 0;
 
                 // Fetch total expenses
-                const expensesResponse = await axios.get(`${API_BASE_URL}/api/player_financial/totalexpenses/${academyId}`);
+                const expensesResponse = await axios.get(`${API_BASE_URL}/api/player_financial/totalexpenses/${academyId}`,{ withCredentials: true });
                 const totalExpenses = expensesResponse.data.totalExpenses || 0;
 
                 // Fetch account receivables
-                const receivableResponse = await axios.get(`${API_BASE_URL}/api/player_financial/acreceivable/${academyId}`);
+                const receivableResponse = await axios.get(`${API_BASE_URL}/api/player_financial/acreceivable/${academyId}`, { withCredentials: true });
                 const acReceivable = receivableResponse.data.acReceivable || 0;
 
                 // Update state with fetched data

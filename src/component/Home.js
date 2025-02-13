@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams ,useLocation} from 'react-router-dom';
 import HomeImage from './Images/homeimage.jpg';
 import { styles } from './Style';
 //-------------------
@@ -12,10 +12,27 @@ import YogaImg from "./Images/yogaImage.jpg"; // Replace with the actual path
 import FitnessTrainerImg from "./Images/fitnessimg.jpg";
 import homeCricket from "./Images/home-cricket-icon.png";
 import { motion } from "framer-motion";
+import ContactForm from './ContactForm';
 
 const Home = () => {
   const { role } = useParams();
 
+
+  const ScrollToHashElement = () => {
+    const location = useLocation();
+  
+    useEffect(() => {
+      if (location.hash) {
+        const element = document.querySelector(location.hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }, [location]);
+  
+    return null;
+  };
+  
   const showPrivacyPolicy = () => {
     const policy = `
       Privacy Policy for Pro Sports Manager
@@ -159,16 +176,13 @@ const Home = () => {
                 </button>
                 {isDropdownOpen && (
                   <ul className='navLinks'>
-                    <li><Link to="/UserRegistration"><button style={styles.btnSignup}>Sign Up</button></Link></li>
                     <li><Link to="/Login"><button style={styles.btnLogin}>Log In</button></Link></li>
                   </ul>
                 )}
               </div>
             ) : (
               <ul className='navLinks'>
-                <li>
-                  <Link to="/UserRegistration"><button style={styles.btnSignup}>Sign Up</button></Link>
-                </li>
+                
                 <li>
                   <Link to="/Login"><button style={styles.btnLogin}>Log In</button></Link>
                 </li>
@@ -178,7 +192,7 @@ const Home = () => {
         )}
         </div>
 
-
+        <ScrollToHashElement />
       {/* Hero Section */}
       {/* Hero Section as About Section */}
 
@@ -204,7 +218,7 @@ const Home = () => {
           <div className='mainHeadingHome'>
             <h1 className='h1StyleHome'>Pro Sports Manager</h1>
             <h3 className='h3StyleAcademyHome'>Your Sports Venue & Player <span style={styles.hubSpan}>Hub</span></h3>
-            <Link to="/UserRegistration">
+            <a href='#contact'>
               <button
                 style={{
                   backgroundColor: 'blue',
@@ -221,7 +235,7 @@ const Home = () => {
               >
                 Get Started
               </button>
-            </Link>
+            </a>
           </div>
         </div>
         <div className="homeImgWithText" >
@@ -250,7 +264,7 @@ const Home = () => {
 
             <p style={{ fontSize: '1.2rem', width: '100%', textAlign: 'left' }}>
               Efficiently manage player details, coaches, batches, and more with our comprehensive Sports Academy Management System. Our platform provides a centralized space to streamline every aspect of your academy’s operations. From tracking player progress and performance to scheduling batches and managing coaches, we empower academies to optimize their workflow, improve training efficiency, and ensure smooth day-to-day management. Whether you're a coach, admin, or academy owner, our system simplifies and elevates your management experience, making it easier to focus on what matters most—developing athletes and achieving success.  </p>
-            <Link to="/UserRegistration">
+            <a href='#contact'>
               <button
                 style={{
                   backgroundColor: 'blue',
@@ -265,7 +279,7 @@ const Home = () => {
               >
                 Get Started
               </button>
-            </Link>
+            </a>
           </section>
 
 
@@ -304,9 +318,9 @@ const Home = () => {
         <section style={{ backgroundColor: '#333', color: 'white', padding: '40px 20px', textAlign: 'center' }}>
           <h2>Ready to get started?</h2>
           <p>Join now to manage your academy’s data efficiently.</p>
-          <Link to='/PlayerRegistration'><button style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', borderRadius: '5px' }}>
+          {/* <Link to='/PlayerRegistration'><button style={{ backgroundColor: 'orange', color: 'white', padding: '10px 20px', borderRadius: '5px' }}>
             Sign Up Now
-          </button></Link>
+          </button></Link> */}
         </section>
 
 
@@ -326,37 +340,7 @@ const Home = () => {
             {/* Contact Form */}
             <div className='home-contactus'>
               <h3>Send us a message</h3>
-              <form>
-                <div style={{ marginBottom: '12px' }}>
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    style={{ width: '100%', padding: '10px', borderRadius: '5px' }}
-                    required
-                  />
-                </div>
-                <div style={{ marginBottom: '12px' }}>
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    style={{ width: '100%', padding: '10px', borderRadius: '5px' }}
-                    required
-                  />
-                </div>
-                <div style={{ marginBottom: '12px' }}>
-                  <textarea
-                    placeholder="Your Message"
-                    style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ddd', height: '100px' }}
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  style={{ backgroundColor: '#007BFF', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer' }}
-                >
-                  Send Message
-                </button>
-              </form>
+              <ContactForm />
             </div>
 
             {/* Contact Information */}

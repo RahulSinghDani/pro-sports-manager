@@ -25,7 +25,7 @@ const UserRegistration = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ role, username, password: hashedPassword }),  // Send the hashed password
-    });
+    } ,  { withCredentials: true });
 
     const data = await response.json();
     if (response.ok) {

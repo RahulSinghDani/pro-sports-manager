@@ -22,7 +22,7 @@ const DeleteAsset = () => {
 
     // Fetch the asset data using the assetId and academyId
     axios
-      .get(`${API_BASE_URL}/api/assets/${academyId}/${assetId}`)
+      .get(`${API_BASE_URL}/api/assets/${academyId}/${assetId}`, { withCredentials: true })
       .then((response) => {
         const { assetName } = response.data;
         setAssetName(assetName);
@@ -45,7 +45,7 @@ const DeleteAsset = () => {
     setLoading(true);
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}/api/deleteAsset/${academyId}/${assetId}`
+        `${API_BASE_URL}/api/deleteAsset/${academyId}/${assetId}` ,{ withCredentials: true }
       );
 
       if (response.status === 200) {

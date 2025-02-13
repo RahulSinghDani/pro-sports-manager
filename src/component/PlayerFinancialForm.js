@@ -53,7 +53,7 @@ const PlayerFinancialForm = () => {
         }
 
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/playerFinancial`, formData);
+            const response = await axios.post(`${API_BASE_URL}/api/playerFinancial`, formData, { withCredentials: true });
             if (response.status === 200) {
                 alert("Data added successfully!"); // Alert comes first
                 setMessage("Player financial details added successfully.");

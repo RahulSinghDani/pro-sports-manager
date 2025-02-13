@@ -16,7 +16,7 @@ const CricketGraph = ({ academyId }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/api/cricket-data/graph/${academyId}`);
+                const response = await axios.get(`${API_BASE_URL}/api/cricket-data/graph/${academyId}`,{ withCredentials: true });
                 setPlayers(response.data);
             } catch (error) {
                 console.error("Error fetching cricket data:", error);
@@ -31,7 +31,7 @@ const CricketGraph = ({ academyId }) => {
             try {
                 const newPlayerData = {};
                 await Promise.all(players.map(async (player) => {
-                    const response = await axios.get(`${API_BASE_URL}/api/allPlayers/${academyId}/${player.player_id}`);
+                    const response = await axios.get(`${API_BASE_URL}/api/allPlayers/${academyId}/${player.player_id}`, { withCredentials: true });
                     newPlayerData[player.player_id] = response.data;
                 }));
                 setPlayerData(newPlayerData);

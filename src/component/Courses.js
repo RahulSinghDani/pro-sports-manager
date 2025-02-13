@@ -15,7 +15,7 @@ const Courses = () => {
   useEffect(() => {
     // Fetch course data from the backend
     axios
-      .get(`${API_BASE_URL}/api/courses/${academyId}`)
+      .get(`${API_BASE_URL}/api/courses/${academyId}`,{ withCredentials: true })
       .then(response => {
         setCourses(response.data); // Set the fetched courses data
         setLoading(false); // Set loading to false after data is fetched

@@ -21,7 +21,7 @@ const DeleteCoach = () => {
 
     // Fetch the coch data using the coachId and academyId
     axios
-      .get(`${API_BASE_URL}/api/getCoach/${academyId}/${coachId}`)
+      .get(`${API_BASE_URL}/api/getCoach/${academyId}/${coachId}` ,{ withCredentials: true })
       .then((response) => {
         const { coachName } = response.data;
         setCoachName(coachName);
@@ -44,7 +44,7 @@ const DeleteCoach = () => {
     setLoading(true);
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}/api/deleteCoach/${academyId}/${coachId}`
+        `${API_BASE_URL}/api/deleteCoach/${academyId}/${coachId}` ,{ withCredentials: true }
       );
 
       if (response.status === 200) {

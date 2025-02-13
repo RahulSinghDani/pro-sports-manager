@@ -30,7 +30,7 @@ const HomeAllPlayerDashboard = () => {
     useEffect(() => {
         // Mock data
         axios
-            .get(`${API_BASE_URL}/api/allplayer`)
+            .get(`${API_BASE_URL}/api/allplayer`,{ withCredentials: true })
             .then(response => {
                 console.log("API Response:", response);
                 setPlayers(response.data); // Set the fetched player data

@@ -22,7 +22,7 @@ const Player = () => {
     const fetchTotalPlayers = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/totalPlayers/${academyId}`
+          `${API_BASE_URL}/api/totalPlayers/${academyId}` , { withCredentials: true }
         );
         setTotalPlayers(response.data.total);
       } catch (error) {
@@ -34,7 +34,7 @@ const Player = () => {
   }, [API_BASE_URL, academyId]);
   useEffect(() => {
     axios
-      .get(`${API_BASE_URL}/api/revenue/${academyId}`)
+      .get(`${API_BASE_URL}/api/revenue/${academyId}`,{ withCredentials: true })
       .then(response => {
         setRevenue(response.data.YTD_Revenue || 0);
       })
@@ -47,7 +47,7 @@ const Player = () => {
   useEffect(() => {
     // Fetch player data from the backend
     axios
-      .get(`${API_BASE_URL}/api/players/${academyId}`)
+      .get(`${API_BASE_URL}/api/players/${academyId}`,{ withCredentials: true })
       .then(response => {
         setPlayers(response.data); // Set the fetched player data
         setLoading(false); // Stop loading

@@ -25,7 +25,7 @@ const LoginCoachDashboard = () => {
   //fetch coach data 
   useEffect(() => {
     // Fetch data for a specific coach using the id
-    axios.get(`${API_BASE_URL}/api/coaches/${academyId}/${coachId}`)
+    axios.get(`${API_BASE_URL}/api/coaches/${academyId}/${coachId}` , { withCredentials: true })
       .then(response => {
         setCoach(response.data); // Set the specific coach's data
       })
@@ -46,7 +46,7 @@ const LoginCoachDashboard = () => {
     const fetchTotalPlayers = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/totalPlayers`
+          `${API_BASE_URL}/api/totalPlayers` , { withCredentials: true }
         );
         setTotalPlayers(response.data.total);
       } catch (error) {
@@ -61,7 +61,7 @@ const LoginCoachDashboard = () => {
   useEffect(() => {
     // Fetch player data from the backend
     axios
-      .get(`${API_BASE_URL}/api/players/${academyId}`)
+      .get(`${API_BASE_URL}/api/players/${academyId}`, { withCredentials: true })
       .then(response => {
         setPlayers(response.data); // Set the fetched player data
         setLoading(false); // Stop loading

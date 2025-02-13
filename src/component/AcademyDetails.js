@@ -61,7 +61,7 @@ const AcademyDetails = () => {
   // console.log("total : ",totalCourses.countTotalCourses);
   useEffect(() => {
     axios
-      .get(`${API_BASE_URL}/api/revenue/${academyId}`)
+      .get(`${API_BASE_URL}/api/revenue/${academyId}`,{ withCredentials: true })
       .then(response => {
         setRevenue(response.data.YTD_Revenue || 0);
       })
@@ -72,69 +72,64 @@ const AcademyDetails = () => {
   })
 
   // player display according to under 10 ,12 , 14, 16
+  
   useEffect(() => {
     const fetchPlayerCount = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/player-count/${academyId}`);
-        const data = await response.json();
-        setPlayerCount(data);
+        const response = await axios.get(`${API_BASE_URL}/api/player-count/${academyId}`, { withCredentials: true });
+        setPlayerCount(response.data);
       } catch (error) {
         console.error("Error fetching player count:", error);
       }
     };
-
     fetchPlayerCount();
   }, [API_BASE_URL, academyId]);
-
-  //fetch courses count 
+  
+  // Fetch courses count
   useEffect(() => {
     const fetchCoursesCount = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/total-courses/${academyId}`);
-        const data = await response.json();
-        setTotalCourses(data);
+        const response = await axios.get(`${API_BASE_URL}/api/total-courses/${academyId}`, { withCredentials: true });
+        setTotalCourses(response.data);
       } catch (error) {
         console.error("Error fetching courses count:", error);
       }
     };
-
     fetchCoursesCount();
   }, [API_BASE_URL, academyId]);
-
-  //fetching coach count 
+  
+  // Fetching coach count
   useEffect(() => {
     const fetchCoachCount = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/coach-count/${academyId}`);
-        const data = await response.json();
-        setCoachCount(data);
+        const response = await axios.get(`${API_BASE_URL}/api/coach-count/${academyId}`, { withCredentials: true });
+        setCoachCount(response.data);
       } catch (error) {
         console.error("Error fetching coach count:", error);
       }
     };
-
     fetchCoachCount();
   }, [API_BASE_URL, academyId]);
-
-  //fetch total player count 
+  
+  // Fetch total player count
   useEffect(() => {
     const fetchTotalPlayer = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/count-total-player/${academyId}`);
-        const data = await response.json();
-        setTotalPlayer(data);
+        const response = await axios.get(`${API_BASE_URL}/api/count-total-player/${academyId}`, { withCredentials: true });
+        setTotalPlayer(response.data);
       } catch (error) {
-        console.error("Error fetching coach count:", error);
+        console.error("Error fetching total player count:", error);
       }
-    }
+    };
     fetchTotalPlayer();
-  })
+  }, [API_BASE_URL, academyId]);
+  
 
 
   useEffect(() => {
     // Fetch specific academic data from the backend
     axios
-      .get(`${API_BASE_URL}/api/academicy/${academyId}`)
+      .get(`${API_BASE_URL}/api/academicy/${academyId}`,{ withCredentials: true })
       .then(response => {
         setAcademy(response.data); // Save the academy object
       })

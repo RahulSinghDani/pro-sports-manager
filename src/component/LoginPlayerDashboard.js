@@ -23,7 +23,7 @@ const LoginPlayerDashboard = () => {
         const fetchTotalPlayers = async () => {
             try {
                 const response = await axios.get(
-                    `${API_BASE_URL}/api/totalPlayers`
+                    `${API_BASE_URL}/api/totalPlayers` , { withCredentials: true }
                 );
                 setTotalPlayers(response.data.total);
             } catch (error) {
@@ -39,7 +39,7 @@ const LoginPlayerDashboard = () => {
     useEffect(() => {
         const fetchPlayerData = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/api/allPlayers/${academy_id}/${id}`);
+                const response = await axios.get(`${API_BASE_URL}/api/allPlayers/${academy_id}/${id}`, { withCredentials: true });
                 setPlayerData(response.data);
             } catch (error) {
                 console.error("Error fetching Data : ", error);

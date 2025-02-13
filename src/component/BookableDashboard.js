@@ -23,7 +23,7 @@ const BookableDashboard = () => {
     useEffect(() => {
         if (id && academyId) {
             axios
-                .get(`${API_BASE_URL}/all-bookable-grounds/${academyId}/${id}`)
+                .get(`${API_BASE_URL}/all-bookable-grounds/${academyId}/${id}`,{ withCredentials: true })
                 .then((response) => {
                     if (response.data && response.data.length > 0) {
                         setBookableDetails(response.data[0]);

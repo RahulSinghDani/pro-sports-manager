@@ -26,7 +26,7 @@ const CricketData = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/cricket-data/${academyId}/${id}/${name}`, formData);
+            const response = await axios.post(`${API_BASE_URL}/api/cricket-data/${academyId}/${id}/${name}`, formData, { withCredentials: true });
             console.log('Data added:', response.data);
             alert('Sports Data added successfully!');
             navigate(`/AcademyDetails/${role}/${academyId}/Player`);

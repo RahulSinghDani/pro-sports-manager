@@ -72,7 +72,7 @@ const NewBooking = () => {
         axios
             .post(`${API_BASE_URL}/bookings/${role}/${academyId}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
-            })
+            } , { withCredentials: true })
             .then((response) => {
                 alert('Booking created successfully!');
                 navigate(`/AcademyDetails/${role}/${academyId}/Asset`);

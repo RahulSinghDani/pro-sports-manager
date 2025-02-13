@@ -12,7 +12,7 @@ const PublicBookings = () => {
     useEffect(() => {
         // Fetch booking data
         axios
-            .get(`${API_BASE_URL}/public-bookings`) // Replace with your API endpoint
+            .get(`${API_BASE_URL}/public-bookings`, { withCredentials: true }) // Replace with your API endpoint
             .then((response) => {
                 setBookings(response.data);
                 setLoading(false);

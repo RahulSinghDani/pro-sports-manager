@@ -24,7 +24,7 @@ const EditCourse = () => {
 
     // Fetch the course data using the courseId and academyId
     axios
-      .get(`${API_BASE_URL}/api/courses/${academyId}/${courseId}`)
+      .get(`${API_BASE_URL}/api/courses/${academyId}/${courseId}`,{ withCredentials: true })
       .then((response) => {
         const { course_name, timing, fee } = response.data;
         setCourseName(course_name);
@@ -55,7 +55,8 @@ const EditCourse = () => {
           course_name: courseName,
           timing: timing,
           fee: parseFloat(fee),
-        }
+        },
+        { withCredentials: true }
       );
 
       if (response.status === 200) {

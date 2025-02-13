@@ -31,7 +31,7 @@ const BookNow = () => {
     // Fetch booked dates
     useEffect(() => {
         // Fetch booked dates
-        axios.get(`${API_BASE_URL}/api/bookings/dates/${id}`)
+        axios.get(`${API_BASE_URL}/api/bookings/dates/${id}`,{ withCredentials: true })
             .then(response => {
                 // Format dates to 'YYYY-MM-DD' and convert to Date objects
                 const dates = response.data.flat().map(dateString => {
@@ -72,7 +72,7 @@ const BookNow = () => {
     useEffect(() => {
         if (id && academyId) {
             axios
-                .get(`${API_BASE_URL}/all-bookable-grounds/${academyId}/${id}`)
+                .get(`${API_BASE_URL}/all-bookable-grounds/${academyId}/${id}`,{ withCredentials: true })
                 .then((response) => {
                     if (response.data && response.data.length > 0) {
                         setBookableDetails(response.data[0]);
@@ -120,7 +120,7 @@ const BookNow = () => {
         };
 
         // Post booking data to backend
-        axios.post(`${API_BASE_URL}/api/bookings-book-now`, bookingData)
+        axios.post(`${API_BASE_URL}/api/bookings-book-now`, bookingData , { withCredentials: true })
             .then(response => {
                 alert('Booking successful');
                 navigate(`/AcademyDetails/${role}/${academyId}/Asset`);

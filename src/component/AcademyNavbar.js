@@ -3,9 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { styles } from './Style';
 import LogoIcon from './Images/favicon.ico';
 import LogOutPng from './Images/log-out_1.png';
+import axios from 'axios';
 
 
 const AcademyNavbar = ({ role, academyId }) => {
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   const location = useLocation(); // Get the current location (path)
   // const { role } = useParams();
   const isLoginAcademyDashboard = location.pathname.includes('/LoginAcademyDashboard');
@@ -35,12 +38,19 @@ const AcademyNavbar = ({ role, academyId }) => {
     navbarDropdown.classList.toggle('open', isDropdownOpen);
   };
 
-
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${API_BASE_URL}/api/logout`, {}, { withCredentials: true });
+      window.location.href = '/Login'; // Redirect after logout
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
   return (
     <nav className='nav'>
       <div className='logo-container'>
-      <img style={{width:'50px' , borderRadius:'50%'}} src={LogoIcon} alt='logo' />
-      <Link to={`/AcademyDetails/${role}/${academyId}`} className="logo" >Pro Sports Manager</Link>
+        <img style={{ width: '50px', borderRadius: '50%' }} src={LogoIcon} alt='logo' />
+        <Link to={`/AcademyDetails/${role}/${academyId}`} className="logo" >Pro Sports Manager</Link>
       </div>
       {/* For Mobile View (Dropdown on small screens) */}
       {isMobile ? (
@@ -54,7 +64,7 @@ const AcademyNavbar = ({ role, academyId }) => {
                 <li><Link to={`/Dashboard/${role}`}>All Academy</Link></li>
               )}
               <li> <Link to={`/AcademyDetails/${role}/${academyId}/ManagePayment`}>
-                  Payments </Link>
+                Payments </Link>
               </li>
               {/* <li>
                 <Link to={`/AcademyDetails/${role}/${academyId}`}>
@@ -74,7 +84,9 @@ const AcademyNavbar = ({ role, academyId }) => {
                 <Link to={`/AcademyDetails/${role}/${academyId}/Player`}>
                   Player  </Link> </li>
               <li>
-                <Link to="/" className='logout-btn-png'><img src={LogOutPng} /></Link>
+                <a onClick={handleLogout} className='logout-btn-png'>
+                  <img src={LogOutPng} alt='logout' />
+                </a>
               </li>
             </ul>
           )}
@@ -94,7 +106,9 @@ const AcademyNavbar = ({ role, academyId }) => {
           <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} ><button style={styles.btn}>Courses</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Asset`} ><button style={styles.btn}>Assets</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Player`} ><button style={styles.btn}>Player</button></Link>
-          <Link to="/"  className='logout-btn-png'><img src={LogOutPng} /></Link>
+          <a onClick={handleLogout} className='logout-btn-png'>
+            <img src={LogOutPng} alt='logout' />
+          </a>
         </ul>
       )}
     </nav>

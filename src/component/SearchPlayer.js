@@ -18,7 +18,7 @@ const SearchPlayer = () => {
             searchTerm,
             searchBy,
           },
-        }
+        }, { withCredentials: true }
       );
       if (response.data) {
         setPlayerDetails(response.data); // Update state with player details

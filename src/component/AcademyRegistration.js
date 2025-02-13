@@ -38,7 +38,7 @@ const AcademyRegistration = () => {
     e.preventDefault();
 
     axios
-      .post(`${API_BASE_URL}/api/addacademies`, formData)
+      .post(`${API_BASE_URL}/api/addacademies`, formData ,{ withCredentials: true })
       .then((response) => {
         setSuccess('Academy added successfully!');
         setTimeout(() => {

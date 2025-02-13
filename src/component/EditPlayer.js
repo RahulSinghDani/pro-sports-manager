@@ -31,7 +31,7 @@ const EditPlayer = () => {
     const fetchBatches = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/getDistinctBatches/${academyId}`
+          `${API_BASE_URL}/api/getDistinctBatches/${academyId}` ,{ withCredentials: true }
         );
         setBatchList(response.data);
       } catch (error) {
@@ -50,7 +50,7 @@ const EditPlayer = () => {
 
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/api/getPlayerDetails/${academyId}/${playerId}`
+        `${API_BASE_URL}/api/getPlayerDetails/${academyId}/${playerId}` ,{ withCredentials: true }
       );
       if (response.data) {
         setPlayerData(response.data);
@@ -178,7 +178,8 @@ const EditPlayer = () => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        }
+        },
+        { withCredentials: true }
       );
   
       if (response.status === 200) {

@@ -19,7 +19,7 @@ const PlayerDetails = () => {
 useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/cricket-data/player/${academyId}/${id}`);
+        const response = await axios.get(`${API_BASE_URL}/api/cricket-data/player/${academyId}/${id}`,{ withCredentials: true });
         // If response is array, take the first element
         setPlayers(response.data[0] || {});
       } catch (error) {
@@ -49,7 +49,7 @@ useEffect(() => {
     useEffect(() => {
         const fetchPlayerOutstandingFee = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/api/outstanding-fee/${academyId}/${id}`);
+                const response = await axios.get(`${API_BASE_URL}/api/outstanding-fee/${academyId}/${id}`,{ withCredentials: true });
                 setOutstandingFee(response.data);
             } catch (error) {
                 console.error("Error fetching outstanding fee records:", error);
@@ -63,7 +63,7 @@ useEffect(() => {
     useEffect(() => {
         const fetchPlayerData = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/api/allPlayers/${academyId}/${id}`);
+                const response = await axios.get(`${API_BASE_URL}/api/allPlayers/${academyId}/${id}`,{ withCredentials: true });
                 setPlayerData(response.data);
             } catch (error) {
                 console.error("Error fetching Data : ", error);

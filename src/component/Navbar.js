@@ -1,17 +1,28 @@
 import React from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
-// import { styles } from './Style';
-import "./Style.css";
+import './Style.css';
 import LogOutPng from './Images/log-out_1.png';
 
 const Navbar = () => {
-  // const {role} = useParams();
-  // console.log(role);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(`${API_BASE_URL}/api/logout`, {}, { withCredentials: true });
+      window.location.href = '/Login'; // Redirect after logout
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
     <div>
-      <nav className='nav' >
+      <nav className='nav'>
         <h1 className="logo">Pro Sports Manager</h1>
-         <Link to="/" className='logout-btn-png'><img src={LogOutPng} /> </Link>
+        <a onClick={handleLogout} className='logout-btn-png'>
+          <img src={LogOutPng} alt='logout' />
+        </a>
       </nav>
     </div>
   );

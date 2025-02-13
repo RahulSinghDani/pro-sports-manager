@@ -31,7 +31,7 @@ const EditAcademy = () => {
 
     const fetchAcademy = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/academies/${academyId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/academies/${academyId}`,{ withCredentials: true });
         setAcademy(response.data); // Set academy details for editing
         setMessage(''); // Clear any previous message
       } catch (error) {
@@ -50,7 +50,7 @@ const EditAcademy = () => {
     setMessage('');
 
     try {
-      const response = await axios.put(`${API_BASE_URL}/api/academies/${academyId}`, academy);
+      const response = await axios.put(`${API_BASE_URL}/api/academies/${academyId}`, academy , { withCredentials: true });
 
       if (response.data.success) {
         setMessage('Academy updated successfully!');

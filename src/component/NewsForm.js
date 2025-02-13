@@ -11,7 +11,7 @@ const NewsForm = ({ role, academyId }) => {
 
     useEffect(() => {
         if (API_BASE_URL) {
-            axios.get(`${API_BASE_URL}/api/getNews/${academyId}`)
+            axios.get(`${API_BASE_URL}/api/getNews/${academyId}`, { withCredentials: true })
                 .then(response => {
                     console.log(response.data); // Check the data structure
                     setNewsData(response.data); // Directly set the fetched data
@@ -74,7 +74,7 @@ const NewsForm = ({ role, academyId }) => {
         formData.append('title', newsDetails.title);
         if (newsDetails.image) formData.append('image', newsDetails.image);
 
-        axios.post(`${API_BASE_URL}/api/publishNews`, formData)
+        axios.post(`${API_BASE_URL}/api/publishNews`, formData , { withCredentials: true })
             .then(response => {
                 alert('News published successfully!');
                 setNewsDetails({ title: '', image: null });

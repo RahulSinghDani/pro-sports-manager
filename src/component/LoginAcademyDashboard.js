@@ -20,7 +20,7 @@ const LoginAcademyDashboard = () => {
         const fetchTotalPlayers = async () => {
             try {
                 const response = await axios.get(
-                    `${API_BASE_URL}/api/totalPlayers`
+                    `${API_BASE_URL}/api/totalPlayers` , { withCredentials: true }
                 );
                 setTotalPlayers(response.data.total);
             } catch (error) {
@@ -36,7 +36,7 @@ const LoginAcademyDashboard = () => {
     useEffect(() => {
         // Fetch specific academic data from the backend
         axios
-            .get(`${API_BASE_URL}/api/academicy/${academyId}`)
+            .get(`${API_BASE_URL}/api/academicy/${academyId}`,{ withCredentials: true })
             .then(response => {
                 setAcademy(response.data); // Save the academy object
             })

@@ -5,8 +5,6 @@
   server.js
 */
 
-
-
 require('dotenv').config();
 
 const express = require('express');
@@ -15,23 +13,27 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
+const jwt = require("jsonwebtoken");
 // const { useParams } = require('react-router-dom');
+const cookieParser = require("cookie-parser");
+const updateSecure = process.env.NODE_ENV === 'production';
+// const bcrypt = require("bcryptjs");
+const CryptoJS = require('crypto-js');
+
+const dotenv = require("dotenv");
+// const verifyToken = require("./middleware/authMiddleware");
+
 
 const app = express();
-const port = process.env.PORT || 5000;
 
+const port = process.env.PORT || 5000;
+// const verifyToken = require("./middleware/verifyToken");
 
 // Middleware
-app.use(cors());
+// app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
 app.use(bodyParser.json());
-
-
-// const db = mysql.createConnection({
-//   host: process.env.DB_HOST || 'localhost', // Fallback to localhost
-//   user: process.env.DB_USER || 'root',     // Fallback to root
-//   password: process.env.DB_PASSWORD || '', // Fallback to empty password
-//   database: process.env.DB_NAME || ''      // Fallback to empty database name
-// });
 
 const db = mysql.createPool({
   connectionLimit: 10, // Adjust the number of connections based on your needs
@@ -40,6 +42,45 @@ const db = mysql.createPool({
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || ''
 });
+
+app.use(cookieParser());
+app.use(express.json());
+app.use(
+  cors({
+    origin: process.env.REACT_APP_API_BASE_URL, // Your frontend URL
+    credentials: true, // Allow cookies to be sent
+  })
+);
+
+const JWT_SECRET = process.env.JWT_SECRET || "your_secret_key";
+
+// Corrected JWT Token Generation Function
+const generateToken = (id, role) => {
+  return jwt.sign({ id, role }, JWT_SECRET, { expiresIn: '1d' }); // Only `id` and `role`
+};
+
+
+app.use((req, res, next) => {
+  console.log("Cookies received:", req.cookies);
+  next();
+});
+
+const verifyToken = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+      console.log("Token missing in request cookies.");
+      return res.status(401).json({ message: 'Session expired. Login again.' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+          console.log("Invalid token:", err);
+          return res.status(401).json({ message: 'Invalid or expired token' });
+      }
+      req.user = decoded;
+      next();
+  });
+};
 
 // db.connect(err => {
 //   if (err) throw err;
@@ -63,102 +104,252 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
-
+//---------------------------------
+//------------------------------
 // Login route
 // Login route
+//1
+// app.post('/login',async (req, res) => {
+//   const { username, password } = req.body;
 
+//   const query = 'SELECT * FROM userdata WHERE username = ? AND password = ?';
+//   db.execute(query, [username, password], (err, results) => {
+//     if (err) {
+//       console.error("Database Error:", err);
+//       return res.status(500).json({ message: 'Internal Server Error', error: err });
+//     }
+    
+
+//     if (results.length > 0) {
+//       const { user_id, role } = results[0];
+      
+//       const token = generateToken(user_id, role);
+
+//       if (role === 'player') {
+//         // Check if user_id exists in player table
+//         const playerQuery = 'SELECT * FROM player WHERE user_id = ?';
+//         db.execute(playerQuery, [user_id], (err, playerResults) => {
+//           if (err) {
+//             return res.status(500).send('Database error');
+//           }
+//           if (playerResults.length > 0) {
+//             const { academy_id, id } = playerResults[0];
+
+//             const token = generateToken(id,  role); // * JWT Token for player
+//             res.cookie('token', token, { httpOnly: true, secure: updateSecure, sameSite: 'Strict' });
+//             return res.status(200).json({ message: 'Login successful', role: 'player', academy_id, id });
+//           } else {
+//             return res.status(400).json({ message: 'Invalid player credentials' });
+//           }
+//         });
+//       } else if (role === 'academy') {
+//         // Check if user_id exists in academy table
+//         const academyQuery = 'SELECT * FROM academy WHERE user_id = ?';
+//         db.execute(academyQuery, [user_id], (err, academyResults) => {
+//           if (err) {
+//             return res.status(500).send('Database error');
+//           }
+//           if (academyResults.length > 0) {
+//             const { id } = academyResults[0];
+//             // console.log("Academy Results:", academyResults[0]); // Debug log
+//             const token = generateToken( id, role); // * JWT Token for academy
+//             res.cookie('token', token, { httpOnly: true, secure: updateSecure, sameSite: 'Strict' });
+//             return res.status(200).json({ message: 'Login successful', role: 'academy', id});
+//           } else {
+//             return res.status(400).json({ message: 'Invalid academy credentials' });
+//           }
+//         });
+//       }
+//       else if (role === 'coach') {
+//         // Check if user_id exists in coach table
+//         const coachQuery = 'SELECT * FROM employee WHERE user_id = ?';
+//         db.execute(coachQuery, [user_id], (err, coachResults) => {
+//           if (err) {
+//             return res.status(500).send('Database error');
+//           }
+//           if (coachResults.length > 0) {
+//             const { academy_id, id } = coachResults[0];
+//             const token = generateToken(id ,role); // * JWT Token for coach
+//             res.cookie('token', token, { httpOnly: true, secure: updateSecure, sameSite: 'Strict' });
+//             return res.status(200).json({ message: 'Login successful', role: 'coach', academy_id, id });
+//           } else {
+//             return res.status(400).json({ message: 'Invalid coach credentials' });
+//           }
+//         });
+//       }
+//       else if (role === 'admin') {
+//         // Admin has full access; no user_id check required
+//         const token = generateToken(user_id, role ); // * JWT Token for admin
+//         res.cookie('token', token, { httpOnly: true, secure: updateSecure, sameSite: 'Strict' });
+//         return res.status(200).json({ message: 'Login successful', role: 'admin',id: user_id});
+//       } else {
+//         return res.status(400).json({ message: 'Invalid role' });
+//       }
+//     } else {
+//       res.status(400).json({ message: 'Invalid credentials' });
+//     }
+//   });
+// });
+//--
+//2
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
   const query = 'SELECT * FROM userdata WHERE username = ? AND password = ?';
   db.execute(query, [username, password], (err, results) => {
     if (err) {
-      return res.status(500).send('Database error');
+      console.error("Database Error:", err);
+      return res.status(500).json({ message: 'Internal Server Error', error: err });
     }
 
     if (results.length > 0) {
       const { user_id, role } = results[0];
 
+      let roleQuery = '';
+      let roleTable = '';
       if (role === 'player') {
-        // Check if user_id exists in player table
-        const playerQuery = 'SELECT * FROM player WHERE user_id = ?';
-        db.execute(playerQuery, [user_id], (err, playerResults) => {
-          if (err) {
-            return res.status(500).send('Database error');
-          }
-          if (playerResults.length > 0) {
-            const { academy_id, id } = playerResults[0];
-            return res.status(200).json({ message: 'Login successful', role: 'player', academy_id, id });
-          } else {
-            return res.status(400).json({ message: 'Invalid player credentials' });
-          }
-        });
+        roleQuery = 'SELECT * FROM player WHERE user_id = ?';
+        roleTable = 'player';
       } else if (role === 'academy') {
-        // Check if user_id exists in academy table
-        const academyQuery = 'SELECT * FROM academy WHERE user_id = ?';
-        db.execute(academyQuery, [user_id], (err, academyResults) => {
-          if (err) {
-            return res.status(500).send('Database error');
-          }
-          if (academyResults.length > 0) {
-            const { id } = academyResults[0];
-            console.log("Academy Results:", academyResults[0]); // Debug log
+        roleQuery = 'SELECT * FROM academy WHERE user_id = ?';
+        roleTable = 'academy';
+      } else if (role === 'coach') {
+        roleQuery = 'SELECT * FROM employee WHERE user_id = ?';
+        roleTable = 'employee';
+      }
 
-            return res.status(200).json({ message: 'Login successful', role: 'academy', id });
-          } else {
-            return res.status(400).json({ message: 'Invalid academy credentials' });
-          }
-        });
-      }
-      else if (role === 'coach') {
-        // Check if user_id exists in coach table
-        const coachQuery = 'SELECT * FROM employee WHERE user_id = ?';
-        db.execute(coachQuery, [user_id], (err, coachResults) => {
+      if (roleTable) {
+        db.execute(roleQuery, [user_id], (err, roleResults) => {
           if (err) {
-            return res.status(500).send('Database error');
+            return res.status(500).json({ message: 'Database error', error: err });
           }
-          if (coachResults.length > 0) {
-            const { academy_id, id } = coachResults[0];
-            return res.status(200).json({ message: 'Login successful', role: 'coach', academy_id, id });
+          if (roleResults.length > 0) {
+            const responseData = {
+              message: 'Login successful',
+              role,
+              id: roleResults[0].id
+            };
+
+            // Add academy_id only for player and coach
+            if (role === 'player' || role === 'coach') {
+              responseData.academy_id = roleResults[0].academy_id;
+            }
+
+            const roleToken = generateToken(roleResults[0].id, role);
+            res.cookie('token', roleToken, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === 'production',  // Only secure in production
+              sameSite: 'Strict',  // Use 'Lax' instead of 'Strict' for cross-origin issues
+              maxAge: 24 * 60 * 60 * 1000  // 1-day expiration
+          });
+            return res.status(200).json(responseData);
           } else {
-            return res.status(400).json({ message: 'Invalid coach credentials' });
+            return res.status(400).json({ message: `Invalid ${role} credentials` });
           }
         });
-      }
-      else if (role === 'admin') {
-        // Admin has full access; no user_id check required
-        return res.status(200).json({ message: 'Login successful', role: 'admin' });
+      } else if (role === 'admin') {
+        const adminToken = generateToken(user_id, role);
+        res.cookie('token', adminToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',  // Only secure in production
+          sameSite: 'Strict',  // Use 'Lax' instead of 'Strict' for cross-origin issues
+          maxAge: 24 * 60 * 60 * 1000  // 1-day expiration
+      });
+        return res.status(200).json({ message: 'Login successful', role, id: user_id });
       } else {
         return res.status(400).json({ message: 'Invalid role' });
       }
     } else {
-      res.status(400).json({ message: 'Invalid credentials' });
+      return res.status(400).json({ message: 'Invalid credentials' });
     }
   });
 });
 
 
-// this is only login code if username and password matches--
+
+//--
+//3
 // app.post('/login', (req, res) => {
 //   const { username, password } = req.body;
 
-//   const query = 'SELECT * FROM userdata WHERE username = ? AND password = ?';
-
-//   db.execute(query, [username, password], (err, results) => {
+//   const query = 'SELECT * FROM userdata WHERE username = ? AND password=?';
+//   db.execute(query, [username,password], (err, results) => {
 //     if (err) {
-//       return res.status(500).send('Database error');
+//       console.error("Database Error:", err);
+//       return res.status(500).json({ message: 'Internal Server Error', error: err });
 //     }
+
 //     if (results.length > 0) {
-//       // Extract role and other details
-//       const { role } = results[0];
-//       res.status(200).json({ message: 'Login successful', role });
+//       const { user_id, role } = results[0];
+//       const token = generateToken(user_id, role);
+
+//       let roleQuery = '';
+//       let roleTable = '';
+//       if (role === 'player') {
+//         roleQuery = 'SELECT * FROM player WHERE user_id = ?';
+//         roleTable = 'player';
+//       } else if (role === 'academy') {
+//         roleQuery = 'SELECT * FROM academy WHERE user_id = ?';
+//         roleTable = 'academy';
+//       } else if (role === 'coach') {
+//         roleQuery = 'SELECT * FROM employee WHERE user_id = ?';
+//         roleTable = 'employee';
+//       }
+
+//       if (roleTable) {
+//         db.execute(roleQuery, [user_id], (err, roleResults) => {
+//           if (err) {
+//             return res.status(500).json({ message: 'Database error', error: err });
+//           }
+//           if (roleResults.length > 0) {
+//             const { id, academy_id } = roleResults[0];
+//             const roleToken = generateToken(id, role);
+//             res.cookie('token', roleToken, {
+//               httpOnly: true,
+//               secure: process.env.NODE_ENV === 'production',
+//               sameSite: 'Strict'
+//             });
+//             return res.status(200).json({ message: 'Login successful', role, id, academy_id });
+//           } else {
+//             return res.status(400).json({ message: `Invalid ${role} credentials` });
+//           }
+//         });
+//       } else if (role === 'admin') {
+//         const adminToken = generateToken(user_id, role);
+//         res.cookie('token', adminToken, {
+//           httpOnly: true,
+//           secure: process.env.NODE_ENV === 'production',
+//           sameSite: 'Strict'
+//         });
+//         return res.status(200).json({ message: 'Login successful', role, id: user_id });
+//       } else {
+//         return res.status(400).json({ message: 'Invalid role' });
+//       }
 //     } else {
-//       res.status(400).json({ message: 'Invalid credentials' });
+//       return res.status(400).json({ message: 'Invalid credentials' });
 //     }
 //   });
 // });
 
+//-------------------------------------------
 //---------------------------------------------------------------
+//here logout 
+// Logout route
+app.post('/api/logout', (req, res) => {
+  // Clear the JWT cookie
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Use 'true' if served over HTTPS in production
+    sameSite: 'Strict', // Adjust based on your requirements
+    path: '/', // Ensure this matches the path used when setting the cookie
+  });
+
+  // Optionally, you can send a response indicating successful logout
+  res.status(200).json({ message: 'Logout successful' });
+});
+
+
+//---------------------------------
 // registration player register player
 
 //add userdata table fields first then player info when he click role is player
@@ -175,9 +366,36 @@ app.post("/registerUser", (req, res) => {
     }
   });
 });
+
+//-----------------------------------------------------
+// contact us form 
+app.post('/api/contact', (req, res) => {
+  const { name, email, phone_number, message } = req.body;
+  const sql = 'INSERT INTO contactus (name, email, phone_number, message) VALUES (?, ?, ?, ?)';
+  db.query(sql, [name, email, phone_number, message], (err, result) => {
+    if (err) {
+      console.error('Error inserting data:', err);
+      res.status(500).json({ error: 'Failed to submit contact form' });
+      return;
+    }
+    res.status(200).json({ message: 'Contact form submitted successfully' });
+  });
+});
+//---------------------------------------
+//display contact us data 
+app.get('/api/contactus', verifyToken, (req, res) => {
+  const query = 'SELECT * FROM contactus';
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database query failed' });
+    }
+    res.json(results);
+  });
+});
+//---------------------------------------------------------
 //player section 
 // Endpoint: Register Player
-app.get("/api/schools", async (req, res) => {
+app.get("/api/schools",verifyToken, async (req, res) => {
   const query = `SELECT DISTINCT id, name FROM academy;`;
   db.query(query, (err, results) => {
     if (err) {
@@ -189,7 +407,7 @@ app.get("/api/schools", async (req, res) => {
 
 //------------------------------------------------------------------
 //Dashboard displaying All Academics
-app.get('/api/dasboard', (req, res) => {
+app.get('/api/dasboard',verifyToken, (req, res) => {
   const query = `
     SELECT DISTINCT
       a.id AS academy_id,
@@ -216,7 +434,7 @@ app.get('/api/dasboard', (req, res) => {
 //academic js table shows academy all info 
 // Route to fetch academic all info
 
-app.get('/api/academicy/:id', (req, res) => {
+app.get('/api/academicy/:id',verifyToken, (req, res) => {
   const academyId = req.params.id;
   console.log('Academy ID:', academyId);  // Debugging line
 
@@ -242,7 +460,7 @@ app.get('/api/academicy/:id', (req, res) => {
 //----------------------------------------------------------
 //coatch data 
 // API route to get coaches by academy ID
-app.get('/api/coaches/:academyId', (req, res) => {
+app.get('/api/coaches/:academyId',verifyToken, (req, res) => {
   const academyId = req.params.academyId;
   const query = `
     SELECT * 
@@ -261,7 +479,7 @@ app.get('/api/coaches/:academyId', (req, res) => {
 
 //------------------
 //Courses / Baches
-app.get('/api/courses/:academyId', (req, res) => {
+app.get('/api/courses/:academyId',verifyToken, (req, res) => {
   const academyId = req.params.academyId;  // Get academyId from URL parameter
 
   const query = `
@@ -279,7 +497,7 @@ app.get('/api/courses/:academyId', (req, res) => {
 });
 //-----------------------------------
 // Endpoint to get assets by academy_id
-app.get('/api/assets/:academyId', (req, res) => {
+app.get('/api/assets/:academyId',verifyToken, (req, res) => {
   const academyId = req.params.academyId;
   const query = 'SELECT * FROM assets WHERE academy_id = ?';
 
@@ -295,7 +513,7 @@ app.get('/api/assets/:academyId', (req, res) => {
 //----------------------------------------------------
 
 // Endpoint to get players by academy_id
-app.get('/api/players/:academyId', (req, res) => {
+app.get('/api/players/:academyId',verifyToken, (req, res) => {
   const academyId = req.params.academyId;
   // const query = 'SELECT id, name, DATE_FORMAT(dob, '%d-%m-%y') AS dob, gender,  school_name, sports_expertise, address, previous_academy, father_name, mother_name, phone_number,  batch,  profile_pic FROM player WHERE academy_id = ?` ;
   const query = `
@@ -335,7 +553,7 @@ app.get('/api/players/:academyId', (req, res) => {
 
 //Add New Academy ------------------------------
 // Endpoint to add a new academy
-app.post('/api/addacademies', upload.single('images'), (req, res) => {
+app.post('/api/addacademies',verifyToken, upload.single('images'), (req, res) => {
   const images = req.file ? req.file.filename : null;
   const {
     name,
@@ -387,7 +605,7 @@ app.post('/api/addacademies', upload.single('images'), (req, res) => {
 });
 //--------------------------------------------------------
 // Route: Get news by academy_id
-app.get('/api/getNews/:academyId', (req, res) => {
+app.get('/api/getNews/:academyId',verifyToken, (req, res) => {
   const { academyId } = req.params;
   const query = 'SELECT * FROM news WHERE academy_id = ? ORDER BY created_at DESC ';
 
@@ -405,7 +623,7 @@ app.get('/api/getNews/:academyId', (req, res) => {
 });
 //-----------------------------------------------
 // Route: Publish news (Insert into MySQL)
-app.post('/api/publishNews', upload.single('image'), (req, res) => {
+app.post('/api/publishNews',verifyToken, upload.single('image'), (req, res) => {
   const { academy_id, title } = req.body;
   const image = req.file ? `${req.file.filename}` : null;
 
@@ -424,7 +642,7 @@ app.post('/api/publishNews', upload.single('image'), (req, res) => {
 });
 //----------------------------------------------
 // Endpoint to view all academies id
-app.get('/api/academies', (req, res) => {
+app.get('/api/academies',verifyToken, (req, res) => {
   const query = 'SELECT * FROM academy';
 
   db.query(query, (err, results) => {
@@ -439,7 +657,7 @@ app.get('/api/academies', (req, res) => {
 //--------------------------------------------------
 //delete academy
 // Endpoint to delete an academy by id
-app.delete('/api/academies/:id', (req, res) => {
+app.delete('/api/academies/:id',verifyToken, (req, res) => {
   const academyId = req.params.id;
 
   // Query to delete the academy from the database
@@ -471,7 +689,7 @@ app.delete('/api/academies/:id', (req, res) => {
 //edit academy update academy
 // PUT request to update academy details by ID
 // Route to get the academy by ID
-app.get('/api/academies/:id', (req, res) => {
+app.get('/api/academies/:id',verifyToken, (req, res) => {
   const { id } = req.params;
   const query = 'SELECT * FROM academy WHERE id = ?';
 
@@ -490,7 +708,7 @@ app.get('/api/academies/:id', (req, res) => {
 });
 
 // Route to update academy by ID
-app.put('/api/academies/:id', (req, res) => {
+app.put('/api/academies/:id',verifyToken, (req, res) => {
   const { id } = req.params;
   const {
     name,
@@ -528,7 +746,7 @@ app.put('/api/academies/:id', (req, res) => {
 // coach edit area / backend
 // edit coach 
 //fetch coach data here for inputs
-app.get('/api/coach/:academyId/:coachId', (req, res) => {
+app.get('/api/coach/:academyId/:coachId',verifyToken, (req, res) => {
   const { academyId, coachId } = req.params;
 
   const query = 'SELECT * FROM employee WHERE academy_id = ? AND id = ?';
@@ -548,7 +766,7 @@ app.get('/api/coach/:academyId/:coachId', (req, res) => {
 
 // Update coach data
 // Update coach details for a specific academy and coach ID
-app.put('/api/editCoach/:academyId/:coachId', (req, res) => {
+app.put('/api/editCoach/:academyId/:coachId',verifyToken, (req, res) => {
   const { academyId, coachId } = req.params;
   const { coachName, designation, address, experience, phoneNumber, email, salary, salaryFrequency } = req.body;
 
@@ -581,7 +799,7 @@ app.put('/api/editCoach/:academyId/:coachId', (req, res) => {
 
 //------------------------------------------------------------------------
 //add new coach 
-app.get("/api/getUniqueCoachId", (req, res) => {
+app.get("/api/getUniqueCoachId",verifyToken, (req, res) => {
   db.query("SELECT MAX(id) AS maxId FROM employee", (err, results) => {
     if (err) {
       return res.status(500).json({ message: "Error fetching coach ID." });
@@ -598,7 +816,7 @@ app.get("/api/getUniqueCoachId", (req, res) => {
 });
 // Add coach API
 // Create a route to add a coach
-app.post("/api/addCoach/:academyId", multer().single('resume'), (req, res) => {
+app.post("/api/addCoach/:academyId", verifyToken, multer().single('resume'), (req, res) => {
   const {
     name,
     designation,
@@ -656,7 +874,7 @@ app.post("/api/addCoach/:academyId", multer().single('resume'), (req, res) => {
 //-----------------------------------------------------------------------------------------
 // Delete Coach
 // Endpoint to fetch coach details
-app.get('/api/getCoach/:academyId/:coachId', (req, res) => {
+app.get('/api/getCoach/:academyId/:coachId',verifyToken, (req, res) => {
   const { academyId, coachId } = req.params;
 
   const query = 'SELECT name FROM employee WHERE academy_id = ? AND id = ?';
@@ -675,7 +893,7 @@ app.get('/api/getCoach/:academyId/:coachId', (req, res) => {
 });
 
 // Endpoint to delete a coach
-app.delete('/api/deleteCoach/:academyId/:coachId', (req, res) => {
+app.delete('/api/deleteCoach/:academyId/:coachId',verifyToken, (req, res) => {
   const { academyId, coachId } = req.params;
 
   const query = 'DELETE FROM employee WHERE academy_id = ? AND id = ?';
@@ -699,7 +917,7 @@ app.delete('/api/deleteCoach/:academyId/:coachId', (req, res) => {
 //edit course
 // Endpoint to get course details by academyId and courseId
 // Fetch course data by academyId and courseId
-app.get('/api/courses/:academyId/:courseId', (req, res) => {
+app.get('/api/courses/:academyId/:courseId',verifyToken, (req, res) => {
   const { academyId, courseId } = req.params;
 
   const query = 'SELECT * FROM courses WHERE academy_id = ? AND course_id = ?';
@@ -718,7 +936,7 @@ app.get('/api/courses/:academyId/:courseId', (req, res) => {
 });
 
 // Update course data
-app.put('/api/editCourse/:academyId/:courseId', (req, res) => {
+app.put('/api/editCourse/:academyId/:courseId',verifyToken, (req, res) => {
   const { academyId, courseId } = req.params;
   const { course_name, timing, fee } = req.body;
 
@@ -745,7 +963,7 @@ app.put('/api/editCourse/:academyId/:courseId', (req, res) => {
 // Endpoint to add a new course
 
 //add new course adge code add course
-app.post('/api/addCourse/:academyId', (req, res) => {
+app.post('/api/addCourse/:academyId',verifyToken, (req, res) => {
   const academyId = req.params.academyId;
   const { course_name, timing, fee , half_yearly , yearly } = req.body;  // Extract data from the request body
 
@@ -777,7 +995,7 @@ app.post('/api/addCourse/:academyId', (req, res) => {
 });
 //----------------
 // fetch time from courses 
-app.get('/api/getCourseTimings', async (req, res) => {
+app.get('/api/getCourseTimings',verifyToken, async (req, res) => {
   try {
     const courseTimings = await Course.findAll(); // Adjust according to your ORM/Database query
     res.json(courseTimings);
@@ -790,7 +1008,7 @@ app.get('/api/getCourseTimings', async (req, res) => {
 
 // delete course
 // Delete course by academyId and courseId
-app.delete('/api/deleteCourse/:academyId/:courseId', (req, res) => {
+app.delete('/api/deleteCourse/:academyId/:courseId',verifyToken, (req, res) => {
   const { academyId, courseId } = req.params;
 
   const query = 'DELETE FROM courses WHERE academy_id = ? AND course_id = ?';
@@ -813,7 +1031,7 @@ app.delete('/api/deleteCourse/:academyId/:courseId', (req, res) => {
 // add a new player here 
 // app.post('/api/addPlayer/:academyId', (req, res) => {
 // Get distinct batch names for a specific academy
-app.get("/api/getDistinctBatches/:academyId", (req, res) => {
+app.get("/api/getDistinctBatches/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
   db.query(
     "SELECT DISTINCT timing FROM courses WHERE academy_id = ?",
@@ -828,7 +1046,7 @@ app.get("/api/getDistinctBatches/:academyId", (req, res) => {
 });
 
 // Get unique player ID
-app.get("/api/getUniquePlayerId", (req, res) => {
+app.get("/api/getUniquePlayerId",verifyToken, (req, res) => {
   db.query("SELECT MAX(id) AS maxId FROM player", (err, results) => {
     if (err) {
       return res.status(500).json({ message: "Error fetching player ID." });
@@ -845,7 +1063,7 @@ app.get("/api/getUniquePlayerId", (req, res) => {
 });
 
 // Add new player
-app.post("/api/addPlayer/:academyId", upload.single("profile_pic"), (req, res) => {
+app.post("/api/addPlayer/:academyId",verifyToken, upload.single("profile_pic"), (req, res) => {
   const {
     name,
     dob,
@@ -924,7 +1142,7 @@ app.use('/uploads', express.static('uploads'));
 //delete player from id 
 // fetch player details from id 
 
-app.get("/api/getPlayerDetails/:playerId", (req, res) => {
+app.get("/api/getPlayerDetails/:playerId",verifyToken, (req, res) => {
   const { playerId } = req.params;
 
   const query = "SELECT name FROM player WHERE id = ?";
@@ -942,7 +1160,7 @@ app.get("/api/getPlayerDetails/:playerId", (req, res) => {
 });
 
 //delete player Code / endpoint
-app.delete("/api/deletePlayer/:playerId", (req, res) => {
+app.delete("/api/deletePlayer/:playerId",verifyToken, (req, res) => {
   const { playerId } = req.params;
 
   const query = "DELETE FROM player WHERE id = ?";
@@ -964,7 +1182,7 @@ app.delete("/api/deletePlayer/:playerId", (req, res) => {
 
 //we are fetching batch option from add player section above 
 //fetch player details 
-app.get("/api/getPlayerDetails/:academyId/:playerId", (req, res) => {
+app.get("/api/getPlayerDetails/:academyId/:playerId", verifyToken,(req, res) => {
   const { academyId, playerId } = req.params;
 
   const query = "SELECT * FROM player WHERE academy_id = ? AND id = ?";
@@ -1021,7 +1239,7 @@ app.get("/api/getPlayerDetails/:academyId/:playerId", (req, res) => {
 //     }
 //   );
 // });
-app.put("/api/editPlayer/:academyId/:playerId", upload.single("profile_pic"), (req, res) => {
+app.put("/api/editPlayer/:academyId/:playerId",verifyToken, upload.single("profile_pic"), (req, res) => {
   const { academyId, playerId } = req.params;
   const playerData = req.body;
   const profilePicPath = req.file ? req.file.filename : null;
@@ -1071,7 +1289,7 @@ app.put("/api/editPlayer/:academyId/:playerId", upload.single("profile_pic"), (r
 
 //add new asset
 //add new asset adge code 
-app.post('/api/addAsset/:academyId', (req, res) => {
+app.post('/api/addAsset/:academyId',verifyToken, (req, res) => {
   const academyId = req.params.academyId;
   const { assetName, quantity, cost } = req.body;  // Extract data from the request body
 
@@ -1104,7 +1322,7 @@ app.post('/api/addAsset/:academyId', (req, res) => {
 //------------------------------------------------------
 
 //edit asset data
-app.get('/api/assets/:academyId/:assetId', (req, res) => {
+app.get('/api/assets/:academyId/:assetId',verifyToken, (req, res) => {
   const { academyId, assetId } = req.params;
 
   const query = 'SELECT * FROM assets WHERE academy_id = ? AND id = ?';
@@ -1123,7 +1341,7 @@ app.get('/api/assets/:academyId/:assetId', (req, res) => {
 });
 
 // Update asset data
-app.put('/api/editAsset/:academyId/:assetId', (req, res) => {
+app.put('/api/editAsset/:academyId/:assetId',verifyToken, (req, res) => {
   const { academyId, assetId } = req.params;
   const { assetName, quantity, cost } = req.body;
 
@@ -1146,7 +1364,7 @@ app.put('/api/editAsset/:academyId/:assetId', (req, res) => {
 //-------------------------------------------------
 
 // delete asset
-app.delete('/api/deleteAsset/:academyId/:assetId', (req, res) => {
+app.delete('/api/deleteAsset/:academyId/:assetId',verifyToken, (req, res) => {
   const { academyId, assetId } = req.params;
 
   const query = 'DELETE FROM assets WHERE academy_id = ? AND id = ?';
@@ -1168,7 +1386,7 @@ app.delete('/api/deleteAsset/:academyId/:assetId', (req, res) => {
 // All players Dashboard 
 // fetch total players count
 // Get total player count
-app.get("/api/totalPlayers", (req, res) => {
+app.get("/api/totalPlayers",verifyToken, (req, res) => {
   const query = "SELECT COUNT(id) AS total FROM player";
 
   db.query(query, (err, results) => {
@@ -1181,7 +1399,7 @@ app.get("/api/totalPlayers", (req, res) => {
 });
 //-------------------------------------------------------
 // Get total player count
-app.get("/api/totalPlayers/:academyId", (req, res) => {
+app.get("/api/totalPlayers/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
   const query = "SELECT COUNT(id) AS total FROM player WHERE academy_id = ?";
 
@@ -1195,7 +1413,7 @@ app.get("/api/totalPlayers/:academyId", (req, res) => {
 });
 //-------------------------------------------------
 // Get revenue from academy
-app.get("/api/revenue/:academyId", (req, res) => {
+app.get("/api/revenue/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
   const query = "SELECT SUM(paid_amount) AS YTD_Revenue FROM playerfinancial WHERE YEAR(created_at) = YEAR(CURDATE()) AND academy_id = ?";
 
@@ -1233,7 +1451,7 @@ app.get("/api/player-count/:academyId", (req, res) => {
 //----------------------------
 // fetch coach count for academy dashboard
 
-app.get("/api/coach-count/:academyId", (req, res) => {
+app.get("/api/coach-count/:academyId",verifyToken, (req, res) => {
   const {academyId} = req.params;
   const query = `
     SELECT count(id) AS totalCoach FROM employee WHERE academy_id= ?`;
@@ -1250,7 +1468,7 @@ app.get("/api/coach-count/:academyId", (req, res) => {
 //------------------------------------
 // fetch courses count for academy dashboard
 
-app.get("/api/total-courses/:academyId", (req, res) => {
+app.get("/api/total-courses/:academyId",verifyToken, (req, res) => {
   const {academyId} = req.params;
   const query = `
     SELECT count(course_id) AS countTotalCourses FROM courses WHERE academy_id= ?`;
@@ -1266,7 +1484,7 @@ app.get("/api/total-courses/:academyId", (req, res) => {
 });
 //---------------------------------------------
 //fetch outstanding fee
-app.get("/api/outstanding-fee/:academyId/:id", (req, res) => {
+app.get("/api/outstanding-fee/:academyId/:id",verifyToken, (req, res) => {
   const {academyId ,id} = req.params;
   const query = `
     SELECT SUM(total_fee) AS playerOutstandingFee FROM playerfinancial WHERE academy_id= ? AND player_id = ?`;
@@ -1282,7 +1500,7 @@ app.get("/api/outstanding-fee/:academyId/:id", (req, res) => {
 });
 //------------------------------------------
 // player active or deactive toogle button
-app.post("/updatePlayerStatus", async (req, res) => {
+app.post("/updatePlayerStatus",verifyToken, async (req, res) => {
   const { playerId, status } = req.body;
 
   try {
@@ -1294,7 +1512,7 @@ app.post("/updatePlayerStatus", async (req, res) => {
   }
 });
 //-------------------------------------------
-app.post("/updateCoachStatus", async (req, res) => {
+app.post("/updateCoachStatus",verifyToken, async (req, res) => {
   const { coachId, status } = req.body;
 
   try {
@@ -1307,7 +1525,7 @@ app.post("/updateCoachStatus", async (req, res) => {
 });
 //-------------------------------------
 // add player cricket record 
-app.post('/api/cricket-data/:academyId/:id/:name', (req, res) => {
+app.post('/api/cricket-data/:academyId/:id/:name',verifyToken, (req, res) => {
   const { academyId, id, name } = req.params;
   const { matches_played, runs, wickets } = req.body;
 
@@ -1361,7 +1579,7 @@ app.post('/api/cricket-data/:academyId/:id/:name', (req, res) => {
 //------------------------------------------------
 
 //display player cricket score
-app.get("/api/cricket-data/player/:academyId/:id", (req, res) => {
+app.get("/api/cricket-data/player/:academyId/:id",verifyToken, (req, res) => {
 
   const {academyId,id} = req.params;
   const sql = "SELECT * FROM cricket_data WHERE academy_id = ? AND player_id = ?";
@@ -1376,7 +1594,7 @@ app.get("/api/cricket-data/player/:academyId/:id", (req, res) => {
 
 //--------------------------------------------
 // fetch cricket score data 
-app.get("/api/cricket-data/graph/:academyId", (req, res) => {
+app.get("/api/cricket-data/graph/:academyId",verifyToken, (req, res) => {
   const {academyId} = req.params;
   const sql = "SELECT * FROM cricket_data WHERE academy_id = ?";
   db.query(sql,[academyId], (err, result) => {
@@ -1389,7 +1607,7 @@ app.get("/api/cricket-data/graph/:academyId", (req, res) => {
 });
 //-----------------------------------------
   //fetch player total count 
-  app.get("/api/count-total-player/:academyId", (req, res) => {
+  app.get("/api/count-total-player/:academyId",verifyToken, (req, res) => {
     const {academyId} = req.params;
     const query = `
       SELECT count(id) AS countTotalPlayer FROM player WHERE academy_id= ?`;
@@ -1405,7 +1623,7 @@ app.get("/api/cricket-data/graph/:academyId", (req, res) => {
 
 //-------------------------------------------------
 //fetch particular player info by academy id AND id
-app.get("/api/allPlayers/:academyId/:id", (req, res) => {
+app.get("/api/allPlayers/:academyId/:id",verifyToken, (req, res) => {
   const { academyId, id } = req.params;
 
   const query = `SELECT * FROM player WHERE academy_id = ? AND id = ? `;
@@ -1429,7 +1647,7 @@ app.get("/api/allPlayers/:academyId/:id", (req, res) => {
 
 //get player details by search
 //search by id
-app.get("/api/playerDetailsById/:id", (req, res) => {
+app.get("/api/playerDetailsById/:id",verifyToken, (req, res) => {
   const { id } = req.params;
   const query = `
     SELECT id, name, batch, dob, sports_expertise, profile_pic, school_name, father_name, mother_name, phone_number 
@@ -1450,7 +1668,7 @@ app.get("/api/playerDetailsById/:id", (req, res) => {
 });
 
 //search by name 
-app.get("/api/playerDetailsByName/:name", (req, res) => {
+app.get("/api/playerDetailsByName/:name",verifyToken, (req, res) => {
   const { name } = req.params;
   const query = `
     SELECT id, name, batch, dob, sports_expertise, profile_pic, school_name, father_name, mother_name, phone_number 
@@ -1472,7 +1690,7 @@ app.get("/api/playerDetailsByName/:name", (req, res) => {
 //-------------------------------
 //financial payment management 
 //fetch all financial record of player
-app.get("/api/financial-records/:academyId", (req, res) => {
+app.get("/api/financial-records/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
   const query = ` SELECT * FROM playerfinancial WHERE academy_id = ?`;
 
@@ -1487,7 +1705,7 @@ app.get("/api/financial-records/:academyId", (req, res) => {
 
 //-----------------------------------------------
 // fetch player payment info by id 
-app.get("/api/edit-financial-records/:id", (req, res) => {
+app.get("/api/edit-financial-records/:id",verifyToken, (req, res) => {
   const { id } = req.params;  // id is fetched from the URL parameter
   const query = `SELECT * FROM playerfinancial WHERE id = ?`;
 
@@ -1507,7 +1725,7 @@ app.get("/api/edit-financial-records/:id", (req, res) => {
 //---------------------------------------------------------------
 // edit player payment record from id 
 // Route to update the player payment record
-app.put('/api/edit-player-payment-record/:id', (req, res) => {
+app.put('/api/edit-player-payment-record/:id',verifyToken, (req, res) => {
   const { id } = req.params;  // The ID of the payment record to update
   const { player_name, total_fee, paid_amount, due_amount, due_date, status, remarks } = req.body;
 
@@ -1550,7 +1768,7 @@ app.put('/api/edit-player-payment-record/:id', (req, res) => {
 });
 //------------------------------------------------------
 // Fetch records by date range
-app.get("/api/financial-records", (req, res) => {
+app.get("/api/financial-records", verifyToken,(req, res) => {
   const { from, to } = req.query;
 
   if (!from || !to) {
@@ -1574,7 +1792,7 @@ app.get("/api/financial-records", (req, res) => {
 
 
 // 2. Fetch records for this week
-app.get("/api/financial-records/week/:academyId", (req, res) => {
+app.get("/api/financial-records/week/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
 
   const query = `
@@ -1593,7 +1811,7 @@ app.get("/api/financial-records/week/:academyId", (req, res) => {
 });
 
 // 3. Fetch records for this month
-app.get("/api/financial-records/month/:academyId", (req, res) => {
+app.get("/api/financial-records/month/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
 
   const query = `
@@ -1612,7 +1830,7 @@ app.get("/api/financial-records/month/:academyId", (req, res) => {
 });
 
 // 4. Fetch records for this year
-app.get("/api/financial-records/year/:academyId", (req, res) => {
+app.get("/api/financial-records/year/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
   const query = `
     SELECT * FROM playerfinancial 
@@ -1629,7 +1847,7 @@ app.get("/api/financial-records/year/:academyId", (req, res) => {
 });
 
 // 5. Search by player ID or name
-app.get("/api/financial-records/player/:academyId", (req, res) => {
+app.get("/api/financial-records/player/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
   const { playerId, playerName } = req.query;
 
@@ -1654,7 +1872,7 @@ app.get("/api/financial-records/player/:academyId", (req, res) => {
   });
 });
 //6 not paid or pending data 
-app.get("/api/financial-records/pending/:academyId", (req, res) => {
+app.get("/api/financial-records/pending/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
   const query = `
     SELECT * FROM playerfinancial 
@@ -1673,7 +1891,7 @@ app.get("/api/financial-records/pending/:academyId", (req, res) => {
 
 // delete player payment record 
 // Delete a player payment record
-app.delete('/api/delete-player-payment-info/:id', (req, res) => {
+app.delete('/api/delete-player-payment-info/:id',verifyToken, (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM playerfinancial WHERE id = ?';
   db.query(query, [id], (err) => {
@@ -1688,7 +1906,7 @@ app.delete('/api/delete-player-payment-info/:id', (req, res) => {
 //---------------------------------------------------
 // Edit player financial record with id
 // Update a financial record
-app.put('/playerfinancial/:id', (req, res) => {
+app.put('/playerfinancial/:id',verifyToken, (req, res) => {
   const { id } = req.params;
   const {
     player_id,
@@ -1719,7 +1937,7 @@ app.put('/playerfinancial/:id', (req, res) => {
 });
 //-----------------------------------------------------------
 // Form submission for player payments
-app.post('/api/playerfinancial', (req, res) => {
+app.post('/api/playerfinancial',verifyToken, (req, res) => {
   const {
     player_id,
     player_name,
@@ -1764,7 +1982,7 @@ app.post('/api/playerfinancial', (req, res) => {
 //-------------------------------------------------------
 // booking role here 
 // display all assets for booking 
-app.get('/assets-bookings/:academyId', (req, res) => {
+app.get('/assets-bookings/:academyId',verifyToken, (req, res) => {
   const { academyId } = req.params;
   const query = 'SELECT * FROM assets where academy_id != ?';
   db.query(query, [academyId], (err, results) => {
@@ -1779,7 +1997,7 @@ app.get('/assets-bookings/:academyId', (req, res) => {
 //---------------------------------------
 //------------------
 // Get all groundss 
-app.get('/all-grounds/:academyId', (req, res) => {
+app.get('/all-grounds/:academyId', verifyToken,(req, res) => {
   const { academyId } = req.params;
   const query = 'SELECT * FROM grounds where academy_id != ?';
   db.query(query, [academyId], (err, results) => {
@@ -1794,7 +2012,7 @@ app.get('/all-grounds/:academyId', (req, res) => {
 
 //-------------------------
 // Get grounds based on ground id
-app.get('/all-bookable-grounds/:academyId/:id', (req, res) => {
+app.get('/all-bookable-grounds/:academyId/:id', verifyToken,(req, res) => {
   const { academyId, id } = req.params;
   const query = 'SELECT * FROM grounds where academy_id != ? AND id=?';
   db.query(query, [academyId, id], (err, results) => {
@@ -1809,7 +2027,7 @@ app.get('/all-bookable-grounds/:academyId/:id', (req, res) => {
 //-------------------------------
 //// booking role here 
 // Get all bookings
-app.get('/bookings/:academyId', (req, res) => {
+app.get('/bookings/:academyId',verifyToken, (req, res) => {
   const { academyId } = req.params;
   const query = 'SELECT * FROM grounds where academy_id = ?';
   db.query(query, [academyId], (err, results) => {
@@ -1843,7 +2061,7 @@ app.get('/bookings/:academyId', (req, res) => {
 //       }
 //   });
 // });
-app.post('/bookings/:role/:academyId', upload.single('image'), (req, res) => {
+app.post('/bookings/:role/:academyId',verifyToken, upload.single('image'), (req, res) => {
   const { academyId } = req.params;
   const { name, date_of_booking, time, amount, customer_name, contact, status, remarks, location, about } = req.body;
   const image_url = req.file ? req.file.filename : null;
@@ -1866,7 +2084,7 @@ app.post('/bookings/:role/:academyId', upload.single('image'), (req, res) => {
 
 
 // Get a single grounds by ID
-app.get('/bookings/:id', (req, res) => {
+app.get('/bookings/:id',verifyToken, (req, res) => {
   const { id } = req.params;
   const query = 'SELECT * FROM grounds WHERE id = ?';
   db.query(query, [id], (err, results) => {
@@ -1879,7 +2097,7 @@ app.get('/bookings/:id', (req, res) => {
   });
 });
 // Update a grounds
-app.put('/bookings/:id', (req, res) => {
+app.put('/bookings/:id', verifyToken, (req, res) => {
   const { id } = req.params;
   const { name, date_of_booking, time, amount, customer_name, contact, status, remarks, location, image_url } = req.body;
   const query = 'UPDATE grounds SET name = ?, date_of_booking = ?, time = ?, amount = ?, customer_name = ?, contact = ?, status = ?, remarks = ? , ,location = ? ,image_url = ? WHERE id = ?';
@@ -1894,7 +2112,7 @@ app.put('/bookings/:id', (req, res) => {
 });
 
 // Delete a grounds
-app.delete('/bookings/:id', (req, res) => {
+app.delete('/bookings/:id',verifyToken, (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM grounds WHERE id = ?';
   db.query(query, [id], (err) => {
@@ -1909,7 +2127,7 @@ app.delete('/bookings/:id', (req, res) => {
 
 //------------------------------
 // -------------------
-app.post('/api/bookings-book-now', (req, res) => {
+app.post('/api/bookings-book-now',verifyToken, (req, res) => {
   const { academy_id, item_type, item_id, booking_date, start_time, end_time, booked_by, contact_number, status } = req.body;
 
   const bookingDate = new Date(booking_date);
@@ -1935,7 +2153,7 @@ app.post('/api/bookings-book-now', (req, res) => {
 //---------------------------------------------------
 //display all bookings of academy id 
 // API to fetch booked data
-app.get('/api/booked/:academy_id', (req, res) => {
+app.get('/api/booked/:academy_id',verifyToken, (req, res) => {
   const { academy_id } = req.params;
   console.log('Received request for academy_id:', academy_id);
 
@@ -1959,7 +2177,7 @@ app.get('/api/booked/:academy_id', (req, res) => {
 //--------------------------------------------------
 //booked date fetch academyid 
 
-app.get('/api/bookings/dates/:id', (req, res) => {
+app.get('/api/bookings/dates/:id',verifyToken, (req, res) => {
   const { id } = req.params;
   const query = 'SELECT DATE(booking_date) AS booking_date FROM bookings WHERE item_id = ?';
   db.query(query, [id], (err, result) => {
@@ -1978,7 +2196,7 @@ app.get('/api/bookings/dates/:id', (req, res) => {
 });
 //------------------------------
 // public grounds home grounds 
-app.get('/public-bookings', (req, res) => {
+app.get('/public-bookings',verifyToken, (req, res) => {
 
   const query = 'SELECT * FROM grounds';
   db.query(query, (err, results) => {
@@ -1996,7 +2214,7 @@ app.get('/public-bookings', (req, res) => {
 //---------------------------------------------------
 //all bookings 
 // Get bookings for a specific academy
-app.get('/all-bookings/:academyId', (req, res) => {
+app.get('/all-bookings/:academyId', verifyToken, (req, res) => {
   const { academyId } = req.params;
   const query = `
       SELECT 
@@ -2019,7 +2237,7 @@ app.get('/all-bookings/:academyId', (req, res) => {
 //----------------------------------------------------
 //total revenue
 // Total Revenue - Summing 'amount' from the grounds and player_financial table
-app.get("/api/booking/totalrevenue/:academyId", (req, res) => {
+app.get("/api/booking/totalrevenue/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
 
   // Query for total revenue from the 'grounds' table
@@ -2032,7 +2250,7 @@ app.get("/api/booking/totalrevenue/:academyId", (req, res) => {
   // Query for total revenue from the 'player_financial' table
   const playerRevenueQuery = `
     SELECT SUM(paid_amount) AS totalRevenue
-    FROM player_financial
+    FROM playerfinancial
     WHERE academy_id = ?;
   `;
 
@@ -2063,7 +2281,7 @@ app.get("/api/booking/totalrevenue/:academyId", (req, res) => {
 
 
 // Total Expenses - Summing 'paid_amount' from the player_financial table
-app.get("/api/player_financial/totalexpenses/:academyId", (req, res) => {
+app.get("/api/player_financial/totalexpenses/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
 
   const query = `
@@ -2083,7 +2301,7 @@ app.get("/api/player_financial/totalexpenses/:academyId", (req, res) => {
 });
 
 // Account Receivable - Summing 'due_amount' from the player_financial table
-app.get("/api/player_financial/acreceivable/:academyId", (req, res) => {
+app.get("/api/player_financial/acreceivable/:academyId",verifyToken, (req, res) => {
   const { academyId } = req.params;
 
   const query = `
@@ -2107,7 +2325,7 @@ app.get("/api/player_financial/acreceivable/:academyId", (req, res) => {
 // coach login dashboard
 
 // API Endpoint: Get Specific Coach by ID
-app.get('/api/coaches/:academyId/:id', (req, res) => {
+app.get('/api/coaches/:academyId/:id',verifyToken, (req, res) => {
   const { academyId, id } = req.params;
 
   const query = `
@@ -2135,7 +2353,7 @@ app.get('/api/coaches/:academyId/:id', (req, res) => {
 // home all palyer dashboard
 
 // Endpoint to get all players
-app.get('/api/allplayer', (req, res) => {
+app.get('/api/allplayer', verifyToken, (req, res) => {
   const academyId = req.params.academyId;
   // const query = 'SELECT id, name, DATE_FORMAT(dob, '%d-%m-%y') AS dob, gender,  school_name, sports_expertise, address, previous_academy, father_name, mother_name, phone_number,  batch,  profile_pic FROM player` ;
   const query = `

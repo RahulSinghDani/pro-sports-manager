@@ -32,7 +32,7 @@ const AddCoach = () => {
   useEffect(() => {
     const fetchCourseTimings = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/courses/${academyId}`);
+        const response = await axios.get(`${API_BASE_URL}/api/courses/${academyId}`, { withCredentials: true });
         setCourseTimings(response.data);
       } catch (error) {
         console.error('Error fetching course timings:', error);
@@ -63,7 +63,7 @@ const AddCoach = () => {
     // Function to generate a unique coach ID
     const generateCoachId = async () => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/getUniqueCoachId`);
+            const response = await axios.get(`${API_BASE_URL}/api/getUniqueCoachId`, { withCredentials: true });
             setGeneratedId(response.data.id);
         } catch (error) {
             console.error('Error fetching coach data for ID generation:', error);
@@ -104,7 +104,7 @@ const AddCoach = () => {
     axios.post(`${API_BASE_URL}/api/addCoach/${academyId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-      },
+      },withCredentials: true
     })
       .then(response => {
         console.log('Coach added successfully', response);

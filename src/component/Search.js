@@ -28,7 +28,7 @@ const Search = () => {
         }
 
         try {
-            const response = await fetch(`${API_BASE_URL}/search?playerName=${searchTerm}`);
+            const response = await fetch(`${API_BASE_URL}/search?playerName=${searchTerm}`,{ withCredentials: true });
             const data = await response.json();
 
             if (data.length > 0) {

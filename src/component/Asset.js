@@ -60,7 +60,7 @@ const Asset = () => {
     useEffect(() => {
         // Fetch asset data from the backend
         axios
-            .get(`${API_BASE_URL}/api/assets/${academyId}`)
+            .get(`${API_BASE_URL}/api/assets/${academyId}`,{ withCredentials: true })
             .then(response => {
                 console.log("Fetched News Data:", response.data); // Console log the data
 
@@ -77,7 +77,7 @@ const Asset = () => {
     // Fetch bookings from the backend
     useEffect(() => {
         axios
-            .get(`${API_BASE_URL}/bookings/${academyId}`) // Replace with your backend API
+            .get(`${API_BASE_URL}/bookings/${academyId}`,{ withCredentials: true }) // Replace with your backend API
             .then((response) => {
                 setBookings(response.data);
             })
@@ -89,7 +89,7 @@ const Asset = () => {
     useEffect(() => {
         // Fetch booked data
         axios
-            .get(`${API_BASE_URL}/api/booked/${academyId}`)
+            .get(`${API_BASE_URL}/api/booked/${academyId}`,{ withCredentials: true })
             .then((response) => {
                 setBookedData(response.data);
                 setLoading(false);
@@ -103,7 +103,7 @@ const Asset = () => {
     // Fetch bookings from the backend
     useEffect(() => {
         axios
-            .get(`${API_BASE_URL}/all-grounds/${academyId}`) // Replace with your backend API
+            .get(`${API_BASE_URL}/all-grounds/${academyId}`,{ withCredentials: true }) // Replace with your backend API
             .then((response) => {
                 setAllAcademyGround(response.data);
             })
@@ -114,7 +114,7 @@ const Asset = () => {
 
     useEffect(() => {
         axios
-            .get(`${API_BASE_URL}/assets-bookings/${academyId}`) // Replace with your backend API
+            .get(`${API_BASE_URL}/assets-bookings/${academyId}`,{ withCredentials: true }) // Replace with your backend API
             .then((response) => {
                 setAssetBookings(response.data);
             })
@@ -137,7 +137,7 @@ const Asset = () => {
             const secondConfirm = window.confirm('This action is irreversible. Do you really want to delete?');
             if (secondConfirm) {
                 axios
-                    .delete(`${API_BASE_URL}/bookings/${id}`)
+                    .delete(`${API_BASE_URL}/bookings/${id}`,{ withCredentials: true })
                     .then(() => {
                         setBookings((prevBookings) => prevBookings.filter((booking) => booking.id !== id));
                         alert('Booking deleted successfully!');

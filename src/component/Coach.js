@@ -15,7 +15,7 @@ const Coach = () => {
 
   useEffect(() => {
     // Fetch coach data using the academyId
-    axios.get(`${API_BASE_URL}/api/coaches/${academyId}`)
+    axios.get(`${API_BASE_URL}/api/coaches/${academyId}`,{ withCredentials: true })
       .then(response => {
         setCoaches(response.data); // Set coaches data from the API response
       })
@@ -43,7 +43,8 @@ const Coach = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ coachId, status: newStatus }),
-      });
+        credentials: "include",
+      } );
 
       if (response.ok) {
         // Update players array to reflect the status change

@@ -40,14 +40,14 @@ const PlayerRegistration = () => {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const schoolResponse = await axios.get(`${API_BASE_URL}/api/schools`);
+        const schoolResponse = await axios.get(`${API_BASE_URL}/api/schools`, { withCredentials: true });
         setSchoolList(schoolResponse.data);
       } catch (error) {
         console.error("Error fetching school data:", error);
       }
 
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/getUniquePlayerId`);
+        const response = await axios.get(`${API_BASE_URL}/api/getUniquePlayerId` , { withCredentials: true });
         setPlayerId(response.data.id);
       } catch (error) {
         console.error("Error fetching player ID:", error);
@@ -64,7 +64,7 @@ const PlayerRegistration = () => {
 
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/getDistinctBatches/${academyId}`
+          `${API_BASE_URL}/api/getDistinctBatches/${academyId}` , { withCredentials: true }
         );
         setBatches(response.data.length ? response.data : []);
 
@@ -125,7 +125,8 @@ const PlayerRegistration = () => {
       const response = await axios.post(
         `${API_BASE_URL}/api/addPlayer/${academyId}`,
         formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { "Content-Type": "multipart/form-data" } },
+        { withCredentials: true }
       );
       if (response.status === 200) {
         setMessage("Player registered successfully!");

@@ -21,7 +21,7 @@ const EditBooking = () => {
     // Fetch booking details
     useEffect(() => {
         axios
-            .get(`${API_BASE_URL}/bookings/${id}`)
+            .get(`${API_BASE_URL}/bookings/${id}`,{ withCredentials: true })
             .then((response) => {
                 setFormData(response.data);
             })
@@ -40,7 +40,7 @@ const EditBooking = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-            .put(`${API_BASE_URL}/bookings/${id}`, formData)
+            .put(`${API_BASE_URL}/bookings/${id}`, formData , { withCredentials: true })
             .then(() => {
                 alert('Booking updated successfully!');
                 navigate(`/ManagePayment/${role}/${academyId}/Bookings`); // Redirect after updating

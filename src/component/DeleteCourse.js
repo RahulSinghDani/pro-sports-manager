@@ -24,7 +24,7 @@ const DeleteCourse = () => {
 
     // Fetch the course data using the courseId and academyId
     axios
-      .get(`${API_BASE_URL}/api/courses/${academyId}/${courseId}`)
+      .get(`${API_BASE_URL}/api/courses/${academyId}/${courseId}`, { withCredentials: true })
       .then((response) => {
         const { course_name } = response.data;
         const {timing} = response.data;
@@ -50,7 +50,7 @@ const DeleteCourse = () => {
     setLoading(true);
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}/api/deleteCourse/${academyId}/${courseId}`
+        `${API_BASE_URL}/api/deleteCourse/${academyId}/${courseId}`, { withCredentials: true }
       );
 
       if (response.status === 200) {

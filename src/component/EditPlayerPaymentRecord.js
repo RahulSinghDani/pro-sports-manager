@@ -29,7 +29,7 @@ const EditPlayerPaymentRecord = () => {
     useEffect(() => {
         setLoading(true);
         axios
-            .get(`${API_BASE_URL}/api/edit-financial-records/${id}`)
+            .get(`${API_BASE_URL}/api/edit-financial-records/${id}`,{ withCredentials: true })
             .then((response) => {
                 // console.log("Fetched data:", response.data);
                 if (response.data && response.data.length > 0) {
@@ -84,7 +84,7 @@ const EditPlayerPaymentRecord = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-            .put(`${API_BASE_URL}/api/edit-player-payment-record/${id}`, formData)
+            .put(`${API_BASE_URL}/api/edit-player-payment-record/${id}`, formData ,{ withCredentials: true })
             .then(() => {
                 alert('Player payment record updated successfully!');
                 navigate(`/AcademyDetails/${role}/${academyId}/ManagePayment`); // Redirect on success

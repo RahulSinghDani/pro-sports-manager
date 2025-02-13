@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import AcademyNavbar from './AcademyNavbar';
 import About from './About';
+
 const AcademyAssets = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -14,7 +15,7 @@ const AcademyAssets = () => {
     useEffect(() => {
         // Fetch asset data from the backend
         axios
-            .get(`${API_BASE_URL}/api/assets/${academyId}`)
+            .get(`${API_BASE_URL}/api/assets/${academyId}`,{ withCredentials: true })
             .then(response => {
                 setAsset(response.data); // Set assets data from the response
                 setLoading(false); // Set loading to false when data is fetched

@@ -30,7 +30,7 @@ const EditCoach = () => {
     }
 
     axios
-      .get(`${API_BASE_URL}/api/coach/${academyId}/${coachId}`)
+      .get(`${API_BASE_URL}/api/coach/${academyId}/${coachId}`,{ withCredentials: true })
       .then((response) => {
         const {
           coachName,
@@ -119,7 +119,7 @@ const EditCoach = () => {
         salaryFrequency,
         // resume,
         // batchName: batchData,
-      });
+      }, { withCredentials: true });
 
       if (response.status === 200) {
         setMessage('Coach updated successfully!');

@@ -45,7 +45,8 @@ const AddCourse = () => {
           fee: parseFloat(fee),
           half_yearly: parseFloat(half_yearly),
           yearly : parseFloat(yearly),
-        }
+        },
+        { withCredentials: true }
       );
 
       // Check for successful response

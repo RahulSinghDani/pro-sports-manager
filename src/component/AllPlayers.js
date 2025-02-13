@@ -46,7 +46,7 @@ const AllPlayers = () => {
         const fetchTotalPlayers = async () => {
             try {
                 const response = await axios.get(
-                    `${API_BASE_URL}/api/totalPlayers`
+                    `${API_BASE_URL}/api/totalPlayers` ,{ withCredentials: true }
                 );
                 setTotalPlayers(response.data.total);
             } catch (error) {
@@ -65,7 +65,7 @@ const AllPlayers = () => {
 
         try {
             const response = await axios.get(
-                `${API_BASE_URL}/api/playerDetailsById/${searchId}`
+                `${API_BASE_URL}/api/playerDetailsById/${searchId}` ,{ withCredentials: true }
             );
             setPlayerDetails(response.data);
             setError("");
@@ -84,7 +84,7 @@ const AllPlayers = () => {
 
         try {
             const response = await axios.get(
-                `${API_BASE_URL}/api/playerDetailsByName/${searchName}`
+                `${API_BASE_URL}/api/playerDetailsByName/${searchName}`,{ withCredentials: true }
             );
             setPlayerDetails(response.data);
             setError("");

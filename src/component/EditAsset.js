@@ -24,7 +24,7 @@ const EditAsset = () => {
 
     // Fetch the asset data using the assetId and academyId
     axios
-      .get(`${API_BASE_URL}/api/assets/${academyId}/${assetId}`)
+      .get(`${API_BASE_URL}/api/assets/${academyId}/${assetId}`, { withCredentials: true })
       .then((response) => {
         const { name, quantity, cost } = response.data;
         setAssetName(name);  // Corrected from 'setAsssetName'
@@ -55,7 +55,8 @@ const EditAsset = () => {
           assetName: assetName,  // Corrected from 'assetName'
           quantity: quantity,
           cost: parseFloat(cost),
-        }
+        },
+        { withCredentials: true }
       );
 
       if (response.status === 200) {

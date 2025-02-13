@@ -32,7 +32,8 @@ const AddAsset = () => {
           assetName: assetName,
           quantity: quantity,
           cost: parseFloat(cost),
-        }
+        },
+        { withCredentials: true }
       );
 
       // Check for successful response

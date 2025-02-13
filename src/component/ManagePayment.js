@@ -31,7 +31,7 @@ const ManagePayment = () => {
     useEffect(() => {
         const fetchAllRecords = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/api/financial-records/${academyId}`);
+                const response = await axios.get(`${API_BASE_URL}/api/financial-records/${academyId}`,{ withCredentials: true });
                 setRecords(response.data);
             } catch (error) {
                 console.error("Error fetching all records:", error);
@@ -48,7 +48,7 @@ const ManagePayment = () => {
                     from: searchParams.fromDate,
                     to: searchParams.toDate,
                 },
-            });
+            }, { withCredentials: true } );
             setRecords(response.data);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -57,7 +57,7 @@ const ManagePayment = () => {
 
     const handleQuickSearch = async (filter) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/financial-records/${filter}/${academyId}`);
+            const response = await axios.get(`${API_BASE_URL}/api/financial-records/${filter}/${academyId}`,{ withCredentials: true });
             setRecords(response.data);
         } catch (error) {
             console.error("Error fetching quick search data:", error);
@@ -71,7 +71,9 @@ const ManagePayment = () => {
                     playerId: searchParams.playerId,
                     playerName: searchParams.playerName,
                 },
-            });
+            },
+                { withCredentials: true }
+            );
             setRecords(response.data);
         } catch (error) {
             console.error("Error searching by player:", error);
@@ -97,7 +99,7 @@ const ManagePayment = () => {
             const secondConfirm = window.confirm('Do you really want to delete?');
             if (secondConfirm) {
                 axios
-                    .delete(`${API_BASE_URL}/api/delete-player-payment-info/${id}`)
+                    .delete(`${API_BASE_URL}/api/delete-player-payment-info/${id}`, { withCredentials: true })
                     .then(() => {
                         // Update the bookings list after successful deletion
                         setRecords((prevRecords) => prevRecords.filter((record) => record.id !== id));
@@ -247,13 +249,13 @@ const ManagePayment = () => {
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.total_fee}</td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.paid_amount}</td>
                                             <td style={{
-                                                    padding: "8px",
-                                                    border: "1px solid #ddd",
-                                                    color: record.due_amount === 0 ? "green" : "orange",
-                                                     // Ensure text is visible
-                                                    fontWeight: "bold", // Make text stand out
-                                                    textAlign: "center" // Center text
-                                                }}>{record.due_amount}</td>
+                                                padding: "8px",
+                                                border: "1px solid #ddd",
+                                                color: record.due_amount === 0 ? "green" : "orange",
+                                                // Ensure text is visible
+                                                fontWeight: "bold", // Make text stand out
+                                                textAlign: "center" // Center text
+                                            }}>{record.due_amount}</td>
                                             {/* <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.due_date}</td> */}
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>
                                                 {new Date(record.due_date).toLocaleDateString()}

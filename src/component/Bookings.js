@@ -14,7 +14,7 @@ const Bookings = () => {
     // Fetch bookings from the backend
     useEffect(() => {
         axios
-            .get(`${API_BASE_URL}/bookings/${academyId}`) // Replace with your backend API
+            .get(`${API_BASE_URL}/bookings/${academyId}`,{ withCredentials: true }) // Replace with your backend API
             .then((response) => {
                 setBookings(response.data);
             })
@@ -30,7 +30,7 @@ const Bookings = () => {
             const secondConfirm = window.confirm('This action is irreversible. Do you really want to delete?');
             if (secondConfirm) {
                 axios
-                    .delete(`${API_BASE_URL}/bookings/${id}`)
+                    .delete(`${API_BASE_URL}/bookings/${id}`,{ withCredentials: true })
                     .then(() => {
                         setBookings((prevBookings) => prevBookings.filter((booking) => booking.id !== id));
                         alert('Booking deleted successfully!');
