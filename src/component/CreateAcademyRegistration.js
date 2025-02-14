@@ -6,21 +6,21 @@ import axios from 'axios';
 const CreateAcademyRegistration = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-    const initialFormData ={
-        name: '',
-        address: '',
-        owner_name: '',
-        phone_num: '',
-        email: '',
-        website: '',
-        images: 'N/A',
-        logo: 'N/A',
-        youtube: 'N/A',
-        instagram: 'N/A',
-        facebook: 'N/A',
-        latitude: 0.00,
-        longitude: 0.00,
-    }
+  const initialFormData = {
+    name: '',
+    address: '',
+    owner_name: '',
+    phone_num: '',
+    email: '',
+    website: '',
+    images: 'N/A',
+    logo: 'N/A',
+    youtube: 'N/A',
+    instagram: 'N/A',
+    facebook: 'N/A',
+    latitude: 0.00,
+    longitude: 0.00,
+  }
 
   const [role, setRole] = useState("academy");
   const [username, setUsername] = useState("");
@@ -32,60 +32,26 @@ const CreateAcademyRegistration = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-    
-  //   if (!window.confirm("Are you sure you want to submit the form?")) {
-  //     return;
-  //   }
-    
-  //   if (!role.trim() || !username.trim() || !password.trim()) {
-  //     alert("Please fill in all user details.");
-  //     return;
-  //   }
-
-  //   const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
-    
-  //   try {
-  //     const userResponse = await fetch(`${API_BASE_URL}/registerUser`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ role, username, password: hashedPassword }),
-  //       credentials: 'include'
-  //     });
-      
-  //     const userData = await userResponse.json();
-      
-  //     if (userResponse.ok) {
-  //       formData.user_id = userData.userId;
-  //       await axios.post(`${API_BASE_URL}/api/addacademies`, formData, { withCredentials: true });
-  //       alert("Registration successful!");
-        
-  //       setUsername("");
-  //       setPassword("");
-  //       setFormData(initialFormData);
-  //     } else {
-  //       alert(userData.message);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during registration:", error);
-  //     alert("Registration failed. Please try again.");
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!window.confirm("Are you sure you want to submit the form?")) {
       return;
     }
-  
+
     if (!role.trim() || !username.trim() || !password.trim()) {
       alert("Please fill in all user details.");
       return;
     }
-  
+
+    // Phone number validation
+    const phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(formData.phone_num)) {
+      alert("Please enter a valid 10-digit phone number.");
+      return;
+    }
     const hashedPassword = CryptoJS.SHA256(password).toString(CryptoJS.enc.Base64);
-  
+
     try {
       const userResponse = await axios.post(`${API_BASE_URL}/registerUser`, {
         role,
@@ -95,14 +61,14 @@ const CreateAcademyRegistration = () => {
         headers: { "Content-Type": "application/json" },
         withCredentials: true
       });
-  
+
       const userData = userResponse.data;
-  
+
       if (userResponse.status === 200) {
         formData.user_id = userData.userId;
         await axios.post(`${API_BASE_URL}/api/addacademies`, formData, { withCredentials: true });
         alert("Registration successful!");
-  
+
         setUsername("");
         setPassword("");
         setFormData(initialFormData);
@@ -116,8 +82,8 @@ const CreateAcademyRegistration = () => {
   };
   return (
     <div>
-      <div className="user-register-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
-        <div className="user-registration-form">
+      <div className="user-register-container-academy" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className="user-registration-form-academy">
           <h2 className="heading" style={{ textAlign: "center" }}>User & Academy Registration</h2>
           <form onSubmit={handleSubmit} className="input-required-field-style">
             <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />

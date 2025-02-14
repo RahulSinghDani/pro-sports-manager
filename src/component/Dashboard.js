@@ -18,6 +18,12 @@ const Dashboard = () => {
     const [academicData, setAcademicData] = useState([]);
     const [totalPlayers, setTotalPlayers] = useState(0);
     const [error, setError] = useState('');
+    const [refresh, setRefresh] = useState(false);
+
+    const triggerRefresh = () => {
+        setRefresh(prev => !prev); // Toggle state to force re-render
+    };
+
 
     // console.log(role);
     //fetch acdemy total player
@@ -79,7 +85,7 @@ const Dashboard = () => {
                                     <p style={{ background: "rgb(199,204,206)", borderRadius: '14px', padding: '4px 4px' }}>60000</p>
                                 </div>
                             </div>
-                            <div  className='contact-container'>
+                            <div className='contact-container'>
                                 <CreateAcademyRegistration />
                                 <ContactUsList />
                             </div>
@@ -102,13 +108,13 @@ const Dashboard = () => {
                         </div>
 
 
-                        <div className="container" style={{ background: 'rgb(255, 255, 255)', display: "flex", flexDirection: 'row', justifyContent: "center" }}>
+                        <div className="container" >
                             {/* all player */}
 
                             {academicData.length === 0 ? (
                                 <p>No Academy found.</p>
                             ) : (
-                                <div style={styles.playersContainerStyle}>
+                                <div className='playersContainerStyle'>
                                     {academicData.map((item, index) => (
                                         <div key={item.academy_id} className='playerBoxStyle'>
                                             <Link to={`/AcademyDetails/${role}/${item.academy_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>

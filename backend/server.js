@@ -675,6 +675,23 @@ app.post('/api/addacademies', verifyToken, upload.single('images'), (req, res) =
     );
   });
 });
+// -------------------------------------------------------------------
+// contact us status read and unread
+app.put('/api/contactus/:id', verifyToken, (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const query = 'UPDATE contactus SET status = ? WHERE id = ?';
+
+  db.query(query, [status, id], (err, result) => {
+    if (err) {
+      console.error('Error updating status:', err);
+      return res.status(500).json({ error: 'Database update failed' });
+    }
+    res.json({ success: true, message: 'Status updated' });
+  });
+});
+
 
 //--------------------------------------------------------
 // Route: Get news by academy_id

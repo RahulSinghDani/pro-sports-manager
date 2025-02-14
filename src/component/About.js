@@ -45,8 +45,8 @@ const About = () => {
             <div className='footer-part'>
 
 
-                <div className="about-content" style={{ width: '70%' }} >
-                    <img src={logo} alt="ProSportsManager" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
+                <div className="about-content" >
+                    {/* <img src={logo} alt="ProSportsManager"/> */}
                     <h2>About ProSportsManager (PSM)</h2>
                     <p>
                         Welcome to <strong>ProSportsManager</strong> (PSM), your one-stop solution for managing venues, grounds, and players efficiently. We are dedicated to helping sports enthusiasts and professionals streamline their operations and focus on what truly matters—excelling in sports!
@@ -56,7 +56,8 @@ const About = () => {
                     </p>
                 </div>
 
-                <div className="social-media-icons" style={{ width: '30%' }} >
+                <div className="social-media-icons">
+                <img src={logo} alt="ProSportsManager" className='psm-icon-about'/>
                     <h3>Follow Us</h3>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', width: '100%' }}>
                         <div className="icons" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' }}>
@@ -74,9 +75,9 @@ const About = () => {
                 </div>
             </div>
             {/* Footer */}
-            <div style={{display:'flex', backgroundColor: '#333', color: 'white', padding: '15px 0', textAlign: 'center' }}>
+            <div className='about-footer-part'>
                 <p>&copy; 2024 Pro Sports Academy Management. All rights reserved.</p>
-                <div style={{ marginLeft: 'auto' }}>
+                <div className="footer-links">
 
                     <a href="/#" style={{ color: 'white', margin: '0 10px' }}
                         onClick={(e) => {
@@ -86,8 +87,8 @@ const About = () => {
 
 
 
-                    <Link to="/About" style={{ color: 'white', margin: '0 10px' }}>Terms of Service</Link>
-                    <Link to="/About" style={{ color: 'white', margin: '0 10px' }}>Contact</Link>
+                    <Link to="/About" >Terms of Service</Link>
+                    <Link to="/About" >Contact</Link>
                 </div>
             </div>
         </footer>
