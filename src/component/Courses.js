@@ -15,7 +15,7 @@ const Courses = () => {
   useEffect(() => {
     // Fetch course data from the backend
     axios
-      .get(`${API_BASE_URL}/api/courses/${academyId}`,{ withCredentials: true })
+      .get(`${API_BASE_URL}/api/courses/${academyId}`, { withCredentials: true })
       .then(response => {
         setCourses(response.data); // Set the fetched courses data
         setLoading(false); // Set loading to false after data is fetched
@@ -40,7 +40,7 @@ const Courses = () => {
     <div>
       <AcademyNavbar role={role} academyId={academyId} />
 
-      <div className='container'>
+      <div className='below-navbar'>
         <h2>Course Information</h2>
         {/* <Link to="/edit-course">
         <button>Edit Course ( not working properly right now)</button>
@@ -82,7 +82,7 @@ const Courses = () => {
                     <td>{course.course_id}</td>
                     <td>{course.course_name}</td>
                     <td>{course.timing}</td>
-                    <td>{course.fee }</td>
+                    <td>{course.fee}</td>
                     <td>{course.half_yearly}</td>
                     <td>{course.yearly}</td>
                   </tr>

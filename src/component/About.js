@@ -59,8 +59,8 @@ const About = () => {
                 <div className="social-media-icons">
                 <img src={logo} alt="ProSportsManager" className='psm-icon-about'/>
                     <h3>Follow Us</h3>
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', width: '100%' }}>
-                        <div className="icons" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '18px' }}>
+                    <div >
+                        <div className="icons" >
                             <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
                                 <img src={instapng} alt="Instagram" className="social-logo" />
                             </a>

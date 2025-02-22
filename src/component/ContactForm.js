@@ -3,7 +3,7 @@ import axios from 'axios';
 import './ContactForm.css';
 
 const ContactForm = () => {
-    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const [formData, setFormData] = useState({
     name: '',
@@ -23,6 +23,7 @@ const ContactForm = () => {
     const newErrors = {};
     if (!formData.name) newErrors.name = 'Name is required';
     if (!formData.email) newErrors.email = 'Email is required';
+    if (!formData.phone_number) newErrors.phone_number = 'Mobile number is required';
     if (!formData.message) newErrors.message = 'Message is required';
     return newErrors;
   };
@@ -76,7 +77,9 @@ const ContactForm = () => {
           name="phone_number"
           value={formData.phone_number}
           onChange={handleChange}
+          className={errors.phone_number ? 'error' : ''}
         />
+        {errors.phone_number && <span className="error-message">{errors.phone_number}</span>}
       </div>
       <div className="form-group">
         <label>Message:</label>

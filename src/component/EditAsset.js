@@ -76,13 +76,11 @@ const EditAsset = () => {
   return (
     <div>
       <div className='nav'>
-        <p className='logo'>Pro Sports Manager</p>
+        <Link to={`/AcademyDetails/${role}/${academyId}`} className='logo'>Pro Sports Manager</Link>
       </div>
       <div className="edit-asset-container">
         <h2 className='heading'>Edit Asset</h2>
         <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
-
-        <p>{academyId ? `Academy ID: ${academyId}` : 'Academy ID not available'}</p>
 
         {/* Step 1: Input for courseId */}
         {!assetFound ? (
@@ -103,8 +101,6 @@ const EditAsset = () => {
           <div>
             {/* Step 2: Display course edit form if courseId is found */}
             <p>Editing Asset ID: {assetId}</p>
-
-            {message && <p>{message}</p>}
 
             <form onSubmit={handleSubmit}>
               <div className="form-group">
@@ -141,6 +137,7 @@ const EditAsset = () => {
                 <button>Back</button>
               </Link>
             </form>
+            {message && <p>{message}</p>}
           </div>
         )}
       </div>

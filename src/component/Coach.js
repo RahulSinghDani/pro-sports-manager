@@ -15,7 +15,7 @@ const Coach = () => {
 
   useEffect(() => {
     // Fetch coach data using the academyId
-    axios.get(`${API_BASE_URL}/api/coaches/${academyId}`,{ withCredentials: true })
+    axios.get(`${API_BASE_URL}/api/coaches/${academyId}`, { withCredentials: true })
       .then(response => {
         setCoaches(response.data); // Set coaches data from the API response
       })
@@ -44,7 +44,7 @@ const Coach = () => {
         },
         body: JSON.stringify({ coachId, status: newStatus }),
         credentials: "include",
-      } );
+      });
 
       if (response.ok) {
         // Update players array to reflect the status change
@@ -53,7 +53,7 @@ const Coach = () => {
             coaches.id === coachId ? { ...coaches, status: newStatus } : coaches
           )
         );
-        alert(`Coach Status updated successfully!`);
+        alert(`Employee Status updated successfully!`);
       } else {
         console.error("Failed to update status");
         alert("Failed to update status");
@@ -70,13 +70,16 @@ const Coach = () => {
       <div className='below-navbar'>
 
         <h2>Coaches for Academy</h2>
+        
         <div>
+        {coaches.length > 0 ? (
           <Link to={`/edit-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <button>Edit Coach</button>
+            <button>Edit Employee</button>
           </Link>
+        ) : null}
           <Link to={`/add-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
 
-            <button>Add Coach</button>
+            <button>Add Employee</button>
           </Link>
           {/* <Link to={`/delete-coach/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
 

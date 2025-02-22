@@ -62,7 +62,6 @@ const AddAsset = () => {
       <h2>Add New Asset</h2>
       <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
 
-      <p>{academyId ? `Academy ID: ${academyId}` : "Academy ID not available"}</p>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Select Asset Type:</label>

@@ -52,7 +52,7 @@ const DeleteAsset = () => {
         setMessage('Asset deleted successfully!');
         setTimeout(() => {
           navigate(`/AcademyDetails/${role}/${academyId}/Asset`); // Redirect to asset list after deletion
-        }, 2000);
+        }, 1000);
       }
     } catch (error) {
       console.error('Error deleting asset:', error);
@@ -67,7 +67,7 @@ const DeleteAsset = () => {
       <h2 className='heading'>Delete Asset</h2>
       <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0"}}/> {/*  adjust margin to set into column line */}
 
-      <p>{academyId ? `Academy ID: ${academyId}` : 'Academy ID not available'}</p>
+    
 
       {/* Step 1: Input for assetId */}
       {!assetFound ? (

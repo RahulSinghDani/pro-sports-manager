@@ -12,6 +12,7 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+
 const path = require('path');
 const jwt = require("jsonwebtoken");
 // const { useParams } = require('react-router-dom');
@@ -88,7 +89,9 @@ const verifyToken = (req, res, next) => {
 // });
 
 // Set up static folder for profile picture uploads
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/uploads",verifyToken , express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", verifyToken, express.static(path.join(__dirname, "uploads")));
+
 
 // File upload setup using multer
 // Configure multer storage
@@ -239,7 +242,7 @@ app.post('/login', (req, res) => {
             res.cookie('token', roleToken, {
               httpOnly: true,
               secure: process.env.NODE_ENV === 'production',  // Only secure in production
-              sameSite: 'Strict',  // Use 'Lax' instead of 'Strict' for cross-origin issues
+              sameSite: 'Lax',  // Use 'Lax' instead of 'Strict' for cross-origin issues
               maxAge: 24 * 60 * 60 * 1000  // 1-day expiration
           });
             return res.status(200).json(responseData);
@@ -252,7 +255,7 @@ app.post('/login', (req, res) => {
         res.cookie('token', adminToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production',  // Only secure in production
-          sameSite: 'Strict',  // Use 'Lax' instead of 'Strict' for cross-origin issues
+          sameSite: 'Lax',  // Use 'Lax' instead of 'Strict' for cross-origin issues
           maxAge: 24 * 60 * 60 * 1000  // 1-day expiration
       });
         return res.status(200).json({ message: 'Login successful', role, id: user_id });
@@ -518,22 +521,7 @@ app.get('/api/players/:academyId',verifyToken, (req, res) => {
   // const query = 'SELECT id, name, DATE_FORMAT(dob, '%d-%m-%y') AS dob, gender,  school_name, sports_expertise, address, previous_academy, father_name, mother_name, phone_number,  batch,  profile_pic FROM player WHERE academy_id = ?` ;
   const query = `
   SELECT 
-    id, 
-    name, 
-    DATE_FORMAT(dob,'%d-%m-%y') AS dob, 
-    gender, 
-    school_name, 
-    sports_expertise, 
-    address, 
-    previous_academy, 
-    father_name, 
-    mother_name, 
-    phone_number, 
-    batch, 
-    profile_pic,
-    fee_type ,
-    fee,
-    status
+    *
   FROM player 
   WHERE academy_id = ?`;
 
@@ -747,7 +735,7 @@ app.get('/api/academies',verifyToken, (req, res) => {
 //--------------------------------------------------
 //delete academy
 // Endpoint to delete an academy by id
-app.delete('/api/academies/:id',verifyToken, (req, res) => {
+app.delete('/api/delete-academy/academies/:id',verifyToken, (req, res) => {
   const academyId = req.params.id;
 
   // Query to delete the academy from the database
@@ -798,38 +786,121 @@ app.get('/api/academies/:id',verifyToken, (req, res) => {
 });
 
 // Route to update academy by ID
-app.put('/api/academies/:id',verifyToken, (req, res) => {
-  const { id } = req.params;
-  const {
-    name,
-    address,
-    owner_name,
-    phone_num,
-    email,
+// app.put('/api/update-academy/academies/:id',verifyToken, upload.single('images'), (req, res) => {
+//   const images = req.file ? req.file.filename : null;
 
-    website,
-    images,
-    logo,
-    youtube,
-    instagram,
-    facebook,
-    latitude,
-    longitude,
-  } = req.body;
+//   const { id } = req.params;
+//   const {
+//     name,
+//     address,
+//     owner_name,
+//     phone_num,
+//     email,
+//     website,
+//     logo,
+//     youtube,
+//     instagram,
+//     facebook,
+//     latitude,
+//     longitude,
+//   } = req.body;
 
-  const query = `UPDATE academy SET name = ?, address = ?, owner_name = ?, phone_num = ?, email = ?, website = ?, images = ?, logo = ?, youtube = ?, instagram = ?, facebook = ?,latitude = ? , longitude = ? WHERE id = ?`;
+//   const query = `UPDATE academy SET name = ?, address = ?, owner_name = ?, phone_num = ?, email = ?, website = ?, images = ?, logo = ?, youtube = ?, instagram = ?, facebook = ?,latitude = ? , longitude = ? WHERE id = ?`;
 
-  db.query(query, [name, address, owner_name, phone_num, email, website, images, logo, youtube, instagram, facebook, latitude, longitude, id], (err, result) => {
-    if (err) {
-      console.error('Error updating academy:', err);
-      return res.status(500).json({ message: 'Failed to update academy' });
+//   db.query(query, [name, address, owner_name, phone_num, email, website, images, logo, youtube, instagram, facebook, latitude, longitude, id], (err, result) => {
+//     if (err) {
+//       console.error('Error updating academy:', err);
+//       return res.status(500).json({ message: 'Failed to update academy' });
+//     }
+
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ message: 'Academy ID not found' });
+//     }
+
+//     res.json({ message: 'Academy updated successfully', success: true });
+//   });
+// });
+app.put('/api/update-academy/academies/:id',verifyToken,
+  upload.fields([
+    { name: 'images', maxCount: 1 },
+    { name: 'logo', maxCount: 1 }
+  ]),
+  (req, res) => {
+    const { id } = req.params;
+    const {
+      name, address,owner_name, phone_num, email, website, youtube, instagram, facebook, latitude, longitude,
+      images, // current image value (if no new file is uploaded)
+      logo      // current logo value (if no new file is uploaded)
+    } = req.body;
+
+    const latVal = (!latitude || latitude === 'null') ? null : latitude;
+    const longVal = (!longitude || longitude === 'null') ? null : longitude;
+    // Determine new file names; if a file isn't provided, use the existing value
+    const newImage =
+      req.files && req.files.images && req.files.images[0]
+        ? req.files.images[0].filename
+        : images;
+    const newLogo =
+      req.files && req.files.logo && req.files.logo[0]
+        ? req.files.logo[0].filename
+        : logo;
+
+    const query = `UPDATE academy SET name = ?, address = ?, owner_name = ?, phone_num = ?, email = ?, website = ?, images = ?, logo = ?, youtube = ?, instagram = ?, facebook = ?, latitude = ?, longitude = ? WHERE id = ?`;
+
+    db.query(
+      query,
+      [ name, address, owner_name, phone_num, email, website, newImage, newLogo, youtube, instagram, facebook, latVal, longVal, id
+      ],
+      (err, result) => {
+        if (err) {
+          console.error('Error updating academy:', err);
+          return res.status(500).json({ message: 'Failed to update academy' });
+        }
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Academy ID not found' });
+        }
+
+        res.json({ message: 'Academy updated successfully', success: true });
+      }
+    );
+  }
+);
+//----------------------------------------------------------------------
+// Fetch all sports equipment
+app.get("/api/sports-equipment", verifyToken, (req, res) => {
+  db.query("SELECT * FROM sports_equipment", (err, results) => {
+    if (err) return res.status(500).json(err);
+    res.json(results);
+  });
+});
+
+// Add new sports equipment
+app.post("/api/add/sports-equipment",verifyToken, (req, res) => {
+  const { name, category } = req.body;
+  db.query("INSERT INTO sports_equipment (name, category) VALUES (?, ?)", [name, category], (err, result) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Equipment added!", id: result.insertId });
+  });
+});
+//-----
+app.put("/api/sports-equipment/:id", verifyToken,(req, res) => {
+  const { name, category } = req.body;
+  db.query(
+    "UPDATE sports_equipment SET name = ?, category = ? WHERE id = ?",
+    [name, category, req.params.id],
+    (err) => {
+      if (err) return res.status(500).json(err);
+      res.json({ message: "Equipment updated!" });
     }
+  );
+});
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Academy ID not found' });
-    }
-
-    res.json({ message: 'Academy updated successfully', success: true });
+// Delete equipment
+app.delete("/api/sports-equipment/:id",verifyToken, (req, res) => {
+  db.query("DELETE FROM sports_equipment WHERE id = ?", [req.params.id], (err) => {
+    if (err) return res.status(500).json(err);
+    res.json({ message: "Equipment deleted!" });
   });
 });
 //--------------------------------------------------
@@ -1165,6 +1236,8 @@ app.post("/api/addPlayer/:academyId",verifyToken, upload.single("profile_pic"), 
     father_name,
     mother_name,
     phone_number,
+    f_ph_num,
+    m_ph_num,
     batch,
     user_id,
     fee_type,
@@ -1188,8 +1261,9 @@ app.post("/api/addPlayer/:academyId",verifyToken, upload.single("profile_pic"), 
     // Insert new player data into the database
     const query = `
   INSERT INTO player (academy_id, id, name, dob, gender, school_name, sports_expertise, address, previous_academy, 
-  father_name, mother_name, phone_number, batch, profile_pic, user_id, fee_type, fee) 
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  father_name, mother_name, phone_number, f_ph_num, m_ph_num, batch, profile_pic, user_id, fee_type, fee) 
+  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)
+
 `;
 
 
@@ -1208,6 +1282,8 @@ app.post("/api/addPlayer/:academyId",verifyToken, upload.single("profile_pic"), 
         father_name || null, // father_name
         mother_name || null, // mother_name
         phone_number || null, // phone_number
+        f_ph_num || null, // f_ph_num
+        m_ph_num || null, // m_ph_num
         batch || null, // batch
         profilePicPath || null, // profile_pic
         user_id || null,
@@ -1338,7 +1414,7 @@ app.put("/api/editPlayer/:academyId/:playerId",verifyToken, upload.single("profi
     UPDATE player 
     SET name = ?, dob = ?, gender = ?, school_name = ?, sports_expertise = ?, 
         address = ?, previous_academy = ?, father_name = ?, mother_name = ?, 
-        phone_number = ?, batch = ?, profile_pic = COALESCE(?, profile_pic) 
+        phone_number = ?,f_ph_num = ? , m_ph_num = ? ,  batch = ?, profile_pic = COALESCE(?, profile_pic) 
     WHERE academy_id = ? AND id = ?
   `;
 
@@ -1355,6 +1431,8 @@ app.put("/api/editPlayer/:academyId/:playerId",verifyToken, upload.single("profi
       playerData.father_name,
       playerData.mother_name,
       playerData.phone_number,
+      playerData.f_ph_num ,
+      playerData.m_ph_num,
       playerData.batch,
       profilePicPath, // Updates profile_pic only if a new file is uploaded, otherwise keeps existing value
       academyId,

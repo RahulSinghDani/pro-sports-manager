@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 // import {useLocation} from 'react-router-dom';
 import axios from "axios";
 // import FinancialSummary from "./FinancialSummary";
@@ -116,7 +116,7 @@ const ManagePayment = () => {
         <div className="body">
 
             <nav className='nav'>
-                <h1 className='logo'>Pro Sports Manager</h1>
+                <Link to={`/AcademyDetails/${role}/${academyId}`} className='logo'>Pro Sports Manager</Link>
                 {/* {(role === "admin" || role === "academy") &&
                     <Link to={`/AcademyDetails/${role}/${academyId}`}>
                         <button style={{ background: "rgb(14, 56, 27)", float: "right" }}>Back</button>
@@ -171,7 +171,7 @@ const ManagePayment = () => {
                                     onChange={handleInputChange}
                                 />
                             </label>
-                            <button onClick={handleSearch} style={{ marginLeft: "10px" }}>
+                            <button onClick={handleSearch} style={{ marginLeft: "10px" , alignSelf: 'center' }}>
                                 Search
                             </button>
                         </div>

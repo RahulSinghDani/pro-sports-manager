@@ -20,6 +20,8 @@ const EditPlayer = () => {
     father_name: "",
     mother_name: "",
     phone_number: "",
+    f_ph_num: "",
+    m_ph_num: "",
     batch: "",
     profile_pic: "",
   });
@@ -31,7 +33,7 @@ const EditPlayer = () => {
     const fetchBatches = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/getDistinctBatches/${academyId}` ,{ withCredentials: true }
+          `${API_BASE_URL}/api/getDistinctBatches/${academyId}`, { withCredentials: true }
         );
         setBatchList(response.data);
       } catch (error) {
@@ -50,7 +52,7 @@ const EditPlayer = () => {
 
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/api/getPlayerDetails/${academyId}/${playerId}` ,{ withCredentials: true }
+        `${API_BASE_URL}/api/getPlayerDetails/${academyId}/${playerId}`, { withCredentials: true }
       );
       if (response.data) {
         setPlayerData(response.data);
@@ -97,12 +99,12 @@ const EditPlayer = () => {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setPreviewImage(imageUrl); // Show preview before uploading
-  
+
       // Update playerData state
       setPlayerData({ ...playerData, profile_pic: file });
     }
   };
-  
+
 
   // Format the date before rendering in the input field
   const formatDate = (dateString) => {
@@ -116,42 +118,14 @@ const EditPlayer = () => {
     return `${year}-${month}-${day}`;
   };
 
-
-  // Handle Save Changes Request
-  // const saveChanges = async (e) => {
-  //   e.preventDefault();
-
-  //   // To avoid shifting by one day, store the date in the format YYYY-MM-DD
-  //   const formattedData = {
-  //     ...playerData,
-  //     dob: playerData.dob ? new Date(playerData.dob).toLocaleDateString("en-CA") : "", // Use local date format (YYYY-MM-DD)
-  //   };
-  //   try {
-  //     const response = await axios.put(
-  //       `${API_BASE_URL}/api/editPlayer/${academyId}/${playerId}`,
-  //       formattedData
-  //     );
-  //     if (response.status === 200) {
-  //       setMessage("Player details updated successfully!");
-  //       // alert("Player Updated..");
-  //       setTimeout(() => {
-  //         navigate(`/AcademyDetails/${role}/${academyId}/Player`); // Redirect to Player Page
-  //       }, 2000);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating player details:", error);
-  //     setMessage("Failed to update player details. Please try again.");
-  //   }
-  // };
-
   const saveChanges = async (e) => {
     e.preventDefault();
-  
+
     // Format DOB to avoid shifting issues (YYYY-MM-DD format)
-    const formattedDOB = playerData.dob 
-      ? new Date(playerData.dob).toISOString().split("T")[0] 
+    const formattedDOB = playerData.dob
+      ? new Date(playerData.dob).toISOString().split("T")[0]
       : "";
-  
+
     // Create FormData for sending file + other fields
     const formData = new FormData();
     formData.append("name", playerData.name);
@@ -164,12 +138,14 @@ const EditPlayer = () => {
     formData.append("father_name", playerData.father_name);
     formData.append("mother_name", playerData.mother_name);
     formData.append("phone_number", playerData.phone_number);
+    formData.append("f_ph_num", playerData.f_ph_num);
+    formData.append("m_ph_num", playerData.m_ph_num);
     formData.append("batch", playerData.batch);
-  
+
     if (playerData.profile_pic) {
       formData.append("profile_pic", playerData.profile_pic); // Append image file
     }
-  
+
     try {
       const response = await axios.put(
         `${API_BASE_URL}/api/editPlayer/${academyId}/${playerId}`,
@@ -178,22 +154,22 @@ const EditPlayer = () => {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        },
-        { withCredentials: true }
+          withCredentials: true
+        }
       );
-  
+
       if (response.status === 200) {
         setMessage("Player details updated successfully!");
         setTimeout(() => {
           navigate(`/AcademyDetails/${role}/${academyId}/Player`);
-        }, 2000);
+        }, 100);
       }
     } catch (error) {
       console.error("Error updating player details:", error);
       setMessage("Failed to update player details. Please try again.");
     }
   };
-  
+
   return (
     <div className="edit-player-container">
       <h2 className='heading'>Edit Player</h2>
@@ -209,174 +185,195 @@ const EditPlayer = () => {
         />
         <button onClick={fetchPlayerDetails}>Check Player</button>
         <Link to={`/AcademyDetails/${role}/${academyId}/player`}>
-          <button type="button">Back</button>
+          <button className="back-btn" type="button">Back</button>
         </Link>
       </div>
 
       {playerId && (
         <form onSubmit={saveChanges}>
+          <div className="form-group-main">
+            <div className="form-seperator-in-parts">
+              <div className="form-group">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={playerData.name}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Date of Birth:</label>
+                <input
+                  type="date"
+                  name="dob"
+                  value={formatDate(playerData.dob)}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Gender:</label>
+                <select
+                  name="gender"
+                  value={playerData.gender}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>School Name:</label>
+                <input
+                  type="text"
+                  name="school_name"
+                  value={playerData.school_name}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Phone Number:</label>
+                <input
+                  type="text"
+                  name="phone_number"
+                  value={playerData.phone_number}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Sports Expertise:</label>
+                <input
+                  type="text"
+                  name="sports_expertise"
+                  value={playerData.sports_expertise}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Address:</label>
+                <input
+                  type="text"
+                  name="address"
+                  value={playerData.address}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              
+            </div>
+            <div className="form-seperator-in-parts">
+            <div className="form-group">
+                <label>Previous Academy:</label>
+                <input
+                  type="text"
+                  name="previous_academy"
+                  value={playerData.previous_academy}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Father's Name:</label>
+                <input
+                  type="text"
+                  name="father_name"
+                  value={playerData.father_name}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Father's Ph. Num.:</label>
+                <input
+                  type="text"
+                  name="f_ph_num"
+                  value={playerData.f_ph_num}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Mother's Name:</label>
+                <input
+                  type="text"
+                  name="mother_name"
+                  value={playerData.mother_name}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Mother's Ph. Num.:</label>
+                <input
+                  type="text"
+                  name="m_ph_num"
+                  value={playerData.m_ph_num}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Batch:</label>
+                <select
+                  name="batch"
+                  value={playerData.batch}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select Batch</option>
+                  {batchList.map((batch) => (
+                    <option key={batch.timing} value={batch.timing}>
+                      {batch.timing}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
           <div className="form-group">
-            <label>Name:</label>
+            <label>Profile Picture:</label>
             <input
-              type="text"
-              name="name"
-              value={playerData.name}
-              onChange={handleInputChange}
+              type="file"
+              accept="image/*"
+              name="profile_pic"
+              onChange={(e) => handleImageChange(e)}
             />
-          </div>
 
-          <div className="form-group">
-            <label>Date of Birth:</label>
-            <input
-              type="date"
-              name="dob"
-              value={formatDate(playerData.dob)}
-              onChange={handleInputChange}
-            />
+            {/* Show existing image or preview selected image */}
+            {previewImage ? (
+              <img
+                src={previewImage}
+                alt="Profile Preview"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "10px",
+                  marginTop: "10px",
+                  objectFit: "cover"
+                }}
+              />
+            ) : playerData.profile_pic ? (
+              <img
+                src={`${API_BASE_URL}/uploads/${playerData.profile_pic}`} // Adjust path if needed
+                alt="Profile"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "10px",
+                  marginTop: "10px",
+                  objectFit: "cover"
+                }}
+              />
+            ) : null}
           </div>
-
-          <div className="form-group">
-            <label>Gender:</label>
-            <select
-              name="gender"
-              value={playerData.gender}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label>School Name:</label>
-            <input
-              type="text"
-              name="school_name"
-              value={playerData.school_name}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Sports Expertise:</label>
-            <input
-              type="text"
-              name="sports_expertise"
-              value={playerData.sports_expertise}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Address:</label>
-            <input
-              type="text"
-              name="address"
-              value={playerData.address}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Previous Academy:</label>
-            <input
-              type="text"
-              name="previous_academy"
-              value={playerData.previous_academy}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Father Name:</label>
-            <input
-              type="text"
-              name="father_name"
-              value={playerData.father_name}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Mother Name:</label>
-            <input
-              type="text"
-              name="mother_name"
-              value={playerData.mother_name}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Phone Number:</label>
-            <input
-              type="text"
-              name="phone_number"
-              value={playerData.phone_number}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Batch:</label>
-            <select
-              name="batch"
-              value={playerData.batch}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Batch</option>
-              {batchList.map((batch) => (
-                <option key={batch.timing} value={batch.timing}>
-                  {batch.timing}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="form-group">
-  <label>Profile Picture:</label>
-  <input
-    type="file"
-    accept="image/*"
-    name="profile_pic"
-    onChange={(e) => handleImageChange(e)}
-  />
-  
-  {/* Show existing image or preview selected image */}
-  {previewImage ? (
-    <img
-      src={previewImage}
-      alt="Profile Preview"
-      style={{
-        width: "100px",
-        height: "100px",
-        borderRadius: "10px",
-        marginTop: "10px",
-        objectFit: "cover"
-      }}
-    />
-  ) : playerData.profile_pic ? (
-    <img
-      src={`${API_BASE_URL}/uploads/${playerData.profile_pic}`} // Adjust path if needed
-      alt="Profile"
-      style={{
-        width: "100px",
-        height: "100px",
-        borderRadius: "10px",
-        marginTop: "10px",
-        objectFit: "cover"
-      }}
-    />
-  ) : null}
-</div>
 
 
 
           <button type="submit">Save Changes</button>
           {message && <p style={{ color: "green" }}>{message}</p>}
           <Link to={`/AcademyDetails/${role}/${academyId}/Player`} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <button>Back</button>
+            <button className="back-btn">Back</button>
           </Link>
         </form>
       )}

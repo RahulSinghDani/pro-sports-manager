@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import './Style.css';
 import LogOutPng from './Images/log-out_1.png';
 

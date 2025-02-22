@@ -57,7 +57,7 @@ const DeleteCourse = () => {
         setMessage('Course deleted successfully!');
         setTimeout(() => {
           navigate(`/AcademyDetails/${role}/${academyId}/Courses`); // Redirect to courses list after deletion
-        }, 2000);
+        }, 1000);
       }
     } catch (error) {
       console.error('Error deleting course:', error);
@@ -76,7 +76,6 @@ const DeleteCourse = () => {
         <h2 className='heading'>Delete Course</h2>
         <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} />
 
-        <p>{academyId ? `Academy ID: ${academyId}` : 'Academy ID not available'}</p>
 
         {/* Step 1: Input for courseId */}
         {!courseFound ? (

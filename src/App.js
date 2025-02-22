@@ -61,6 +61,8 @@ import LoadingSpinner from "./component/LoadingSpinner";
 import NotFound from "./component/NotFound";
 import CreateAcademyRegistration from "./component/CreateAcademyRegistration";
 import ContactForm from "./component/ContactForm";
+import UpdateAcademyProfile from "./component/UpdateAcademyProfile";
+import SportsEquipment from "./component/SportsEquipment";
 
 // Create an AuthContext
 // const AuthContext = createContext();
@@ -166,6 +168,7 @@ function App() {
               <Route exact path="CreateAcademyRegistration" element={<CreateAcademyRegistration />} />
               <Route exact path="/AllPlayers/:role" element={<AllPlayers />} />
               <Route exact path="/HomeAllPlayerDashboard" element={<HomeAllPlayerDashboard />} />
+              <Route exact path="/SportsEquipment" element={<SportsEquipment />} />
 
               <Route exact path="/LoginPlayerDashboard/:role/:academy_id/:id" element={<LoginPlayerDashboard />} />
               <Route exact path="/LoginAcademyDashboard/:role/:id" element={<LoginAcademyDashboard />} />
@@ -178,6 +181,7 @@ function App() {
               <Route path="/PublicBookings" element={<PublicBookings />} />
               <Route path="/About" element={<About />} />
               <Route path="/booking-book-now/:role/:academyId/:id" element={<BookNow />} />
+              <Route path="/update-academy-profile/:role/:academyId" element={<UpdateAcademyProfile />} />
 
               <Route path="/UserRegistration" element={<UserRegistration />} />
               <Route path="/playerRegistration" element={<PlayerRegistration />} />

@@ -55,7 +55,7 @@ const AddCourse = () => {
         // Redirect to the AcademyDetails/Courses page after success
         setTimeout(() => {
           navigate(`/AcademyDetails/${role}/${academyId}/Courses`);
-        }, 2000); // Redirect after 2 seconds
+        }, 100); // Redirect after 2 seconds
       }
     } catch (error) {
       console.error("Error adding course:", error);
@@ -74,7 +74,6 @@ const AddCourse = () => {
       <h2>Add New Course</h2>
       <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
 
-      <p>{academyId ? `Academy ID: ${academyId}` : "Academy ID not available"}</p>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Course Name:</label>

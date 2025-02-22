@@ -60,7 +60,7 @@ const Asset = () => {
     useEffect(() => {
         // Fetch asset data from the backend
         axios
-            .get(`${API_BASE_URL}/api/assets/${academyId}`,{ withCredentials: true })
+            .get(`${API_BASE_URL}/api/assets/${academyId}`, { withCredentials: true })
             .then(response => {
                 console.log("Fetched News Data:", response.data); // Console log the data
 
@@ -77,7 +77,7 @@ const Asset = () => {
     // Fetch bookings from the backend
     useEffect(() => {
         axios
-            .get(`${API_BASE_URL}/bookings/${academyId}`,{ withCredentials: true }) // Replace with your backend API
+            .get(`${API_BASE_URL}/bookings/${academyId}`, { withCredentials: true }) // Replace with your backend API
             .then((response) => {
                 setBookings(response.data);
             })
@@ -89,7 +89,7 @@ const Asset = () => {
     useEffect(() => {
         // Fetch booked data
         axios
-            .get(`${API_BASE_URL}/api/booked/${academyId}`,{ withCredentials: true })
+            .get(`${API_BASE_URL}/api/booked/${academyId}`, { withCredentials: true })
             .then((response) => {
                 setBookedData(response.data);
                 setLoading(false);
@@ -103,7 +103,7 @@ const Asset = () => {
     // Fetch bookings from the backend
     useEffect(() => {
         axios
-            .get(`${API_BASE_URL}/all-grounds/${academyId}`,{ withCredentials: true }) // Replace with your backend API
+            .get(`${API_BASE_URL}/all-grounds/${academyId}`, { withCredentials: true }) // Replace with your backend API
             .then((response) => {
                 setAllAcademyGround(response.data);
             })
@@ -114,7 +114,7 @@ const Asset = () => {
 
     useEffect(() => {
         axios
-            .get(`${API_BASE_URL}/assets-bookings/${academyId}`,{ withCredentials: true }) // Replace with your backend API
+            .get(`${API_BASE_URL}/assets-bookings/${academyId}`, { withCredentials: true }) // Replace with your backend API
             .then((response) => {
                 setAssetBookings(response.data);
             })
@@ -137,7 +137,7 @@ const Asset = () => {
             const secondConfirm = window.confirm('This action is irreversible. Do you really want to delete?');
             if (secondConfirm) {
                 axios
-                    .delete(`${API_BASE_URL}/bookings/${id}`,{ withCredentials: true })
+                    .delete(`${API_BASE_URL}/bookings/${id}`, { withCredentials: true })
                     .then(() => {
                         setBookings((prevBookings) => prevBookings.filter((booking) => booking.id !== id));
                         alert('Booking deleted successfully!');
@@ -225,124 +225,133 @@ const Asset = () => {
                         )
                     ) :
                         selectedCategory === 'sports' ? (
-                            asset.length === 0 ? (
-                                <p className='switches-p'>No Sports Kits & Equipment found for this academy.</p>
-                            ) : (
-                                <div className="switches">
-                                    <div>
-                                        {/* <Link to={`/academy-asset/${role}/${academyId}`} >Academy Asset</Link> */}
+                            <div>
+                                <div style={{ display: 'flex' }}>
+                                    {/* <Link to={`/academy-asset/${role}/${academyId}`} >Academy Asset</Link> */}
 
-                                        <Link to={`/add-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Link to={`/add-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <button>Add Asset</button>
+                                    </Link>
+                                    {asset.length > 0 ? (
+                                        <div>
+                                            <Link to={`/edit-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
 
-                                            <button>Add Asset</button>
-                                        </Link>
-                                        <Link to={`/edit-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                                <button>Edit Asset</button>
+                                            </Link>
+                                            <Link to={`/delete-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
 
-                                            <button>Edit Asset</button>
-                                        </Link>
-                                        <Link to={`/delete-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                                <button>Delete Asset</button>
+                                            </Link>
+                                        </div>
+                                    ) : null}
+                                </div>
+                                {asset.length === 0 ? (
+                                    <p className='switches-p'>No Sports Kits & Equipment found for this academy.</p>
+                                ) : (
+                                    <div className="switches">
 
-                                            <button>Delete Asset</button>
-                                        </Link>
-                                    </div>
-                                    <div className="table-wrapper">
-                                        <table className='table-main'>
+                                        <div className="table-wrapper">
+                                            <table className='table-main'>
 
-                                            <thead>
-                                                <tr>
-                                                    <th>Asset ID</th>
-                                                    <th>Asset Name</th>
-                                                    <th>Quantity</th>
-                                                    <th>Cost</th>
-                                                    <th>Asset Type</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {asset.map((assetItem) => (
-                                                    <tr key={assetItem.id}>
-                                                        <td>{assetItem.id}</td>
-                                                        <td>{assetItem.name}</td>
-                                                        <td>{assetItem.quantity}</td>
-                                                        <td>{assetItem.cost} / hr</td>
-                                                        <td>{assetItem.assetType}</td>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Asset ID</th>
+                                                        <th>Asset Name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Cost</th>
+                                                        <th>Asset Type</th>
                                                     </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    {asset.map((assetItem) => (
+                                                        <tr key={assetItem.id}>
+                                                            <td>{assetItem.id}</td>
+                                                            <td>{assetItem.name}</td>
+                                                            <td>{assetItem.quantity}</td>
+                                                            <td>{assetItem.cost} / hr</td>
+                                                            <td>{assetItem.assetType}</td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                            )
+                                )}
+                            </div>
                         ) : selectedCategory === 'grounds' ? (
-                            assetBookings.length === 0 ? (
-                                <p className='switches-p'>No Grounds & Courts found for this academy.</p>
-                            ) : (
-                                <div className="switches-main">
-                                    <h1 style={{ paddingBottom: '12px', width: '100%' }}>Academy Grounds <span style={{ float: 'right', paddingRight: '34px' }}><button className='available-ground-btn' onClick={handleNewBooking}>Add New Ground</button></span></h1>
+                            <div>
+                                <h1 style={{ paddingBottom: '12px', width: '100%' }}>Academy Grounds <span style={{ float: 'right', paddingRight: '34px' }}><button className='available-ground-btn' onClick={handleNewBooking}>Add New Ground</button></span></h1>
 
-                                    <div className="sports-container">
-                                        {bookings.length === 0 ? (
-                                            <p>No grounds found.</p>
-                                        ) : (
-                                            bookings.map((booking) => (
-                                                <div key={booking.id} className="booking-box-asset">
-                                                    {/* <img src={booking.image_url} alt={`${booking.name}`} className="sports-image-asset" /> */}
-                                                    <div>
-                                                        <img
-                                                            src={
-                                                                booking.image_url?.startsWith('http') // Check if the URL is a valid link
-                                                                    ? booking.image_url // Use the provided link if valid
-                                                                    : `${API_BASE_URL}/uploads/${booking.image_url}` // Otherwise, construct the file path
-                                                            }
-                                                            alt={booking.name || 'Image not available'}
-                                                            className="sports-image"
-                                                            onError={(e) => { e.target.src = defaultImage; }} // Fallback if the image fails to load
-                                                        />
-                                                    </div>
-                                                    <h3>{booking.name}</h3>
-                                                    <p>
-                                                        <strong>Date:</strong>{' '}
-                                                        {new Date(booking.date_of_booking).toLocaleDateString('en-GB', {
-                                                            day: '2-digit',
-                                                            month: 'short',
-                                                            year: 'numeric',
-                                                        })}
-                                                        <br />
-                                                        <strong>Time:</strong> {booking.time}
-                                                        <br />
-                                                        <strong>Contact Name:</strong> {booking.customer_name} | <strong>Contact:</strong> {booking.contact}
-                                                        <br />
-                                                        <strong>Amount:</strong> {booking.amount} /hr
-                                                        <br />
-                                                        <strong>Status:</strong> <span style={{ color: booking.status === 'confirmed' ? 'green' : 'blue' }}>
-                                                            {booking.status}
-                                                        </span>
-                                                    </p>
-                                                    <p><strong>Remarks:</strong> {booking.remarks}</p>
-                                                    {/* <p className="sports-description"><a href={booking.location} target='_blank' rel="noopener noreferrer"><button style={{ background: 'grey' }}>Go to Location</button></a></p> */}
-                                                    <p className="sports-description">
-                                                        <a
-                                                            href={
-                                                                booking.location?.startsWith("http")
-                                                                    ? booking.location // Use the provided link if it's a complete URL
-                                                                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.location)}` // Generate Google Maps search link for plain names
-                                                            }
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            <button style={{ background: 'grey' }}>Go to Location</button>
-                                                        </a>
-                                                    </p>
+                                {assetBookings.length === 0 ? (
+                                    <p className='switches-p'>No Grounds & Courts found for this academy.</p>
+                                ) : (
+                                    <div className="switches-main">
 
-                                                    <div className="booking-actions">
-                                                        <button onClick={() => handleEditBooking(booking.id)}>Edit</button>
-                                                        <button onClick={() => deleteBooking(booking.id)}>Delete</button>
+                                        <div className="sports-container">
+                                            {bookings.length === 0 ? (
+                                                <p className='switches-p'>No grounds found.</p>
+                                            ) : (
+                                                bookings.map((booking) => (
+                                                    <div key={booking.id} className="booking-box-asset">
+                                                        {/* <img src={booking.image_url} alt={`${booking.name}`} className="sports-image-asset" /> */}
+                                                        <div>
+                                                            <img
+                                                                src={
+                                                                    booking.image_url?.startsWith('http') // Check if the URL is a valid link
+                                                                        ? booking.image_url // Use the provided link if valid
+                                                                        : `${API_BASE_URL}/uploads/${booking.image_url}` // Otherwise, construct the file path
+                                                                }
+                                                                alt={booking.name || 'Image not available'}
+                                                                className="sports-image"
+                                                                onError={(e) => { e.target.src = defaultImage; }} // Fallback if the image fails to load
+                                                            />
+                                                        </div>
+                                                        <h3>{booking.name}</h3>
+                                                        <p>
+                                                            <strong>Date:</strong>{' '}
+                                                            {new Date(booking.date_of_booking).toLocaleDateString('en-GB', {
+                                                                day: '2-digit',
+                                                                month: 'short',
+                                                                year: 'numeric',
+                                                            })}
+                                                            <br />
+                                                            <strong>Time:</strong> {booking.time}
+                                                            <br />
+                                                            <strong>Contact Name:</strong> {booking.customer_name} | <strong>Contact:</strong> {booking.contact}
+                                                            <br />
+                                                            <strong>Amount:</strong> {booking.amount} /hr
+                                                            <br />
+                                                            <strong>Status:</strong> <span style={{ color: booking.status === 'confirmed' ? 'green' : 'blue' }}>
+                                                                {booking.status}
+                                                            </span>
+                                                        </p>
+                                                        <p><strong>Remarks:</strong> {booking.remarks}</p>
+                                                        {/* <p className="sports-description"><a href={booking.location} target='_blank' rel="noopener noreferrer"><button style={{ background: 'grey' }}>Go to Location</button></a></p> */}
+                                                        <p className="sports-description">
+                                                            <a
+                                                                href={
+                                                                    booking.location?.startsWith("http")
+                                                                        ? booking.location // Use the provided link if it's a complete URL
+                                                                        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.location)}` // Generate Google Maps search link for plain names
+                                                                }
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                <button style={{ background: 'grey' }}>Go to Location</button>
+                                                            </a>
+                                                        </p>
+
+                                                        <div className="booking-actions">
+                                                            <button onClick={() => handleEditBooking(booking.id)}>Edit</button>
+                                                            <button onClick={() => deleteBooking(booking.id)}>Delete</button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            ))
-                                        )}
+                                                ))
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            )
+                                )}
+                            </div>
                         ) : (
                             <p>No items found for this category.</p>
                         )}

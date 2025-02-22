@@ -5,6 +5,8 @@ import axios from 'axios';
 const AddAcademy = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const { role } = useParams();
+  const [profilePic, setProfilePic] = useState(null);
+
   const [formData, setFormData] = useState({
     name: '',
     address: '',
@@ -30,7 +32,7 @@ const AddAcademy = () => {
   };
 
   const handleImageChange = (e) => {
-    setFormData({ ...formData, images: e.target.files[0] });
+    setProfilePic(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
@@ -40,7 +42,9 @@ const AddAcademy = () => {
     Object.keys(formData).forEach((key) => {
       formDataToSend.append(key, formData[key]);
     });
-
+    if (profilePic) {
+      formDataToSend.append('images', profilePic);
+    }
     try {
       await axios.post(`${API_BASE_URL}/api/addacademies`, formDataToSend, {
         headers: {
@@ -83,7 +87,12 @@ const AddAcademy = () => {
             <input type='text' name='longitude' placeholder='Longitude' value={formData.longitude} onChange={handleChange} required />
           </div>
           <input type='text' name='website' placeholder='Website' value={formData.website} onChange={handleChange} />
-          <input type='file' name='images' accept='images/*' onChange={handleImageChange} required />
+          {/* <input type='file' name='images' accept='images/*' onChange={handleImageChange} required /> */}
+          <input
+              type="file"
+              accept="images/*"
+              onChange={handleImageChange}
+            />
           <input type='text' name='logo' placeholder='Logo URL' value={formData.logo} onChange={handleChange} />
           <input type='text' name='youtube' placeholder='YouTube Link' value={formData.youtube} onChange={handleChange} />
           <input type='text' name='instagram' placeholder='Instagram Link' value={formData.instagram} onChange={handleChange} />

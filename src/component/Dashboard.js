@@ -8,6 +8,7 @@ import academyIcon from "./Images/academy_png.png"; // Import the academy image
 import About from './About';
 import CreateAcademyRegistration from './CreateAcademyRegistration';
 import ContactUsList from './ContactUsList';
+import SportsEquipment from './SportsEquipment';
 // import { useAuth } from "./AuthContext";
 // const token = localStorage.getItem('token');
 
@@ -66,52 +67,39 @@ const Dashboard = () => {
                     {/* <h1 style={{background:"blue" , color:"white"}}>Pro Sports Academy</h1> */}
 
 
-                    <div>
+                    <div lassName='below-navbar-home'>
 
-                        <div className='below-navbar-home'>
+                        <div >
                             <h2>Welcome to the Academic Dashboard</h2>
-                            <div id="dashboard-boxes" style={{ display: "flex", gap: "20px", justifyContent: 'center', alignItems: 'center', marginBottom: "20px" }}>
-                                {/* Total Players Box */}
-                                <div style={boxStyle}>
-                                    <h3 style={{ padding: '5px 5px', borderRadius: '12px', height: '50px' }}>Total Players</h3>
-                                    <p style={{ background: "rgb(199,204,206)", borderRadius: '14px', padding: '4px 4px' }}>{totalPlayers}</p>
-                                </div>
-                                <div style={boxStyle}>
-                                    <h3 style={{ padding: '5px 5px', borderRadius: '12px', height: '50px' }}>New Players MTD</h3>
-                                    <p style={{ background: "rgb(199,204,206)", borderRadius: '14px', padding: '4px 4px' }}>{totalPlayers}</p>
-                                </div>
-                                <div style={boxStyle}>
-                                    <h3 style={{ padding: '5px 5px', borderRadius: '12px', height: '50px' }}>Total Fees Outstanding</h3>
-                                    <p style={{ background: "rgb(199,204,206)", borderRadius: '14px', padding: '4px 4px' }}>60000</p>
-                                </div>
-                            </div>
+
                             <div className='contact-container'>
                                 <CreateAcademyRegistration />
                                 <ContactUsList />
                             </div>
-                            <h2>Academy Information</h2>
-
-                            <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
-                                <Link to={`/add-academy/${role}`} >
-                                    <button>Add a New Academy</button>
-                                </Link>
-                                <Link to={`/delete-academy/${role}`}>
-                                    <button>Delete Academy</button>
-                                </Link>
-                                <Link to={`/edit-academy/${role}`}>
-                                    <button>Edit Academy</button>
-                                </Link>
-
-                            </div>
-
 
                         </div>
 
 
-                        <div className="container" >
+                        <div className="display-academy-style" >
+                            <div style={{ paddingTop: '14px' }}>
+                                <h2 >Academy Information</h2>
+
+                                <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                                    <Link to={`/add-academy/${role}`} >
+                                        <button>Add a New Academy</button>
+                                    </Link>
+                                    {/* <Link to={`/delete-academy/${role}`}>
+                                    <button>Delete Academy</button>
+                                </Link> */}
+                                    <Link to={`/edit-academy/${role}`}>
+                                        <button>Edit Academy</button>
+                                    </Link>
+
+                                </div>
+                            </div>
                             {/* all player */}
 
-                            {academicData.length === 0 ? (
+                            {/* {academicData.length === 0 ? (
                                 <p>No Academy found.</p>
                             ) : (
                                 <div className='playersContainerStyle'>
@@ -141,14 +129,14 @@ const Dashboard = () => {
                                         </div>
                                     ))}
                                 </div>
-                            )}
+                            )} */}
                         </div>
 
                         <div style={styles.tableDiv}></div>
                         <div className="table-wrapper">
                             <p style={{ textAlign: 'center', color: 'blue' }}>Click on <span style={{ color: 'red' }}>(Academy Id or Academy Name)</span> to view the information.</p>
 
-                            <table border="1" className='table-main'>
+                            {/* <table border="1" className='table-main-head'>
                                 <thead>
                                     <tr>
                                         <th>Academy ID</th>
@@ -156,8 +144,6 @@ const Dashboard = () => {
                                         <th>Owner</th>
                                         <th>Phone</th>
                                         <th>Email</th>
-                                        {/* <th>Location</th> */}
-                                        {/* <th>Website</th> */}
 
                                     </tr>
                                 </thead>
@@ -175,30 +161,62 @@ const Dashboard = () => {
                                                 </Link>
                                             </td>
                                             <td>{item.academy_owner}</td>
-                                            {/* for call */}
                                             <td>
                                                 <a href={`tel:${item.academy_phone}`}>
                                                     {item.academy_phone}
                                                 </a>
                                             </td>
-                                            {/* for mail */}
                                             <td>
                                                 <a href={`mailto:${item.academy_email}`}>
                                                     {item.academy_email}
                                                 </a>
                                             </td>
-                                            {/* used for link , open in browser */}
-                                            {/* <td>
-                                    <a href={item.academy_website} target="_blank" rel="noopener noreferrer">
-                                        {item.academy_website}
-                                    </a>
-                                </td> */}
-
                                         </tr>
                                     ))}
                                 </tbody>
 
-                            </table>
+                            </table> */}
+
+                            <div className="table-container">
+                                <table className="table-main">
+                                    <thead>
+                                        <tr>
+                                            <th>Academy ID</th>
+                                            <th>Academy Name</th>
+                                            <th>Owner</th>
+                                            <th>Phone</th>
+                                            <th>Email</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <div className="table-scroll">
+                                    <table className="table-main">
+                                        <tbody>
+                                            {academicData.map((item, index) => (
+                                                <tr key={item.academy_id || index}>
+                                                    <td>
+                                                        <Link to={`/AcademyDetails/${role}/${item.academy_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                                            <b>{item.academy_id}</b>
+                                                        </Link>
+                                                    </td>
+                                                    <td>
+                                                        <Link to={`/AcademyDetails/${role}/${item.academy_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                                            <b>{item.academy_name}</b>
+                                                        </Link>
+                                                    </td>
+                                                    <td>{item.academy_owner}</td>
+                                                    <td><a href={`tel:${item.academy_phone}`}>{item.academy_phone}</a></td>
+                                                    <td><a href={`mailto:${item.academy_email}`}>{item.academy_email}</a></td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className='SportsEquipment-style'>
+                            <SportsEquipment />
                         </div>
                     </div>
 

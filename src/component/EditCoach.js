@@ -122,13 +122,13 @@ const EditCoach = () => {
       }, { withCredentials: true });
 
       if (response.status === 200) {
-        setMessage('Coach updated successfully!');
+        setMessage('Employee updated successfully!');
         setTimeout(() => {
           navigate(`/AcademyDetails/${role}/${academyId}/Coach`);
-        }, 2000);
+        }, 100);
       }
     } catch (error) {
-      console.error('Error updating coach:', error);
+      console.error('Error updating Employee:', error);
       setMessage('Failed to update coach. Please try again.');
     } finally {
       setLoading(false);

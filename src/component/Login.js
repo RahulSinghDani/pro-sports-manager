@@ -59,9 +59,9 @@ const Login = () => {
         </Link>
       </nav>
 
-      <div className="login-container" style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center', height: '100vh' }}>
+      <div className="login-container" >
         <div className="user-registration-form">
-          <h2 className="heading" style={{ textAlign: "center", width: "100%" }}>Login</h2>
+          <h2 className="heading" >Login</h2>
           <div className='blue-line'></div>
           <form onSubmit={handleLogin}>
             <input
@@ -78,11 +78,11 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-            <button type="submit" style={{ width: "100%" }}>Login</button>
-            <p style={{ width: "100%", textAlign: "center", color: "#555555" }}>New user? Click on Register</p>
+            {errorMessage && <p style={{color:'red'}} >{errorMessage}</p>}
+            <button type="submit" >Login</button>
+            <p >New user? Click on Register</p>
             <Link to="/#contact">
-              <button style={{ width: "100%", backgroundColor: "gray" }}>Register</button>
+              <button >Register</button>
             </Link>
           </form>
         </div>

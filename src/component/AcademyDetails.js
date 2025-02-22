@@ -180,19 +180,7 @@ const AcademyDetails = () => {
           </div>
         </div>
 
-        <div className='academy-img' alt="Ground"
-          style={{
-            marginTop: '10px',
-            width: '100%', // Makes the image responsive and fills the width of its container
-            height: 'auto', // Maintains aspect ratio
-            borderRadius: '10px', // Optional: Adds rounded corners to the image
-            // boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', // Optional: Adds a subtle shadow
-            objectFit: 'cover', // Optional: Ensures the image covers the container area without stretching
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            // padding:'12px 12px',
-          }}>
+        <div className='academy-img' alt="Ground" >
           {/* <img src={academyData.images || GroundImage} style={{ width: '800px' }} alt='Loading...'></img> */}
           <img
             src={
@@ -200,7 +188,7 @@ const AcademyDetails = () => {
                 ? academyData.images // Use the provided link if valid
                 : `${API_BASE_URL}/uploads/${academyData.images}` // Construct the file path
             }
-            style={{ width: '50%', borderRadius: '20px' }}
+            className='academy-img-main'
             alt="Loading..."
             onError={(e) => { e.target.src = DefaultImage; }} // Fallback image
           />
@@ -233,12 +221,12 @@ const AcademyDetails = () => {
               </div>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '5px' }}>
                 <div className="info-card">
-                  <h3 className="info-title">Total Coach</h3>
+                  <h3 className="info-title">Total Coaches</h3>
                   <p className="info-count">{coachCount.totalCoach}</p>
                 </div>
 
                 <div className="info-card">
-                  <h3 className="info-title">Total Player</h3>
+                  <h3 className="info-title">Total Players</h3>
                   <p className="info-count">{totalPlayer.countTotalPlayer}</p>
                 </div>
                 <div className="info-card">
@@ -253,8 +241,7 @@ const AcademyDetails = () => {
 
           <div className='academy-details-home'>
             <div className="detail-box">
-              <h3>Academy ID</h3>
-              <p>{academyData.id}</p>
+              
               <h3>Address</h3>
               <p>{academyData.address}</p>
               <h3>Owner Name</h3>

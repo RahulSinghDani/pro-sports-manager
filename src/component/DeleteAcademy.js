@@ -25,7 +25,7 @@ const DeleteAcademy = () => {
 
     try {
       // Send DELETE request to backend
-      const response = await axios.delete(`${API_BASE_URL}/api/academies/${academyId}`,{ withCredentials: true });
+      const response = await axios.delete(`${API_BASE_URL}/api/delete-academy/academies/${academyId}`,{ withCredentials: true });
 
       if (response.data.success) {
         setAcademyName(response.data.academyName); // Get the academy name from response

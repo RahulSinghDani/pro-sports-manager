@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams ,useLocation} from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import HomeImage from './Images/homeimage.jpg';
 import { styles } from './Style';
 //-------------------
@@ -20,7 +20,7 @@ const Home = () => {
 
   const ScrollToHashElement = () => {
     const location = useLocation();
-  
+
     useEffect(() => {
       if (location.hash) {
         const element = document.querySelector(location.hash);
@@ -29,10 +29,10 @@ const Home = () => {
         }
       }
     }, [location]);
-  
+
     return null;
   };
-  
+
   const showPrivacyPolicy = () => {
     const policy = `
       Privacy Policy for Pro Sports Manager
@@ -163,7 +163,7 @@ const Home = () => {
   return (
     // <div className='body1'>
     <div >
-      
+
       <div className="fade-page">
         {role !== 'admin' && (
           <nav className='nav'>
@@ -182,7 +182,7 @@ const Home = () => {
               </div>
             ) : (
               <ul className='navLinks'>
-                
+
                 <li>
                   <Link to="/Login"><button style={styles.btnLogin}>Log In</button></Link>
                 </li>
@@ -190,16 +190,16 @@ const Home = () => {
             )}
           </nav>
         )}
-        </div>
+      </div>
 
-        <ScrollToHashElement />
+      <ScrollToHashElement />
       {/* Hero Section */}
       {/* Hero Section as About Section */}
 
       <div className='below-navbar-home'>
 
         <div className='home-top-content'>
-          
+
           <div className="fade-page-img-home">
             <div style={{
               paddingTop: '50px',
@@ -336,7 +336,7 @@ const Home = () => {
           <h2>Contact Us</h2>
           <p>We'd love to hear from you! Feel free to reach out for any inquiries or support.</p>
 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '35px', flexWrap: 'wrap' }}>
+          <div className="contact-container">
             {/* Contact Form */}
             <div className='home-contactus'>
               <h3>Send us a message</h3>
@@ -344,12 +344,11 @@ const Home = () => {
             </div>
 
             {/* Contact Information */}
-            <div style={{ flex: '1', justifyContent: 'center', alignItems: 'center', maxWidth: '300px', padding: '20px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+            <div className="contact-info">
               <h3>Our Contact Information</h3>
-
-              <p><strong>Email:</strong>support@prosportsmanager.in</p>
+              <p><strong>Email:</strong> support@prosportsmanager.in</p>
               <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-              <p><strong>Address:</strong> 123 Academy St, Cityville, State, 12345</p>
+              <p><strong>Address:</strong> 123 Academy Bangalore, Cityville, State, 12345</p>
             </div>
           </div>
         </section>

@@ -17,12 +17,21 @@ const Player = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true); // Add a loading state
 
+
+  // Function to format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
   //fetch acdemy total player
   useEffect(() => {
     const fetchTotalPlayers = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/totalPlayers/${academyId}` , { withCredentials: true }
+          `${API_BASE_URL}/api/totalPlayers/${academyId}`, { withCredentials: true }
         );
         setTotalPlayers(response.data.total);
       } catch (error) {
@@ -34,7 +43,7 @@ const Player = () => {
   }, [API_BASE_URL, academyId]);
   useEffect(() => {
     axios
-      .get(`${API_BASE_URL}/api/revenue/${academyId}`,{ withCredentials: true })
+      .get(`${API_BASE_URL}/api/revenue/${academyId}`, { withCredentials: true })
       .then(response => {
         setRevenue(response.data.YTD_Revenue || 0);
       })
@@ -47,7 +56,7 @@ const Player = () => {
   useEffect(() => {
     // Fetch player data from the backend
     axios
-      .get(`${API_BASE_URL}/api/players/${academyId}`,{ withCredentials: true })
+      .get(`${API_BASE_URL}/api/players/${academyId}`, { withCredentials: true })
       .then(response => {
         setPlayers(response.data); // Set the fetched player data
         setLoading(false); // Stop loading
@@ -74,6 +83,7 @@ const Player = () => {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify({ playerId, status: newStatus }),
       });
 
@@ -179,10 +189,9 @@ const Player = () => {
                   {/* <th>Player ID</th> */}
                   <th>Name</th>
                   <th>Batch & Fee</th>
-                  <th>Gender &<br /> DOB (D-M-Y)</th>
+                  <th>Gender &<br /> DOB</th>
                   <th>Phone Number</th>
                   <th>School Name</th>
-                  <th>Sports Expertise</th>
                   <th>Parent & Address</th>
                   <th>Add Score</th>
                   {/* <th>Profile Picture</th> */}
@@ -190,7 +199,7 @@ const Player = () => {
               </thead>
               <tbody>
                 {players.map(player => (
-                  <tr key={player.id}>
+                  <tr key={player.id} className='player-row-data'>
                     {/* Toggle Button */}
                     <td>
                       <label className="toggle">
@@ -202,16 +211,15 @@ const Player = () => {
                         <span className="slider"></span>
                       </label>
                     </td>
-                    <td><Link to={`/financialform/${role}/${academyId}/${player.id}/${player.name}/${player.fee}`}>Payment <br /><b> {player.id}</b></Link></td>
+                    <td><Link to={`/financialform/${role}/${academyId}/${player.id}/${player.name}/${player.fee}`}>Payment <br /><b> {player.id.toUpperCase()}</b></Link></td>
 
                     <td><Link to={`/AcademyDetails/${role}/${academyId}/${player.id}/${player.name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                       <b> {player.name}</b>
                     </Link></td>
-                    <td> <b>Batch:</b> {player.batch} <br /> {player.fee_type}<br />Rs. <span style={{ color: "blue", fontSize: "1rem" }}> {player.fee}</span></td>
-                    <td>{player.gender} <br /><b>DOB:</b> {player.dob} </td>
-                    <td>{player.phone_number}</td>
-                    <td><b> School Name:</b> {player.school_name} <br /><b> Previous Academy:</b> {player.previous_academy}</td>
-                    <td>{player.sports_expertise}</td>
+                    <td> <b>Batch:</b> {player.batch} <br /> {player.fee_type}<br />Fee. <span style={{ color: "blue", fontSize: "1rem" }}> {player.fee}</span></td>
+                    <td><i>{player.gender}</i> <br /><b>DOB:</b>{formatDate(player.dob)} <br /><b>Sorts Expertise: </b>{player.sports_expertise}</td>
+                    <td><b>Player Ph.: </b>{player.phone_number} <br /> <b>Father Ph.: </b>{player.f_ph_num} <br /> <b>Mother Ph.: </b>{player.m_ph_num}</td>
+                    <td><b> School Name:</b> {player.school_name} <br /><b> Pre Aca:</b> {player.previous_academy}</td>
                     {/* <td>{player.address}</td> */}
                     {/* <td>{player.previous_academy}</td> */}
                     <td><b>Father:</b> {player.father_name} <br /><b>Mother:</b> {player.mother_name} <br /> <b>Address: </b>{player.address}</td>

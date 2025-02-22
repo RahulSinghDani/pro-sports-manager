@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { styles } from './Style';
 import LogoIcon from './Images/favicon.ico';
 import LogOutPng from './Images/log-out_1.png';
@@ -13,6 +13,30 @@ const AcademyNavbar = ({ role, academyId }) => {
   // const { role } = useParams();
   const isLoginAcademyDashboard = location.pathname.includes('/LoginAcademyDashboard');
   const [isMobile, setIsMobile] = useState(false);
+  const [academy, setAcademy] = useState(null);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    axios
+      .get(`${API_BASE_URL}/api/academicy/${academyId}`, { withCredentials: true })
+      .then(response => {
+        setAcademy(response.data); // Save the academy object
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setError('Failed to load academy details.');
+      });
+  }, [academyId]);
+
+  // Extract first letter from academy name
+  const firstLetter = academy?.name ? academy.name.charAt(0).toUpperCase() : '?';
+
+  // Redirect function
+  const handleClick = () => {
+    navigate(`/update-academy-profile/${role}/${academyId}`); // Redirect to update profile page
+  };
 
   // Check screen width on load and resize
   useEffect(() => {
@@ -60,6 +84,9 @@ const AcademyNavbar = ({ role, academyId }) => {
           </button>
           {isDropdownOpen && (
             <ul className="navLinks">
+              <div className="profile-avatar" onClick={handleClick}>
+                {firstLetter}
+              </div>
               {role === 'admin' && !isLoginAcademyDashboard && (
                 <li><Link to={`/Dashboard/${role}`}>All Academy</Link></li>
               )}
@@ -72,7 +99,7 @@ const AcademyNavbar = ({ role, academyId }) => {
               </li> */}
               <li>
                 <Link to={`/AcademyDetails/${role}/${academyId}/Coach`}>
-                  Coach </Link>
+                Employee </Link>
               </li>
               <li>
                 <Link to={`/AcademyDetails/${role}/${academyId}/Courses`}>
@@ -95,6 +122,7 @@ const AcademyNavbar = ({ role, academyId }) => {
         // For Desktop View (Always visible on larger screens)
         <ul className='navLinks' >
           {/* <li><Link to={`/Dashboard`}><button>Dashboard</button></Link></li> */}
+          
           {role === 'admin' && !isLoginAcademyDashboard && (
             <Link to={`/Dashboard/${role}`}><button style={styles.btn}>All Academy</button></Link>
 
@@ -102,10 +130,13 @@ const AcademyNavbar = ({ role, academyId }) => {
           <Link to={`/AcademyDetails/${role}/${academyId}/ManagePayment`} ><button style={styles.btn}>Payments</button></Link>
 
           {/* <Link to={`/AcademyDetails/${role}/${academyId}`} ><button style={styles.btn}>AcademyDetails</button></Link> */}
-          <Link to={`/AcademyDetails/${role}/${academyId}/Coach`} ><button style={styles.btn}>Coach</button></Link>
+          <Link to={`/AcademyDetails/${role}/${academyId}/Coach`} ><button style={styles.btn}>Employee</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} ><button style={styles.btn}>Courses</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Asset`} ><button style={styles.btn}>Assets</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Player`} ><button style={styles.btn}>Player</button></Link>
+          <div className="profile-avatar" onClick={handleClick}>
+            {firstLetter}
+          </div>
           <a onClick={handleLogout} className='logout-btn-png'>
             <img src={LogOutPng} alt='logout' />
           </a>
