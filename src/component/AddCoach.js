@@ -136,7 +136,7 @@ const AddCoach = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group-main">
             <div className='form-group'>
-              <label>Generated Coach ID: </label>
+              <label>Employee ID: </label>
               <input
                 type="text"
                 value={generatedId.toUpperCase()}
@@ -267,20 +267,20 @@ const AddCoach = () => {
             </div>
             <div className='form-group'>
               <label>Salary Frequency:</label>
-              <input
-                type="text"
-                value={salaryFrequency}
-                onChange={(e) => setSalaryFrequency(e.target.value)}
-                required
-              />
+              <select value={salaryFrequency} onChange={(e) => setSalaryFrequency(e.target.value)} required>
+                <option value="">Select Frequency</option>
+                <option value="monthly">Monthly</option>
+                <option value="weekly">Weekly</option>
+                <option value="daily">Daily</option>
+              </select>
             </div>
-            <div className='form-group'>
+            {/* <div className='form-group'>
               <label>Resume:</label>
               <input
                 type="file"
                 onChange={(e) => setResume(e.target.files[0])}
               />
-            </div>
+            </div> */}
           </div>
           <div>
 

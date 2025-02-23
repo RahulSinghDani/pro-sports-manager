@@ -31,7 +31,7 @@ const ManagePayment = () => {
     useEffect(() => {
         const fetchAllRecords = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/api/financial-records/${academyId}`,{ withCredentials: true });
+                const response = await axios.get(`${API_BASE_URL}/api/financial-records/${academyId}`, { withCredentials: true });
                 setRecords(response.data);
             } catch (error) {
                 console.error("Error fetching all records:", error);
@@ -48,7 +48,7 @@ const ManagePayment = () => {
                     from: searchParams.fromDate,
                     to: searchParams.toDate,
                 },
-            }, { withCredentials: true } );
+            }, { withCredentials: true });
             setRecords(response.data);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -57,7 +57,7 @@ const ManagePayment = () => {
 
     const handleQuickSearch = async (filter) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/api/financial-records/${filter}/${academyId}`,{ withCredentials: true });
+            const response = await axios.get(`${API_BASE_URL}/api/financial-records/${filter}/${academyId}`, { withCredentials: true });
             setRecords(response.data);
         } catch (error) {
             console.error("Error fetching quick search data:", error);
@@ -171,7 +171,7 @@ const ManagePayment = () => {
                                     onChange={handleInputChange}
                                 />
                             </label>
-                            <button onClick={handleSearch} style={{ marginLeft: "10px" , alignSelf: 'center' }}>
+                            <button onClick={handleSearch} style={{ marginLeft: "10px", alignSelf: 'center' }}>
                                 Search
                             </button>
                         </div>
@@ -219,9 +219,7 @@ const ManagePayment = () => {
                     </div>
                     {/* Results Table */}
                     <div className="table-wrapper">
-                        <table
-                            className="table-main"
-                        >
+                        <table >
                             <thead>
                                 <tr style={{ background: "#f4f4f4", textAlign: "left" }}>
                                     <th style={{ padding: "8px", border: "1px solid #ddd" }}>Actions</th>
@@ -241,7 +239,7 @@ const ManagePayment = () => {
                                     records.map((record) => (
                                         <tr key={record.id}>
                                             <td>
-                                                <button onClick={() => handleEditPayment(role, academyId, record.id)}><b>Edit </b> {record.player_id}</button>
+                                                <button onClick={() => handleEditPayment(role, academyId, record.id)}><b>Edit </b></button>
                                                 {/* <button onClick={() => deletePaymentData(record.id)}>Delete</button> */}
                                             </td>
                                             <td style={{ padding: "8px", border: "1px solid #ddd" }}>{record.player_id}</td>

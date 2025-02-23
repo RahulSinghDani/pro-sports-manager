@@ -69,7 +69,7 @@ const Coach = () => {
       <AcademyNavbar role={role} academyId={academyId} /> {/* Pass academyId to the Navbar */}
       <div className='below-navbar'>
 
-        <h2>Coaches for Academy</h2>
+        <h2>Academy Employees</h2>
         
         <div>
         {coaches.length > 0 ? (
@@ -88,10 +88,10 @@ const Coach = () => {
         </div>
         {error && <p>{error}</p>}
         {coaches.length === 0 ? (
-          <p>No coaches found for this academy.</p>
+          <p>No Employees found for this academy.</p>
         ) : (
           <div className="table-wrapper">
-            <table className='table-main'>
+            <table border="1" width="700px">
               <thead>
                 <tr>
                   <th>Status</th>
@@ -119,7 +119,7 @@ const Coach = () => {
                         <span className="slider"></span>
                       </label>
                     </td>
-                    <td>{coach.id}</td>
+                    <td>{coach.id.toUpperCase()}</td>
                     <td>{coach.name}</td>
                     <td>{coach.designation}</td>
                     <td>{coach.experience}</td>

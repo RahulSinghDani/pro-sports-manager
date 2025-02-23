@@ -6,7 +6,7 @@ import About from './About';
 const EditPlayerPaymentRecord = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-    const {role, academyId,  id } = useParams(); // Fetch params from URL
+    const { role, academyId, id } = useParams(); // Fetch params from URL
     const navigate = useNavigate();
 
     // Initial state for form data
@@ -16,7 +16,7 @@ const EditPlayerPaymentRecord = () => {
         total_fee: '',
         paid_amount: '',
         due_amount: '',
-        due_date:'',
+        due_date: '',
         status: '',
         remarks: '',
     });
@@ -29,7 +29,7 @@ const EditPlayerPaymentRecord = () => {
     useEffect(() => {
         setLoading(true);
         axios
-            .get(`${API_BASE_URL}/api/edit-financial-records/${id}`,{ withCredentials: true })
+            .get(`${API_BASE_URL}/api/edit-financial-records/${id}`, { withCredentials: true })
             .then((response) => {
                 // console.log("Fetched data:", response.data);
                 if (response.data && response.data.length > 0) {
@@ -44,7 +44,7 @@ const EditPlayerPaymentRecord = () => {
                 setError('Failed to fetch player financial data. Please try again.');
                 setLoading(false);
             });
-    }, [API_BASE_URL , id]);    
+    }, [API_BASE_URL, id]);
 
     // Handle input changes
     const handleChange = (e) => {
@@ -53,7 +53,7 @@ const EditPlayerPaymentRecord = () => {
         if (!id) {
             alert("Please correct a payment id.");
             return;
-          }
+        }
         // Update `due_amount` dynamically if total_fee or paid_amount changes
         if (name === 'total_fee' || name === 'paid_amount') {
             const updatedFormData = {
@@ -69,22 +69,22 @@ const EditPlayerPaymentRecord = () => {
         }
     };
 
-      // Format the date before rendering in the input field
-//   const formatDate = (dateString) => {
-//     if (!dateString) return "";
-//     const date = new Date(dateString);
-//     // Manually format the date in the local format (YYYY-MM-DD)
-//     const day = String(date.getDate()).padStart(2, '0');
-//     const month = String(date.getMonth() + 1).padStart(2, '0');
-//     const year = date.getFullYear();
-//     // Return the formatted date as 'YYYY-MM-DD'
-//     return `${year}-${month}-${day}`;
-//   };
+    // Format the date before rendering in the input field
+    //   const formatDate = (dateString) => {
+    //     if (!dateString) return "";
+    //     const date = new Date(dateString);
+    //     // Manually format the date in the local format (YYYY-MM-DD)
+    //     const day = String(date.getDate()).padStart(2, '0');
+    //     const month = String(date.getMonth() + 1).padStart(2, '0');
+    //     const year = date.getFullYear();
+    //     // Return the formatted date as 'YYYY-MM-DD'
+    //     return `${year}-${month}-${day}`;
+    //   };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         axios
-            .put(`${API_BASE_URL}/api/edit-player-payment-record/${id}`, formData ,{ withCredentials: true })
+            .put(`${API_BASE_URL}/api/edit-player-payment-record/${id}`, formData, { withCredentials: true })
             .then(() => {
                 alert('Player payment record updated successfully!');
                 navigate(`/AcademyDetails/${role}/${academyId}/ManagePayment`); // Redirect on success
@@ -108,89 +108,57 @@ const EditPlayerPaymentRecord = () => {
             <div className='nav'>
                 <p className='logo'>Pro Sports Manager</p>
             </div>
-        <div className='below-navbar'>
-            <h1 className='heading'>Edit Player Payment Record</h1>
-            <form  onSubmit={handleSubmit}>
-                <label>
-                    Player ID:
-                    <input
-                        type="text"
-                        value={formData.player_id}
-                        readOnly
-                    />
-                </label>
-                <label>
-                    Player Name:
-                    <input
-                        type="text"
-                        name="player_name"
-                        value={formData.player_name}
-                        onChange={handleChange}
-                    />
-                </label>
-                <label>
-                    Total Fee:
-                    <input
-                        type="number"
-                        name="total_fee"
-                        value={formData.total_fee}
-                        onChange={handleChange}
-                    />
-                </label>
-                <label>
-                    Paid Amount:
-                    <input
-                        type="number"
-                        name="paid_amount"
-                        value={formData.paid_amount}
-                        onChange={handleChange}
-                    />
-                </label>
-                <label>
-                    Due Amount:
-                    <input
-                        type="number"
-                        name="due_amount"
-                        value={formData.due_amount}
-                        readOnly
-                    />
-                </label>
-                <label>
-                    Due Date:
-                    <input
-                        type="date"
-                        name="due_date"
-                        value={formData.due_date}
-                        onChange={handleChange}
-                    />
-                </label>
-                <label>
-                    Status:
-                    <select
-                        name="status"
-                        value={formData.status}
-                        onChange={handleChange}
-                    >
-                        <option value="paid">Paid</option>
-                        <option value="not paid">Not Paid</option>
-                        <option value="pending">Pending</option>
-                    </select>
-                </label>
-                <label>
-                    Remarks:
-                    <textarea
-                        name="remarks"
-                        value={formData.remarks}
-                        onChange={handleChange}
-                    ></textarea>
-                </label>
-                <button type="submit">Update Record</button>
-                <Link to={`/AcademyDetails/${role}/${academyId}/ManagePayment`}>
-                    <button type="button">Back</button>
-                </Link>
-            </form>
-        </div>
-        <About />
+            <div className='below-navbar'>
+                <h1 className='heading'>Edit Player Payment Record</h1>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-seperator-in-parts">
+                        <div className='form-group'>
+                            <label>
+                                Player ID:</label>
+                            <input type="text" value={formData.player_id} readOnly />
+                        </div>
+                        <div className='form-group'>
+                            <label> Player Name: </label>
+                            <input type="text" name="player_name" value={formData.player_name} onChange={handleChange} />
+                        </div>
+                        <div className='form-group'>
+                            <label> Total Fee: </label>
+                            <input type="number" name="total_fee" value={formData.total_fee} onChange={handleChange} />
+                        </div>
+                        <div className='form-group'>
+                            <label>  Paid Amount: </label>
+                            <input type="number" name="paid_amount" value={formData.paid_amount} onChange={handleChange} />
+                        </div>
+                        <div className='form-group'>
+                            <label> Due Amount: </label>
+                            <input type="number" name="due_amount" value={formData.due_amount} readOnly />
+                        </div>
+                        <div className='form-group'>
+                            <label> Due Date:  </label>
+                            <input type="date" name="due_date" value={formData.due_date} onChange={handleChange} />
+                        </div>
+                        <div className='form-group'>
+                            <label> Status:  </label>
+                            <select name="status" value={formData.status} onChange={handleChange} >
+                                <option value="paid">Paid</option>
+                                <option value="not paid">Not Paid</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </div>
+                        <div className='form-group'>
+                            <label>  Remarks: </label>
+                            <textarea name="remarks" value={formData.remarks} onChange={handleChange} ></textarea>
+                        </div>
+                        <div className='form-group'>
+                            <Link to={`/AcademyDetails/${role}/${academyId}/ManagePayment`}>
+                                <button className='back-btn' type="button">Back</button>
+                            </Link>
+                            <button type="submit">Update Record</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <About />
         </div>
     );
 };

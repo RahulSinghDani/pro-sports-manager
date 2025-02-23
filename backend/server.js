@@ -32,7 +32,9 @@ const port = process.env.PORT || 5000;
 
 // Middleware
 // app.use(cors());
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
+// app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "https://prosportsmanager.in", credentials: true }));
 
 app.use(bodyParser.json());
 
@@ -472,7 +474,7 @@ app.get('/api/coaches/:academyId',verifyToken, (req, res) => {
   `;
   db.query(query, [academyId], (err, results) => {
     if (err) {
-      return res.status(500).json({ message: 'Error fetching coach data', error: err });
+      return res.status(500).json({ message: 'Error fetching employee data', error: err });
     }
     res.json(results); // Send the coach data as JSON
   });
@@ -943,14 +945,14 @@ app.put('/api/editCoach/:academyId/:coachId',verifyToken, (req, res) => {
     [coachName, designation, address, experience, phoneNumber, email, salary, salaryFrequency, academyId, coachId],
     (err, result) => {
       if (err) {
-        console.error('Error updating coach:', err);
-        return res.status(500).json({ message: 'Failed to update coach.' });
+        console.error('Error updating employee:', err);
+        return res.status(500).json({ message: 'Failed to update employee.' });
       }
 
       if (result.affectedRows > 0) {
-        res.status(200).json({ message: 'Coach updated successfully!' });
+        res.status(200).json({ message: 'employee updated successfully!' });
       } else {
-        res.status(404).json({ message: 'Coach not found.' });
+        res.status(404).json({ message: 'employee not found.' });
       }
     }
   );
@@ -963,14 +965,17 @@ app.put('/api/editCoach/:academyId/:coachId',verifyToken, (req, res) => {
 app.get("/api/getUniqueCoachId",verifyToken, (req, res) => {
   db.query("SELECT MAX(id) AS maxId FROM employee", (err, results) => {
     if (err) {
-      return res.status(500).json({ message: "Error fetching coach ID." });
+      return res.status(500).json({ message: "Error fetching employee ID." });
     }
     // Extract the numeric part of the ID
-    const maxId = results[0].maxId ? parseInt(results[0].maxId.replace("coach", "")) : 0;
+    // const maxId = results[0].maxId ? parseInt(results[0].maxId.replace("emp", "")) : 0;
+        // Handle NULL case
+        const maxIdStr = results[0].maxId || "emp000"; // Default if table is empty
+        const maxId = parseInt(maxIdStr.replace("emp", ""), 10) || 0;
 
     // Increment the numeric part and format it with leading zeros
     const newIdNumber = maxId + 1;
-    const newCoachId = `coach${String(newIdNumber).padStart(3, "0")}`;
+    const newCoachId = `emp${String(newIdNumber).padStart(3, "0")}`;
 
     res.status(200).json({ id: newCoachId });
   });
@@ -997,12 +1002,14 @@ app.post("/api/addCoach/:academyId", verifyToken, multer().single('resume'), (re
   // Generate a new unique coach ID
   db.query("SELECT MAX(id) AS maxId FROM employee", (err, results) => {
     if (err) {
-      console.error("Error fetching max coach ID:", err);
-      return res.status(500).json({ message: "Failed to generate coach ID." });
+      console.error("Error fetching max employee ID:", err);
+      return res.status(500).json({ message: "Failed to generate employee ID." });
     }
 
-    const maxId = results[0].maxId ? parseInt(results[0].maxId.replace("coach", "")) : 0;
-    const newCoachId = `coach${String(maxId + 1).padStart(3, "0")}`; // Generate new ID with padding
+    // const maxId = results[0].maxId ? parseInt(results[0].maxId.replace("emp", "")) : 0;
+    const maxIdStr = results[0].maxId || "emp000"; // Handle NULL case
+    const maxId = parseInt(maxIdStr.replace("emp", ""), 10) || 0;
+    const newCoachId = `emp${String(maxId + 1).padStart(3, "0")}`; // Generate new ID with padding
 
     // Insert new player data into the database
     const query = `
@@ -1302,7 +1309,7 @@ app.post("/api/addPlayer/:academyId",verifyToken, upload.single("profile_pic"), 
 });
 
 // Serve static files (profile pics)
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads',verifyToken, express.static('uploads'));
 
 //---------------------------------------------------------
 //delete player from id 

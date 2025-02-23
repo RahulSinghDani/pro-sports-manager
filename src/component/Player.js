@@ -216,7 +216,7 @@ const Player = () => {
                     <td><Link to={`/AcademyDetails/${role}/${academyId}/${player.id}/${player.name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                       <b> {player.name}</b>
                     </Link></td>
-                    <td> <b>Batch:</b> {player.batch} <br /> {player.fee_type}<br />Fee. <span style={{ color: "blue", fontSize: "1rem" }}> {player.fee}</span></td>
+                    <td> <b>Batch:</b> {player.batch} <br /> {player.fee_type}<br /><b>Fee</b> Rs. <span style={{ color: "blue", fontSize: "1rem" }}> {player.fee}</span></td>
                     <td><i>{player.gender}</i> <br /><b>DOB:</b>{formatDate(player.dob)} <br /><b>Sorts Expertise: </b>{player.sports_expertise}</td>
                     <td><b>Player Ph.: </b>{player.phone_number} <br /> <b>Father Ph.: </b>{player.f_ph_num} <br /> <b>Mother Ph.: </b>{player.m_ph_num}</td>
                     <td><b> School Name:</b> {player.school_name} <br /><b> Pre Aca:</b> {player.previous_academy}</td>

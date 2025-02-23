@@ -928,7 +928,7 @@ label {
 }
 
 /* Input styling */
-input {
+input , textarea{
   padding: 5px;
   /* Comfortable padding */
   font-size: 1rem;
@@ -1181,7 +1181,7 @@ h2 {
   text-align: center;
   font-size: 2rem;
   color: #333;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 /* Dashboard Box Styling */
@@ -1495,6 +1495,7 @@ input:checked+.slider:before {
   justify-content: center;
   gap: 35px;
   flex-wrap: wrap;
+  padding-top: 24px;
 }
 
 .contact-info {
@@ -1920,7 +1921,7 @@ div {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #f4f4f4;
+  background: rgb(243, 248, 247);
   padding: 10px;
   border-radius: 5px;
 }
@@ -1962,7 +1963,7 @@ div {
 }
 
 .search-by-year-month {
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 20px;
   display: flex;
   flex-direction: row;
@@ -2689,20 +2690,19 @@ div {
     align-items: center;
     padding: 4px;
     border-radius: 20px;
-    gap: 50px;
+    gap: 10px;
     flex-direction: column;
     box-sizing: border-box;
   }
 
   .search-box-managepayment {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     justify-content: center;
     align-items: center;
-    border: 1px solid rgb(203, 203, 203);
-    gap: 16px;
-    padding: 20px;
-    width: 90%;
+    border: 1px solid #d1d1d1;
+    
+    padding: 10px;
     background-color: rgb(243, 248, 247);
 
   }
