@@ -662,6 +662,89 @@ app.get("/api/attendance/:academyId", verifyToken, (req, res) => {
     res.json({ attendanceExists: true, attendanceData });
   });
 });
+
+//---------------------------------------------------------------
+// Route to update academy by ID
+// app.put('/api/update-academy/academies/:id',verifyToken, upload.single('images'), (req, res) => {
+//   const images = req.file ? req.file.filename : null;
+
+//   const { id } = req.params;
+//   const {
+//     name,
+//     address,
+//     owner_name,
+//     phone_num,
+//     email,
+//     website,
+//     logo,
+//     youtube,
+//     instagram,
+//     facebook,
+//     latitude,
+//     longitude,
+//   } = req.body;
+
+//   const query = `UPDATE academy SET name = ?, address = ?, owner_name = ?, phone_num = ?, email = ?, website = ?, images = ?, logo = ?, youtube = ?, instagram = ?, facebook = ?,latitude = ? , longitude = ? WHERE id = ?`;
+
+//   db.query(query, [name, address, owner_name, phone_num, email, website, images, logo, youtube, instagram, facebook, latitude, longitude, id], (err, result) => {
+//     if (err) {
+//       console.error('Error updating academy:', err);
+//       return res.status(500).json({ message: 'Failed to update academy' });
+//     }
+
+//     if (result.affectedRows === 0) {
+//       return res.status(404).json({ message: 'Academy ID not found' });
+//     }
+
+//     res.json({ message: 'Academy updated successfully', success: true });
+//   });
+// });
+app.put('/api/update-academy/academies/:id', verifyToken,
+  upload.fields([
+    { name: 'images', maxCount: 1 },
+    { name: 'logo', maxCount: 1 }
+  ]),
+  (req, res) => {
+    const { id } = req.params;
+    const {
+      name, address, owner_name, phone_num, email, website, youtube, instagram, facebook, latitude, longitude,
+      images, // current image value (if no new file is uploaded)
+      logo      // current logo value (if no new file is uploaded)
+    } = req.body;
+
+    const latVal = (!latitude || latitude === 'null') ? null : latitude;
+    const longVal = (!longitude || longitude === 'null') ? null : longitude;
+    // Determine new file names; if a file isn't provided, use the existing value
+    const newImage =
+      req.files && req.files.images && req.files.images[0]
+        ? req.files.images[0].filename
+        : images;
+    const newLogo =
+      req.files && req.files.logo && req.files.logo[0]
+        ? req.files.logo[0].filename
+        : logo;
+
+    const query = `UPDATE academy SET name = ?, address = ?, owner_name = ?, phone_num = ?, email = ?, website = ?, images = ?, logo = ?, youtube = ?, instagram = ?, facebook = ?, latitude = ?, longitude = ? WHERE id = ?`;
+
+    db.query(
+      query,
+      [name, address, owner_name, phone_num, email, website, newImage, newLogo, youtube, instagram, facebook, latVal, longVal, id
+      ],
+      (err, result) => {
+        if (err) {
+          console.error('Error updating academy:', err);
+          return res.status(500).json({ message: 'Failed to update academy' });
+        }
+
+        if (result.affectedRows === 0) {
+          return res.status(404).json({ message: 'Academy ID not found' });
+        }
+
+        res.json({ message: 'Academy updated successfully', success: true });
+      }
+    );
+  }
+);
 //-----------------------------------------------------
 
 //Add New Academy ------------------------------
@@ -910,87 +993,7 @@ app.get('/api/academies/:id', verifyToken, (req, res) => {
   });
 });
 
-// Route to update academy by ID
-// app.put('/api/update-academy/academies/:id',verifyToken, upload.single('images'), (req, res) => {
-//   const images = req.file ? req.file.filename : null;
 
-//   const { id } = req.params;
-//   const {
-//     name,
-//     address,
-//     owner_name,
-//     phone_num,
-//     email,
-//     website,
-//     logo,
-//     youtube,
-//     instagram,
-//     facebook,
-//     latitude,
-//     longitude,
-//   } = req.body;
-
-//   const query = `UPDATE academy SET name = ?, address = ?, owner_name = ?, phone_num = ?, email = ?, website = ?, images = ?, logo = ?, youtube = ?, instagram = ?, facebook = ?,latitude = ? , longitude = ? WHERE id = ?`;
-
-//   db.query(query, [name, address, owner_name, phone_num, email, website, images, logo, youtube, instagram, facebook, latitude, longitude, id], (err, result) => {
-//     if (err) {
-//       console.error('Error updating academy:', err);
-//       return res.status(500).json({ message: 'Failed to update academy' });
-//     }
-
-//     if (result.affectedRows === 0) {
-//       return res.status(404).json({ message: 'Academy ID not found' });
-//     }
-
-//     res.json({ message: 'Academy updated successfully', success: true });
-//   });
-// });
-app.put('/api/update-academy/academies/:id', verifyToken,
-  upload.fields([
-    { name: 'images', maxCount: 1 },
-    { name: 'logo', maxCount: 1 }
-  ]),
-  (req, res) => {
-    const { id } = req.params;
-    const {
-      name, address, owner_name, phone_num, email, website, youtube, instagram, facebook, latitude, longitude,
-      images, // current image value (if no new file is uploaded)
-      logo      // current logo value (if no new file is uploaded)
-    } = req.body;
-
-    const latVal = (!latitude || latitude === 'null') ? null : latitude;
-    const longVal = (!longitude || longitude === 'null') ? null : longitude;
-    // Determine new file names; if a file isn't provided, use the existing value
-    const newImage =
-      req.files && req.files.images && req.files.images[0]
-        ? req.files.images[0].filename
-        : images;
-    const newLogo =
-      req.files && req.files.logo && req.files.logo[0]
-        ? req.files.logo[0].filename
-        : logo;
-
-    const query = `UPDATE academy SET name = ?, address = ?, owner_name = ?, phone_num = ?, email = ?, website = ?, images = ?, logo = ?, youtube = ?, instagram = ?, facebook = ?, latitude = ?, longitude = ? WHERE id = ?`;
-
-    db.query(
-      query,
-      [name, address, owner_name, phone_num, email, website, newImage, newLogo, youtube, instagram, facebook, latVal, longVal, id
-      ],
-      (err, result) => {
-        if (err) {
-          console.error('Error updating academy:', err);
-          return res.status(500).json({ message: 'Failed to update academy' });
-        }
-
-        if (result.affectedRows === 0) {
-          return res.status(404).json({ message: 'Academy ID not found' });
-        }
-
-        res.json({ message: 'Academy updated successfully', success: true });
-      }
-    );
-  }
-);
 //----------------------------------------------------------------------
 // Fetch all sports equipment
 app.get("/api/sports-equipment", verifyToken, (req, res) => {

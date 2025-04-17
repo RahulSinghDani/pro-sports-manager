@@ -66,15 +66,6 @@ const EditPlayer = () => {
     }
   };
 
-  // // Handle Player Data Update
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setPlayerData({
-  //     ...playerData,
-  //     [name]: value,
-  //   });
-  // };
-
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
 

@@ -14,9 +14,10 @@ body {
   overflow-x: hidden;
   /* Prevent horizontal scrolling */
 }
-.back-btn{
+
+.back-btn {
   background-color: #585858;
-  color:white;
+  color: white;
 }
 
 /* --------------------------------------- */
@@ -54,10 +55,11 @@ body {
 
 @keyframes spin {
   from {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
+
   to {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -132,11 +134,13 @@ body {
   justify-content: center;
 
 }
-.img-input-academy{
+
+.img-input-academy {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 /* Title styling */
 .edit-academy-title {
   margin-top: 35px;
@@ -153,9 +157,11 @@ body {
   align-items: center;
   justify-content: space-evenly;
 }
- .seperate-edit-academy-inputs{
+
+.seperate-edit-academy-inputs {
   /* display:grid; */
- }
+}
+
 /* Input field styling */
 input[type="text"],
 input[type="email"] {
@@ -249,22 +255,25 @@ button:hover:not([disabled]) {
   font-size: 10px;
   /* font-weight: bold; */
 }
+
 /* ---------------------------- */
 
-.remove-value-btn{
+.remove-value-btn {
   /* width: 100px; */
   padding: 4px 4px;
   background-color: #243c5f;
   color: white;
 }
-.add-value-btn{
+
+.add-value-btn {
   /* width: 100px; */
   padding: 4px 4px;
   background-color: #157243;
   color: white;
 }
+
 /* ------------------------------- */
-.attendance-sidebar{
+.attendance-sidebar {
   width: 16rem;
   position: fixed;
   /* background-color: #e5e7eb;  */
@@ -272,16 +281,20 @@ button:hover:not([disabled]) {
   height: 100vh;
   padding: 1rem;
 }
-.attendance-calendar{
+
+.attendance-calendar {
   flex: 1;
-  margin-left: 16rem; /* Offset for the sidebar */
+  margin-left: 16rem;
+  /* Offset for the sidebar */
   padding: 1rem;
 }
+
 /* -------------------------------------- */
 /* Sidebar container */
-.side-nav-below-navbar{
+.side-nav-below-navbar {
   margin-top: 65px;
 }
+
 .sidenav {
   margin-top: 60px;
   width: 16rem;
@@ -292,7 +305,7 @@ button:hover:not([disabled]) {
   position: fixed;
   top: 0;
   left: 0;
-  
+
 }
 
 /* Individual menu items */
@@ -301,7 +314,8 @@ button:hover:not([disabled]) {
   padding: 0.5rem 1rem;
   color: #6b6b6b;
   margin-top: 0.5rem;
-  border-radius: 0.375rem; /* Rounded corners */
+  border-radius: 0.375rem;
+  /* Rounded corners */
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
 }
@@ -309,12 +323,15 @@ button:hover:not([disabled]) {
 /* Hover effect */
 .menu-item:hover {
   background-color: #d5d5d5;
-  border: 1px solid rgb(206, 0, 0); /* Lighter blue (similar to slate-700) */
+  border: 1px solid rgb(206, 0, 0);
+  /* Lighter blue (similar to slate-700) */
 }
-.menu-content{
+
+.menu-content {
   display: flex;
-  gap:4px;
+  gap: 4px;
 }
+
 .menu-icon-sidenav {
   width: 20px;
   height: 20px;
@@ -325,15 +342,15 @@ button:hover:not([disabled]) {
 /* error-message-session */
 .error-message-session {
   text-align: center;
-  color: #ff4d4d; 
+  color: #ff4d4d;
   font-size: 16px;
   font-weight: bold;
-  background-color: #ffe6e6; 
+  background-color: #ffe6e6;
   padding: 10px;
   border: 1px solid #ff4d4d;
   border-radius: 5px;
   display: inline-block;
-  margin: 10px auto; 
+  margin: 10px auto;
   width: fit-content;
 }
 
@@ -342,12 +359,14 @@ button:hover:not([disabled]) {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh; 
+  height: 100vh;
 }
+
 .countdown {
   font-size: 14px;
   font-weight: bold;
-  color: #d9534f; /* Dark red for countdown */
+  color: #d9534f;
+  /* Dark red for countdown */
 }
 
 
@@ -357,13 +376,13 @@ button:hover:not([disabled]) {
 /* General Styles */
 /* General Styling for the container */
 .equipment-container {
-  border:1px solid grey;
+  border: 1px solid grey;
   display: flex;
   max-width: 1000px;
   margin: 0 auto;
   padding: 20px;
   font-family: 'Arial', sans-serif;
-  justify-content:space-evenly;
+  justify-content: space-evenly;
   align-items: center;
   border-radius: 14px;
   margin-top: 10px;
@@ -442,7 +461,7 @@ button:hover:not([disabled]) {
   border: 1px solid #b0adad;
   border-radius: 5px;
   align-items: center;
-  
+
 }
 
 .equipment-item div {
@@ -469,6 +488,7 @@ button:hover:not([disabled]) {
 .delete-btn:hover {
   background-color: #c0392b;
 }
+
 .edit-btn {
   background-color: #8b8b8b;
   color: white;
@@ -481,11 +501,13 @@ button:hover:not([disabled]) {
 .edit-btn:hover {
   background-color: #191919;
 }
-.download-btn-main{
+
+.download-btn-main {
   display: flex;
   justify-content: center;
 }
-.download-btn{
+
+.download-btn {
   padding: 10px 15px;
   background: #191919;
   color: white;
@@ -495,20 +517,24 @@ button:hover:not([disabled]) {
   font-weight: bold;
   /* margin-bottom: 15px; */
 }
+
 .SportsEquipment-style {
   max-height: 400px;
   margin: 16px;
 }
-.sports-equipment-box-style{
+
+.sports-equipment-box-style {
   display: flex;
   justify-content: center;
 }
+
 /* No equipment message styling */
 .no-equipment {
   text-align: center;
   color: #777;
   font-size: 1.2rem;
 }
+
 /* ------------------------------------------ */
 .about-section {
   background-color: #000000;
@@ -825,8 +851,10 @@ body {
   margin: 0;
   padding: 0;
 }
+
 .parent-address-style {
-  max-width: 200px; /* Adjust width as needed */
+  max-width: 200px;
+  /* Adjust width as needed */
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
@@ -1014,6 +1042,7 @@ li button:active,
   background: #f9f9f9;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .heading {
   padding-top: 8px;
   text-align: center;
@@ -1058,12 +1087,13 @@ label {
   /* Regular weight */
   color: #333;
   /* Dark text for contrast */
- 
+
   /* Allows label to take equal space */
 }
 
 /* Input styling */
-input , textarea{
+input,
+textarea {
   padding: 5px;
   /* Comfortable padding */
   font-size: 1rem;
@@ -1103,15 +1133,17 @@ form div input:focus {
 #aboutHome {
   width: 40%;
 }
+
 /* ------------------------------------------------ */
 /* quick search button style  */
-.date-filter-style{
+.date-filter-style {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 5px;
   padding: 0px 4px;
 }
+
 .search-by-year-month {
   display: flex;
   gap: 10px;
@@ -1135,6 +1167,7 @@ form div input:focus {
 .quick-search-btn:active {
   background-color: #ccc;
 }
+
 .quick-reset-btn {
   padding: 5px 5px;
   font-size: 14px;
@@ -1158,7 +1191,8 @@ form div input:focus {
 }
 
 .search-icon {
-  width: 24px;  /* Adjust size as needed */
+  width: 24px;
+  /* Adjust size as needed */
   height: 24px;
 }
 
@@ -1313,10 +1347,11 @@ button[onClick="handleRefresh"]:hover {
   background-color: #e53935;
 }
 
-.payment-quick-filter-main{
+.payment-quick-filter-main {
   display: flex;
   justify-content: space-between;
 }
+
 /* General container styling */
 /* ------------------------------------------- */
 
@@ -1558,7 +1593,7 @@ input:checked+.slider:before {
 /* -------- */
 .news-container {
   display: flex;
-
+  flex-direction: column;
   max-height: 300px;
   /* Fixed height */
   overflow-y: auto;
@@ -2004,13 +2039,17 @@ p {
 .input-required-field-style button:hover {
   background-color: #4338ca;
 }
+
 /* ------------------------------------------------ */
 .active-menu-item-side-nav {
-  background-color: #007bff; /* Blue color */
-  color: white; /* Text color */
+  background-color: #007bff;
+  /* Blue color */
+  color: white;
+  /* Text color */
   font-weight: bold;
   border-radius: 5px;
 }
+
 /* ---------------------------------------- */
 
 
@@ -2088,13 +2127,15 @@ div {
 }
 
 /* ---------------------------------- */
-.refresh-btn{
+.refresh-btn {
   cursor: pointer;
 }
-.player-functionality-btns{
+
+.player-functionality-btns {
   display: flex;
   justify-content: space-between;
 }
+
 /* ------------------------------------------------------- */
 /* search box manage payemnt  */
 /* Search Section */
@@ -2217,8 +2258,9 @@ div {
   height: 100vh;
 
 }
+
 /* ------------------------------ */
-.player-details-img-part{
+.player-details-img-part {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2227,6 +2269,7 @@ div {
   padding: 4px;
   /* background-color: #45a049; */
 }
+
 .player-details-cricket-score-card {
   background: #f8f9fa;
   padding: 16px;
@@ -2278,16 +2321,18 @@ div {
 .player-details-cricket-score-card a:hover {
   background: #0056b3;
 }
-.player-details-seperate-style{
+
+.player-details-seperate-style {
   display: flex;
   justify-content: space-evenly;
   text-align: left;
-  padding: 30px 12px; 
+  padding: 30px 12px;
   background: rgb(54, 54, 54);
   border-radius: 14px;
   width: 100%;
 }
-.details-of-player-v1{
+
+.details-of-player-v1 {
   gap: 12px;
   color: white;
   /* background-color: rgb(103, 103, 103); */
@@ -2417,7 +2462,7 @@ div {
   width: 100%;
   /* Matches the display area width */
   overflow-x: auto;
- 
+
   /* Adds horizontal scrollbar */
   -webkit-overflow-scrolling: touch;
   /* Smooth scrolling for touch devices */
@@ -2428,11 +2473,12 @@ div {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 
 }
+
 .table-wrapper1 {
   width: 100%;
   /* Matches the display area width */
   overflow-x: auto;
- 
+
   /* Adds horizontal scrollbar */
   -webkit-overflow-scrolling: touch;
   /* Smooth scrolling for touch devices */
@@ -2443,6 +2489,7 @@ div {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 
 }
+
 /* ------------------------------------------- */
 /* table style scroller  */
 .table-container {
@@ -2466,7 +2513,8 @@ div {
 }
 
 .table-scroll {
-  max-height: 300px; /* Adjust height as needed */
+  max-height: 300px;
+  /* Adjust height as needed */
   overflow-y: auto;
   display: block;
 }
@@ -2573,24 +2621,28 @@ div {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  gap:12px;
+  gap: 12px;
 }
+
 /* ------------------------------------------------------------- */
 /* forms design  */
-.form-seperator-in-parts{
+.form-seperator-in-parts {
   width: 45%;
   display: flex;
   justify-content: center;
   align-items: center;
- 
+
   flex-wrap: wrap;
 }
-.form-group-main{
+
+.form-group-main {
   display: flex;
   align-items: flex-start;
-  justify-content:space-evenly;
-  border: 1px solig rgb(206, 206, 206);;
+  justify-content: space-evenly;
+  border: 1px solig rgb(206, 206, 206);
+  ;
 }
+
 /* ---------------------------------------------------------- */
 .contact-form {
   width: 100%;
@@ -2608,25 +2660,30 @@ div {
   align-items: center;
   /* gap: 10px; */
 }
-.form-group-timing{
+
+.form-group-timing {
   display: flex;
   /* flex-direction: row; */
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
 }
-.form-group-timing div{
+
+.form-group-timing div {
   width: 48%;
 }
-.form-group-timing select{
+
+.form-group-timing select {
   font-size: 12px;
 }
-.timing-div{
+
+.timing-div {
   display: flex;
   flex-wrap: nowrap;
 }
+
 .form-group label {
-  width:fit-content;
+  width: fit-content;
   font-weight: bold;
   width: 150px;
   /* Adjust width for consistent alignment */
@@ -2781,6 +2838,7 @@ div {
   height: 450px;
   border-radius: 20px;
 }
+
 @media (max-width: 1170px) {
   /* ----------------------------------- */
   /* for table  */
@@ -2807,7 +2865,7 @@ div {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap:12px;
+    gap: 12px;
   }
 
   /* Styling for navLinks inside a separate div */
@@ -2831,10 +2889,11 @@ div {
     /* Ensure child elements stretch to container width */
   }
 }
+
 /* ------------------------------------------------------------------- */
 /* Media Queries for Small Screens (Mobile) */
 @media (max-width: 850px) {
-  .attendance-sidebar{
+  .attendance-sidebar {
     width: 12rem;
     position: fixed;
     /* background-color: #e5e7eb;  */
@@ -2842,15 +2901,19 @@ div {
     height: 100vh;
     padding: 1rem;
   }
-  .form-group-timing div{
+
+  .form-group-timing div {
     width: 100%;
   }
+
   .dashboard-box p {
     font-size: 1.3rem;
   }
-  .box-style{
+
+  .box-style {
     flex-direction: column;
   }
+
   .about-content {
     width: 100%;
     text-align: center;
@@ -2889,7 +2952,7 @@ div {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap:12px;
+    gap: 12px;
   }
 
   .academy-details {
@@ -3090,7 +3153,7 @@ div {
     justify-content: center;
     align-items: center;
     border: 1px solid #d1d1d1;
-    
+
     padding: 10px;
     background-color: rgb(243, 248, 247);
 
@@ -3259,14 +3322,16 @@ div {
 /* -------------------------------- */
 /* Responsive styles */
 @media (max-width: 600px) {
-  .attendance-calendar{
+  .attendance-calendar {
     margin-left: 8rem;
   }
-  .sidenav{
+
+  .sidenav {
     margin-top: 70px;
     padding: 0.1rem;
   }
-  .attendance-sidebar{
+
+  .attendance-sidebar {
     width: 8rem;
     position: fixed;
     /* background-color: #e5e7eb;  */
@@ -3274,49 +3339,58 @@ div {
     height: 100vh;
     padding: 0.3rem;
   }
-  .form-group-timing div{
+
+  .form-group-timing div {
     width: 100%;
   }
-  .player-details-img-part{
+
+  .player-details-img-part {
     width: 40%;
   }
-  .player-details-cricket-score-card{
+
+  .player-details-cricket-score-card {
     width: 50%;
   }
-  .player-details-cricket-score-card td{
+
+  .player-details-cricket-score-card td {
     width: 80px;
   }
-  .player-details-seperate-style{
+
+  .player-details-seperate-style {
     text-align: left;
-    padding: 8px 12px; 
-    background: rgb(232,232,232);
+    padding: 8px 12px;
+    background: rgb(232, 232, 232);
     border-radius: 14px;
     width: 100%;
   }
-  .equipment-container{
+
+  .equipment-container {
     position: relative;
     flex-direction: column;
     justify-content: center;
     /* z-index: 10; */
-    
+
   }
-  .user-registration-form{
+
+  .user-registration-form {
     max-width: 320px;
   }
-  .form-seperator-in-parts{
+
+  .form-seperator-in-parts {
     width: 90%;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap:20px;
+    gap: 20px;
     flex-wrap: wrap;
   }
+
   .box-style {
     flex-direction: column;
     border: 1px solid #ddd;
     padding: 10px;
     border-radius: 8px;
-    max-width:  150px;
+    max-width: 150px;
     max-height: 100px;
     display: flex;
     align-items: center;
@@ -3325,11 +3399,13 @@ div {
     background: #f9f9f9;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
-  .sports-equipment-box-style{
+
+  .sports-equipment-box-style {
     display: flex;
     flex-direction: column;
     padding: 3px;
   }
+
   .edit-academy-container {
     padding: 10px;
   }
