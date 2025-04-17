@@ -5,30 +5,32 @@ import cricketBg from "./Images/cricketBg.jpg"; // Import the background image
 import { useParams, Link } from 'react-router-dom';
 import defaultImage from "./Images/playerpng.png"; // Import the default image
 import About from './About';
+import logo from "./Images/logo.png";
+
 const PlayerDetails = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-    const { academyId, id, role ,name} = useParams();
-    console.log("player id: ", id);
+    const { academyId, id, role, name } = useParams();
+    // console.log("player id: ", id);
     // const [totalPlayers, setTotalPlayers] = useState(0);
     const [playerData, setPlayerData] = useState({});
     const [outstandingFee, setOutstandingFee] = useState(0);
     const [players, setPlayers] = useState({});
 
-//fetch cricket data
-useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/cricket-data/player/${academyId}/${id}`,{ withCredentials: true });
-        // If response is array, take the first element
-        setPlayers(response.data[0] || {});
-      } catch (error) {
-        console.error("Error fetching cricket data:", error);
-      }
-    };
-    fetchData();
-  }, [API_BASE_URL, academyId, id]);
-  
+    //fetch cricket data
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${API_BASE_URL}/api/cricket-data/player/${academyId}/${id}`, { withCredentials: true });
+                // If response is array, take the first element
+                setPlayers(response.data[0] || {});
+            } catch (error) {
+                console.error("Error fetching cricket data:", error);
+            }
+        };
+        fetchData();
+    }, [API_BASE_URL, academyId, id]);
+
     // useEffect(() => {
     //     const fetchTotalPlayers = async () => {
     //         try {
@@ -49,7 +51,7 @@ useEffect(() => {
     useEffect(() => {
         const fetchPlayerOutstandingFee = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/api/outstanding-fee/${academyId}/${id}`,{ withCredentials: true });
+                const response = await axios.get(`${API_BASE_URL}/api/outstanding-fee/${academyId}/${id}`, { withCredentials: true });
                 setOutstandingFee(response.data);
             } catch (error) {
                 console.error("Error fetching outstanding fee records:", error);
@@ -63,7 +65,7 @@ useEffect(() => {
     useEffect(() => {
         const fetchPlayerData = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/api/allPlayers/${academyId}/${id}`,{ withCredentials: true });
+                const response = await axios.get(`${API_BASE_URL}/api/allPlayers/${academyId}/${id}`, { withCredentials: true });
                 setPlayerData(response.data);
             } catch (error) {
                 console.error("Error fetching Data : ", error);
@@ -82,6 +84,7 @@ useEffect(() => {
         return `${ageYears} years ${ageMonths} months`;
     };
 
+
     return (
         <div style={{ backgroundImage: `url(${cricketBg})`, backgroundSize: 'cover', minHeight: '100vh' }}>
             {/* <Link to={`/AcademyDetails/${academyId}/Player`}>Back</Link> */}
@@ -89,78 +92,79 @@ useEffect(() => {
 
             <h2 className="heading" style={{ textAlign: "center", background: "black", color: "white", padding: "8px 8px", width: "100%" }}>
                 Player Dashboard
-                <Link to={`/AcademyDetails/${role}/${academyId}/Player`}><button id="playerDashboard" style={{ background: "rgb(30, 30, 30)", float: "right" }}>Go Back</button></Link>
+                <Link to={`/AcademyDetails/${role}/${academyId}/Player`}><button id="playerDashboard" style={{ background: "rgb(30, 30, 30)", float: "right" }}>Back</button></Link>
             </h2>
 
-            <div className="container" style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ display: "flex", justifyContent: "center" }}>
                 <div>
-
-
-
+                    
                     {/* Player Details Section */}
                     {(
                         <div style={playerDetailsContainerStyle}>
                             <div style={{ background: "rgb(0,0,0)", borderRadius: "10px", paddingTop: "4px", paddingBottom: "4px", color: "white" }}>
-                                <h2>Player: {playerData.name}</h2>
-                                <h4>Sports Expertise: {playerData.sports_expertise}</h4>
+                                <h3 style={{ color: 'white' }}>Player: {playerData.name}</h3>
+                                <h5>Sports Expertise: {playerData.sports_expertise}</h5>
                             </div>
                             <div style={playerInfoStyle}>
-                                {/* First Column */}
-                                <div style={{ textAlign: "left", padding: "8px 12px", background: "rgb(232,232,232)", borderRadius: "14px" }}>
-                                    <p><strong>Player ID:</strong> {playerData.id}</p>
-                                    <p><strong>Name:</strong> {playerData.name || "N/A"}</p>
-                                    <p><strong>Joined On:</strong> 20 Jan 2023</p>
-                                    <p><strong>Batch:</strong> {playerData.batch}</p>
-
-                                    <p><strong>Fee Mode:</strong> Monthly</p>
-                                    <p><strong>Fee Amount:</strong> 10000</p>
-                                    <p><strong>Age:</strong> {calculateAge(playerData.dob)}</p>
-
-                                    <br></br>
-                                    <br></br>
-                                    {/* Parent Details */}
-                                    <h3>Player Parents Details</h3>
-                                    <p><strong>Father's Name:</strong> {playerData.father_name}</p>
-                                    <p><strong>Mother's Name:</strong> {playerData.mother_name}</p>
-                                    <p><strong>Phone Number:</strong> {playerData.phone_number}</p>
-                                </div>
-
                                 {/* Second Column */}
-                                <div style={{ textAlign: "center", margin: "5px" }}>
+                                <div className='player-details-img-part' style={{ textAlign: "center", margin: "5px" }}>
                                     <img
                                         src={playerData.profile_pic ? `${API_BASE_URL}/uploads/${playerData.profile_pic}` : defaultImage}
                                         alt="Player"
-                                        style={{ width: "150px", borderRadius: "10px", marginBottom: "60px", pointerEvents: "none", userSelect: "none" ,cursor:'not-allowed'}}
+                                        style={{ width: "160px",height:'200px', borderRadius: "10px", marginBottom: "60px", pointerEvents: "none", userSelect: "none", cursor: 'not-allowed' }}
                                         onDoubleClick={(e) => e.preventDefault()} // Prevents double-click
                                         onContextMenu={(e) => e.preventDefault()} // Disables right-click (prevents download)
                                         draggable="false" // Prevents drag & drop
                                     />
-
                                     <p><strong>School:</strong> {playerData.school_name}</p>
                                     <p><strong>Outstanding Fee:</strong> {outstandingFee.playerOutstandingFee || 0}</p>
                                 </div>
 
                                 {/* Third Column */}
-                                <div>
-                                    <div className="table-wrapper">
-                                        <table style={tableStyle}>
-                                            <tbody>
-                                                <tr>
-                                                    <td><strong>Matches: </strong> {players.matches_played || 0}</td>
-                                                    <td><strong>Runs: </strong> {players.runs || 0}</td>
-                                                    <td><strong>Wickets: </strong>{players.wickets || 0}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <div className='player-details-cricket-score-card'>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <strong>Matches: </strong>
+                                                <td>{players.matches_played || 0}</td>
+                                            </tr>
+                                            <tr><strong>Runs: </strong>
+                                                <td>{players.runs || 0}</td></tr>
+                                            <tr><strong>Wickets: </strong>
+                                                <td>{players.wickets || 0}</td></tr>
+                                        </tbody>
+                                    </table>
                                     <Link to={`/player-cricket-data/${role}/${academyId}/${id}/${name}`} style={buttonStyle}> Add Sports Details</Link>
+                                </div>
+
+                                {/* First Column */}
+                                <div style={{ background: 'rgb(224, 224, 224)', borderRadius: '40px', padding: '12px' }}>
+                                    <h3>Player Details</h3>
+                                    <div className='player-details-seperate-style' >
+
+                                        <div className='details-of-player-v1' >
+                                            <p><strong>Player ID:</strong> {playerData.id}</p>
+                                            <p><strong>Name:</strong> {playerData.name || "N/A"}</p>
+                                            <p><strong>Joined On:</strong> 20 Jan 2023</p>
+                                            <p><strong>Batch:</strong> {playerData.batch}</p>
+
+                                            <p><strong>Fee Mode:</strong> Monthly</p>
+                                            <p><strong>Fee :</strong> 10000</p>
+                                            <p><strong>Age:</strong> {calculateAge(playerData.dob)}</p>
+                                        </div>
+                                        <div className='details-of-player-v1' >
+                                            <p><strong>Father :</strong> {playerData.father_name}</p>
+                                            <p><strong>Mother :</strong> {playerData.mother_name}</p>
+                                            <p><strong>Player Ph No:</strong> {playerData.phone_number}</p>
+                                            <p><strong>Father's Ph No:</strong> {playerData.f_ph_num}</p>
+                                            <p><strong>Mother's Ph No:</strong> {playerData.m_ph_num}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     )}
-
                 </div>
-
             </div>
             <About />
         </div>
@@ -191,16 +195,7 @@ const playerInfoStyle = {
     display: "flex",
     justifyContent: "space-around",
     marginTop: "20px",
+    gap: '20px'
 };
 
-const tableStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "30vh",
-    width: "100%",
-    borderCollapse: "collapse",
-    // border:"2px solid black",
-    marginTop: "10px",
-};
 export default PlayerDetails

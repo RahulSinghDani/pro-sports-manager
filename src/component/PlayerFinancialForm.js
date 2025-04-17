@@ -1,20 +1,20 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import About from "./About";
+import LogoIcon from './Images/PSM-logo1.ico';
 
 const PlayerFinancialForm = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
     const { role, academyId, id, name, fee } = useParams();
-    // console.log("fee: ",fee);
-    // State for form data
+    const [originalDueAmount, setOriginalDueAmount] = useState(0);
+
     const [formData, setFormData] = useState({
         player_id: id || "",
         player_name: name || "",
         total_fee: fee,
-        paid_amount: "",
+        paid_amount: "0",
         due_amount: "0",
         due_date: "",
         status: "",
@@ -22,140 +22,171 @@ const PlayerFinancialForm = () => {
         academy_id: academyId || "",
     });
 
-    // State for submission message
     const [message, setMessage] = useState("");
 
+    const fetchPlayerRecord = async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/api/financial-records/${academyId}/${id}`, { withCredentials: true });
 
-    // Automatically update the due amount based on the total fee and paid amount
-    useEffect(() => {
-        const dueAmount = parseFloat(formData.total_fee || 0) - parseFloat(formData.paid_amount || 0);
-        setFormData(prevData => ({
-            ...prevData,
-            due_amount: dueAmount.toFixed(2),
-            status: dueAmount === 0 ? "paid" : "pending", // Update status based on due amount
-            remarks: dueAmount === 0 ? "Fully paid" : "Pending payment",
-        }));
-    }, [formData.total_fee, formData.paid_amount]);
+            // Ensure you get an array of records, not just one
+            const records = Array.isArray(response.data) ? response.data : [response.data];
 
-    // Handle input changes
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+            const totalPaidAmount = records.reduce((sum, record) => sum + parseFloat(record.paid_amount || 0), 0);
+            const totalFee = parseFloat(fee || "0");
+            const calculatedDueAmount = totalFee - totalPaidAmount;
+
+            setOriginalDueAmount(calculatedDueAmount);
+
+            setFormData(prevData => ({
+                ...prevData,
+                paid_amount: "0",
+                due_amount: calculatedDueAmount.toFixed(2),
+                due_date: records[0]?.due_date ? new Date(records[0].due_date).toISOString().split("T")[0] : "",
+                status: calculatedDueAmount === 0 ? "paid" : "pending",
+                remarks: calculatedDueAmount === 0 ? "Fully paid" : "Pending payment"
+            }));
+        } catch (error) {
+            console.error("Error fetching player payment record:", error);
+            const totalFee = parseFloat(fee || "0");
+            setOriginalDueAmount(totalFee);
+            setFormData(prevData => ({
+                ...prevData,
+                paid_amount: "0",
+                due_amount: totalFee.toFixed(2),
+                status: "pending",
+                remarks: "Pending payment"
+            }));
+        }
     };
 
-    // Handle form submission
+    useEffect(() => {
+        if (id) {
+            fetchPlayerRecord();
+        }
+    }, [API_BASE_URL, academyId, id]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        if (name === "paid_amount") {
+            let inputValue = value.trim() === "" ? 0 : parseFloat(value) || 0; // Handle empty input
+
+            const lastPaidAmount = parseFloat(formData.paid_amount || "0");
+            const lastDueAmount = parseFloat(formData.due_amount || 0) + lastPaidAmount; // Restore original due before calculation
+
+            if (inputValue > lastDueAmount) {
+                alert("Paid amount cannot be greater than the due amount.");
+                return;
+            }
+
+            const newDueAmount = lastDueAmount - inputValue;
+
+            setFormData(prevData => ({
+                ...prevData,
+                paid_amount: value, // Keep original input for UI
+                due_amount: newDueAmount.toFixed(2),
+                status: newDueAmount === 0 ? "paid" : "pending",
+                remarks: newDueAmount === 0 ? "Fully paid" : "Pending payment",
+            }));
+        }
+        else {
+            setFormData(prevData => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!formData.total_fee || !formData.paid_amount || !formData.status || !formData.due_date) {
             alert("Please fill in all required fields.");
             return;
         }
-
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/playerFinancial`, formData, { withCredentials: true });
-            if (response.status === 200) {
-                alert("Data added successfully!"); // Alert comes first
-                setMessage("Player financial details added successfully.");
-                navigate(`/AcademyDetails/${role}/${academyId}/Player`);
-            }
+            await axios.post(`${API_BASE_URL}/api/playerFinancial`, formData, { withCredentials: true });
+            alert("Data added successfully!");
+            navigate(`/AcademyDetails/${role}/${academyId}/Player`);
         } catch (error) {
-            setMessage("Failed to add player financial details. Please try again.");
             console.error("Error adding data:", error.response || error);
             alert("An error occurred while submitting the form. Please try again.");
         }
     };
 
-
     return (
         <div>
-            <div className="nav">
-                <p className="logo">Pro Sports Manager</p>
+            <div className='nav'>
+                <div className='logo-container'>
+                    <Link to={`/AcademyDetails/${role}/${academyId}`}><img style={{ width: '50px', borderRadius: '50%' }} src={LogoIcon} alt='logo' /></Link>
+                    <Link to={`/AcademyDetails/${role}/${academyId}`} className="logo" >Pro Sports Manager</Link>
+                </div>
             </div>
-            <div className="below-navbar">
-                <h2>Player Financial Form</h2>
+            <div className="below-navbar" style={{ display: 'flex', margin: 'auto', flexDirection: 'column', alignItems: 'center' }}>
+                <h3>Player Financial Form</h3>
                 <form onSubmit={handleSubmit}>
-                    {/* Player ID (read-only) */}
-                    <div>
+                    <div className="form-group">
                         <label>Player ID:</label>
                         <input type="text" value={formData.player_id} readOnly />
                     </div>
-
-                    {/* Player Name (read-only) */}
-                    <div>
+                    <div className="form-group">
                         <label>Player Name:</label>
                         <input type="text" value={formData.player_name} readOnly />
                     </div>
-
-                    {/* Total Fee */}
-                    <div>
+                    <div className="form-group">
                         <label>Total Fee:</label>
-                        <input
-                            type="number"
-                            name="total_fee"
-                            value={formData.total_fee}
-                            onChange={handleChange}
-                            disabled
-                        />
+                        <input type="number" value={formData.total_fee} disabled />
                     </div>
-
-                    {/* Paid Amount */}
-                    <div>
+                    <div className="form-group">
                         <label>Paid Amount:</label>
+                        {/* <input type="number" name="paid_amount" onChange={handleChange} /> */}
                         <input
                             type="number"
                             name="paid_amount"
                             value={formData.paid_amount}
                             onChange={handleChange}
-                            required
+                            min="0"
+                            max={originalDueAmount} // Limits input to due amount
                         />
                     </div>
-
-                    {/* Due Amount */}
-                    <div>
+                    <div className="form-group">
                         <label>Due Amount:</label>
-                        <input
-                            type="number"
-                            name="due_amount"
-                            value={formData.due_amount}
-                            onChange={handleChange}
-                        />
+                        <input type="number" value={formData.due_amount} disabled />
                     </div>
-
-                    {/* Due Date */}
-                    <div>
+                    <div className="form-group">
                         <label>Due Date:</label>
-                        <input
-                            type="date"
-                            name="due_date"
-                            value={formData.due_date}
-                            onChange={handleChange}
-                        />
+                        <input type="date" name="due_date" value={formData.due_date} onChange={handleChange} min={new Date().toISOString().split("T")[0]} />
                     </div>
-
-                    {/* Status */}
-                    <div>
+                    <div className="form-group">
                         <label>Status:</label>
-                        <select name="status" value={formData.status} onChange={handleChange}>
-                            <option>select status</option>
-                            <option value="paid">paid</option>
-                            <option value="pending">pending</option>
+                        <select value={formData.status} disabled>
+                            <option value="paid">Paid</option>
+                            <option value="pending">Pending</option>
                         </select>
                     </div>
-
-                    {/* Remarks */}
-                    <div>
+                    <div className="form-group">
                         <label>Remarks:</label>
-                        <textarea
-                            name="remarks"
-                            value={formData.remarks}
-                            onChange={handleChange}
-                        ></textarea>
+                        <textarea name="remarks" value={formData.remarks} onChange={handleChange} ></textarea>
                     </div>
-
-                    <button type="submit">Submit</button>
+                    {/* <button type="submit">Submit</button> */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '20px' }}>
+                        <Link to={`/AcademyDetails/${role}/${academyId}/Player`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <button className="back-btn">Back</button>
+                        </Link>
+                        <button
+                            type="submit"
+                            disabled={isNaN(formData.paid_amount) || parseFloat(formData.paid_amount) <= 0}
+                            style={{
+                                opacity: isNaN(formData.paid_amount) || parseFloat(formData.paid_amount) <= 0 ? 0.5 : 1,
+                                cursor: isNaN(formData.paid_amount) || parseFloat(formData.paid_amount) <= 0 ? 'not-allowed' : 'pointer'
+                            }}
+                        >
+                            Submit
+                        </button>
+                    </div>
                 </form>
                 {message && <p>{message}</p>}
+
             </div>
             <About />
         </div>

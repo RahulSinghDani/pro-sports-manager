@@ -1,43 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-// import './Style.css';
 import './AcademyNavbar.css';
 import AcademyNavbar from './AcademyNavbar.js';
 import { styles } from './Style.js';
 import DefaultImage from './Images/cricket-players.jpg';
-// import GroundImage from './Images/ground2.jpg';
 import InstagramPng from './Images/instapng.png';
 import YoutubePng from './Images/ytpng.png';
 import FacebookPng from './Images/fbpng.png';
 import LocationImg from './Images/locationIcon.jpg';
 import DilarImg from './Images/phone-call.png';
 import About from './About.js';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-// import { motion } from "framer-motion";
 import CricketGraph from './CricketGraph.js';
 import NewsForm from './NewsForm.js';
+import MapPng from './Images/map-png.png';
 
-// const useIncrementalCount = (targetValue, duration = 1000) => {
-//   const [count, setCount] = useState(0);
-
-//   useEffect(() => {
-//     let start = 0;
-//     const increment = targetValue / (duration / 10);
-//     const interval = setInterval(() => {
-//       start += increment;
-//       if (start >= targetValue) {
-//         setCount(targetValue);
-//         clearInterval(interval);
-//       } else {
-//         setCount(Math.floor(start));
-//       }
-//     }, 10);
-//     return () => clearInterval(interval);
-//   }, [targetValue, duration]);
-
-//   return count;
-// };
 const AcademyDetails = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -45,23 +22,16 @@ const AcademyDetails = () => {
 
   const [academyData, setAcademy] = useState(null);
   const [error, setError] = useState();
-  // const [totalPlayers, setTotalPlayers] = useState(0);
   const [revenue, setRevenue] = useState(0);
   const [playerCount, setPlayerCount] = useState({});
   const [coachCount, setCoachCount] = useState(0);
   const [totalPlayer, setTotalPlayer] = useState(0);
   const [totalCourses, setTotalCourses] = useState(0);
 
-
-  
-  // const animatedRevenue = useIncrementalCount(revenue);
-  // const animatedCoachCount = useIncrementalCount(coachCount.totalCoach);
-  // const animatedTotalPlayer = useIncrementalCount(totalPlayer.countTotalPlayer);
-  // const animatedTotalCourses = useIncrementalCount(totalCourses.countTotalCourses);
-  // console.log("total : ",totalCourses.countTotalCourses);
+  const [newPlayerCount, setNewPlayerCount] = useState(0);
   useEffect(() => {
     axios
-      .get(`${API_BASE_URL}/api/revenue/${academyId}`,{ withCredentials: true })
+      .get(`${API_BASE_URL}/api/revenue/${academyId}`, { withCredentials: true })
       .then(response => {
         setRevenue(response.data.YTD_Revenue || 0);
       })
@@ -71,8 +41,6 @@ const AcademyDetails = () => {
       });
   })
 
-  // player display according to under 10 ,12 , 14, 16
-  
   useEffect(() => {
     const fetchPlayerCount = async () => {
       try {
@@ -84,7 +52,7 @@ const AcademyDetails = () => {
     };
     fetchPlayerCount();
   }, [API_BASE_URL, academyId]);
-  
+
   // Fetch courses count
   useEffect(() => {
     const fetchCoursesCount = async () => {
@@ -97,7 +65,7 @@ const AcademyDetails = () => {
     };
     fetchCoursesCount();
   }, [API_BASE_URL, academyId]);
-  
+
   // Fetching coach count
   useEffect(() => {
     const fetchCoachCount = async () => {
@@ -110,7 +78,18 @@ const AcademyDetails = () => {
     };
     fetchCoachCount();
   }, [API_BASE_URL, academyId]);
-  
+
+  const fetchNewPlayersCount = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/count-new-players-this-month/${academyId}`, {
+        withCredentials: true
+      });
+      console.log("New players this month:", response.data.countNewPlayersThisMonth);
+      setNewPlayerCount(response.data.countNewPlayersThisMonth);
+    } catch (error) {
+      console.error("Error fetching new players count:", error);
+    }
+  };
   // Fetch total player count
   useEffect(() => {
     const fetchTotalPlayer = async () => {
@@ -122,23 +101,21 @@ const AcademyDetails = () => {
       }
     };
     fetchTotalPlayer();
+    fetchNewPlayersCount();
   }, [API_BASE_URL, academyId]);
+
   
-
-
   useEffect(() => {
-    // Fetch specific academic data from the backend
     axios
-      .get(`${API_BASE_URL}/api/academicy/${academyId}`,{ withCredentials: true })
+      .get(`${API_BASE_URL}/api/academicy/${academyId}`, { withCredentials: true })
       .then(response => {
-        setAcademy(response.data); // Save the academy object
+        setAcademy(response.data);
       })
       .catch(error => {
         console.error('Error fetching data:', error); // Log the error object
         setError('Failed to load academy details.');
       });
   }, [API_BASE_URL, academyId]);
-
 
   if (error) {
     return <div>{error}</div>;
@@ -148,23 +125,13 @@ const AcademyDetails = () => {
     return <div>Loading...</div>;
   }
 
-
-
-  //-----------------------------------------
-
-  // Map code Here
-
-  //--------------------------------------------
   return (
     <div >
-      {/* <aside className="w-64 bg-gray-900 text-white h-screen p-5 sticky top-0 md:block hidden"> */}
       <div className="fade-page">
         <AcademyNavbar role={role} academyId={academyId} />
       </div>
 
       <div className='below-navbar'>
-        {/* Dashboard Boxes */}
-
         <div id="dashboard-boxes">
           <div className="dashboard-box">
             <h3>Total Players</h3>
@@ -172,7 +139,7 @@ const AcademyDetails = () => {
           </div>
           <div className="dashboard-box">
             <h3>New Players MTD</h3>
-            <p className='countdown-numbers'>{totalPlayer.countTotalPlayer}</p>
+            <p className='countdown-numbers'>{newPlayerCount}</p>
           </div>
           <div className="dashboard-box">
             <h3>YTD Revenue</h3>
@@ -181,7 +148,6 @@ const AcademyDetails = () => {
         </div>
 
         <div className='academy-img' alt="Ground" >
-          {/* <img src={academyData.images || GroundImage} style={{ width: '800px' }} alt='Loading...'></img> */}
           <img
             src={
               academyData.images?.startsWith('http') // Check if it's a valid URL
@@ -201,13 +167,10 @@ const AcademyDetails = () => {
 
 
         <div >
-
-          {/* Academy Details */}
           <div className="academy-details">
             <div className='graph-container-academy-page'>
               <CricketGraph academyId={academyId} />
             </div>
-            {/* display under 10 ,12, 14, and 16 players  */}
             <div className="dashboard-container">
               <div className="category-card">
                 <h3 className="category-title">Players Category</h3>
@@ -234,14 +197,17 @@ const AcademyDetails = () => {
                   <p className="info-count">{totalCourses.countTotalCourses}</p>
                 </div>
               </div>
-
             </div>
-
           </div>
-
+          <div style={styles.outerDiv}>
+            <div style={styles.logoDiv}>
+              <img src={FacebookPng} alt="Facebook" style={styles.logoPng} />
+              <img src={InstagramPng} alt="Instagram" style={styles.logoPng} />
+              <img src={YoutubePng} alt="YouTube" style={styles.logoPng} />
+            </div>
+          </div>
           <div className='academy-details-home'>
             <div className="detail-box">
-              
               <h3>Address</h3>
               <p>{academyData.address}</p>
               <h3>Owner Name</h3>
@@ -264,12 +230,13 @@ const AcademyDetails = () => {
                 Longitude: {academyData.longitude}
               </p> */}
             </div>
+
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-              <div style={styles.logoDiv}>
+              {/* <div style={styles.logoDiv}>
                 <img src={FacebookPng} alt='Loading...' style={styles.logoPng} />
                 <img src={InstagramPng} alt='Loading...' style={styles.logoPng} />
                 <img src={YoutubePng} alt='Loading...' style={styles.logoPng} />
-              </div>
+              </div> */}
 
               {/* map  */}
 
@@ -289,36 +256,36 @@ const AcademyDetails = () => {
                   </div>
                 </div>
 
-                {/* <div className="iframe-container" >
-              <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3462.366048682458!2d-90.82593452445572!3d29.795967475049693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjnCsDQ3JzQ1LjUiTiA5MMKwNDknMjQuMSJX!5e0!3m2!1sen!2sin!4v1734450765738!5m2!1sen!2sin"
-                style={{ width: "600px", height: "400px", border: "0px" }} loading="lazy" frameBorder="0" allowFullScreen></iframe>
-
-            </div> */}
-                <div className="iframe-container">
-                  <h3 className='heading'>ACADEMY LOCATION</h3>
-                  <LoadScript googleMapsApiKey="AIzaSyB0bx0i1japWV7bxcN5tVXXGuo7EVqLyDA">
-                    <GoogleMap
-                      mapContainerStyle={{
-                        width: '600px',
-                        height: '300px',
-                      }}
-                      zoom={10}
-                      center={{
-                        lat: parseFloat(academyData.latitude), // Convert latitude to a float
-                        lng: parseFloat(academyData.longitude), // Convert longitude to a float
-                      }}
-                    >
-                      <Marker
-                        position={{
-                          lat: parseFloat(academyData.latitude), // Marker latitude
-                          lng: parseFloat(academyData.longitude), // Marker longitude
-                        }}
-                      />
-                    </GoogleMap>
-                  </LoadScript>
+                <div className='map-image-link'>
+                  {academyData.address ? (
+                    // If a valid link is available, check if it's a Google Maps link
+                    academyData.address.startsWith('https') ? (
+                      // Display the map image as a link that redirects to the location in Google Maps
+                      <a href={academyData.address} target="_blank" rel="noopener noreferrer">
+                        <img
+                          src={MapPng}
+                          alt="Map"
+                          style={{ width: '400px', height: '180px', cursor: 'pointer', boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }} // Style the image link
+                        />
+                      </a>
+                    ) : (
+                      // Fallback to dynamic Google Maps search link
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(academyData.address)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img
+                          src={MapPng}
+                          alt="Map"
+                          style={{ width: '400px', height: '180px', cursor: 'pointer', boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }} // Style the image link
+                        />
+                      </a>
+                    )
+                  ) : (
+                    <p>No location available.</p> // Show message if no location is provided
+                  )}
                 </div>
-
-
               </div>
             </div>
           </div>

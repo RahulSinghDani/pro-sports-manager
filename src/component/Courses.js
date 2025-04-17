@@ -42,24 +42,10 @@ const Courses = () => {
 
       <div className='below-navbar'>
         <h2>Course Information</h2>
-        {/* <Link to="/edit-course">
-        <button>Edit Course ( not working properly right now)</button>
-      </Link> */}
-        <Link to={`/edit-course/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <button>Edit Course</button>
-        </Link>
-
-        {/* <Link to={{ pathname: "/add-course", state: { academyId: academyId } }}>
-  <button>Add Course</button>
-</Link> */}
-        <Link to={`/delete-course/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <button>Delete Course</button>
-        </Link>
-
         <Link to={`/add-course/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-
           <button>Add Course</button>
         </Link>
+
         {error && <p>{error}</p>}
         {courses.length === 0 ? (
           <p>No courses found for this academy.</p>
@@ -74,17 +60,31 @@ const Courses = () => {
                   <th>Quarterly</th>
                   <th>Half Yearly</th>
                   <th>Yearly</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {courses.map(course => (
                   <tr key={course.course_id}>
-                    <td>{course.course_id}</td>
+                    <td>{course.course_id.toUpperCase()}</td>
                     <td>{course.course_name}</td>
                     <td>{course.timing}</td>
                     <td>{course.fee}</td>
                     <td>{course.half_yearly}</td>
                     <td>{course.yearly}</td>
+                    <td>
+                      <Link to={`/edit-course/${role}/${academyId}`}
+                        state={{ courseId: course.course_id }}
+                      >
+                        <button>Edit</button>
+                      </Link>
+
+                      <Link to={`/delete-course/${role}/${academyId}`} state={{ courseId: course.course_id }}>
+                        <button style={{ marginLeft: '10px', backgroundColor: 'red', color: 'white' }}>
+                          Delete
+                        </button>
+                      </Link>
+                    </td>
                   </tr>
                 ))}
               </tbody>

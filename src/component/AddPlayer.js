@@ -2,6 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import About from "./About";
+import imageCompression from 'browser-image-compression';
+
+const sportsOptions = [
+  "LHB",
+  "RHB",
+  "Left arm Fast",
+  "Left arm off spin",
+  "Left arm leg spin",
+  "Right arm Fast",
+  "Right arm of Spin",
+  "Right arm Leg spin",
+];
 
 const AddPlayer = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -34,6 +46,17 @@ const AddPlayer = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const handleCheckboxChange = (option) => {
+    let selectedArray = sportsExpertise ? sportsExpertise.split(", ") : [];
+
+    if (selectedArray.includes(option)) {
+      selectedArray = selectedArray.filter((item) => item !== option); // Remove
+    } else {
+      selectedArray.push(option); // Add
+    }
+
+    setSportsExpertise(selectedArray.join(", ")); // Convert back to string
+  };
 
   // console.log("fee type : ", feeType, " | Fee : ", fee);
   useEffect(() => {
@@ -64,6 +87,18 @@ const AddPlayer = () => {
     }
   }, [API_BASE_URL, academyId]);
 
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const options = { maxSizeMB: 1, maxWidthOrHeight: 800, useWebWorker: true };
+        const compressedFile = await imageCompression(file, options);
+        setProfilePic(compressedFile);
+      } catch (error) {
+        console.error("Error compressing image:", error);
+      }
+    }
+  };
   useEffect(() => {
     // Fetch course data from the backend
     axios
@@ -97,6 +132,7 @@ const AddPlayer = () => {
     }
   }, [courses, feeType, batch]); // Re-run whenever feeType or batch changes
 
+
   // Handle form submission to add a new player
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -128,8 +164,7 @@ const AddPlayer = () => {
       formData.append("m_ph_num", m_ph_num);
       formData.append("batch", batch);
       if (profilePic) {
-        const compressedImage = await compressImage(profilePic, 1 * 1024 * 1024); // Compress to below 1MB
-        formData.append("profile_pic", compressedImage);
+        formData.append("profile_pic", profilePic);
       }
       formData.append("fee_type", feeType);
       formData.append("fee", fee);
@@ -155,56 +190,7 @@ const AddPlayer = () => {
     }
   };
 
-  // Function to compress image using canvas
-  const compressImage = (file, maxSize) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (event) => {
-        const img = new Image();
-        img.src = event.target.result;
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
 
-          let width = img.width;
-          let height = img.height;
-
-          const maxWidth = 800; // Set max width
-          const maxHeight = 800; // Set max height
-
-          if (width > height) {
-            if (width > maxWidth) {
-              height *= maxWidth / width;
-              width = maxWidth;
-            }
-          } else {
-            if (height > maxHeight) {
-              width *= maxHeight / height;
-              height = maxHeight;
-            }
-          }
-
-          canvas.width = width;
-          canvas.height = height;
-          ctx.drawImage(img, 0, 0, width, height);
-
-          canvas.toBlob(
-            (blob) => {
-              if (blob.size > maxSize) {
-                // Reduce quality further if needed
-                return resolve(compressImage(file, maxSize * 0.9));
-              }
-              resolve(new File([blob], file.name, { type: file.type }));
-            },
-            file.type,
-            0.7 // Adjust quality
-          );
-        };
-      };
-      reader.onerror = (error) => reject(error);
-    });
-  };
   return (
     <div>
       <div className="nav">
@@ -212,14 +198,14 @@ const AddPlayer = () => {
 
       </div>
       <div className="below-navbar">
-        <h2 >Add New Player</h2>
+        <h2 className="heading">Add New Player</h2>
         <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} />
 
         <form onSubmit={handleSubmit}>
           <div className="form-group-main">
             <div className="form-seperator-in-parts">
               <div className="form-group">
-                <label>Player ID (Unique):</label>
+                <label>Player ID :</label>
                 <input type="text" value={playerId.toUpperCase()} disabled />
               </div>
               <div className="form-group">
@@ -246,11 +232,33 @@ const AddPlayer = () => {
                 <label>Player Phone Number: </label>
                 <input type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label>Sports Expertise: <span style={{ color: 'red' }}>*</span></label>
                 <input type="text" value={sportsExpertise} onChange={(e) => setSportsExpertise(e.target.value)}
                   required
                 />
+              </div> */}
+              <div className="form-group">
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <label>
+                    Sports Expertise: <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <div className="checkbox-group" >
+                    {sportsOptions.map((option) => (
+                      <label key={option} className="checkbox-label">
+                        <input
+                          type="checkbox"
+                          checked={sportsExpertise.includes(option)}
+                          onChange={() => handleCheckboxChange(option)}
+                          className="checkbox-input"
+                        />
+                        {option}
+                      </label>
+                    ))}
+                  </div>
+
+                  <p className="selected-text">Selected: {sportsExpertise || "None"}</p>
+                </div>
               </div>
               <div className="form-group">
                 <label>Address: <span style={{ color: 'red' }}>*</span></label>
@@ -299,12 +307,11 @@ const AddPlayer = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Mother ph. Num.: <span style={{ color: 'red' }}>*</span></label>
+                <label>Mother ph. Num.: </label>
                 <input
                   type="text"
                   value={m_ph_num}
                   onChange={(e) => setMotherPhoneNumber(e.target.value)}
-                  required
                 />
               </div>
               <div className="form-group">
@@ -346,7 +353,7 @@ const AddPlayer = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setProfilePic(e.target.files[0])}
+                  onChange={handleImageChange}
                 />
               </div>
             </div>

@@ -57,12 +57,17 @@ const Asset = () => {
     const [assetBookings, setAssetBookings] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('sports'); // State to track selected category
 
+    const [showModal, setShowModal] = useState(false);
+    const [selectedAssetId, setSelectedAssetId] = useState(null);
+    const [message, setMessage] = useState('');
+
+
     useEffect(() => {
         // Fetch asset data from the backend
         axios
             .get(`${API_BASE_URL}/api/assets/${academyId}`, { withCredentials: true })
             .then(response => {
-                console.log("Fetched News Data:", response.data); // Console log the data
+                // console.log("Fetched News Data:", response.data); 
 
                 setAsset(response.data); // Set assets data from the response
                 setLoading(false); // Set loading to false when data is fetched
@@ -74,6 +79,31 @@ const Asset = () => {
             });
     }, [API_BASE_URL, academyId]);
 
+    const handleDelete = (assetId) => {
+        console.log(`Clicked delete for assetId: ${assetId}`);
+        setSelectedAssetId(assetId);
+        setShowModal(true);
+    };
+
+    const confirmDelete = () => {
+        console.log(`Confirming delete for assetId: ${selectedAssetId}`); // Debugging line
+        axios.delete(`${API_BASE_URL}/api/deleteAsset/${academyId}/${selectedAssetId}`, { withCredentials: true })
+            .then((response) => {
+                console.log(`Deleted assetId: ${selectedAssetId}`); // Debugging line to verify deletion
+                if (response.status === 200) {
+                    // Remove the deleted asset from the UI
+                    setAsset(prevAssets => prevAssets.filter(item => item.id !== selectedAssetId));
+                    setMessage('Asset deleted successfully!');
+                    setShowModal(false);
+                    setSelectedAssetId(null);
+                }
+            })
+            .catch((error) => {
+                console.error('Error deleting asset:', error);
+                setMessage('Asset deletion failed.');
+            });
+    };
+    
     // Fetch bookings from the backend
     useEffect(() => {
         axios
@@ -229,21 +259,12 @@ const Asset = () => {
                                 <div style={{ display: 'flex' }}>
                                     {/* <Link to={`/academy-asset/${role}/${academyId}`} >Academy Asset</Link> */}
 
-                                    <Link to={`/add-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        <button>Add Asset</button>
-                                    </Link>
-                                    {asset.length > 0 ? (
-                                        <div>
-                                            <Link to={`/edit-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%', paddingRight: '4px' }}>
+                                        <Link to={`/add-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            <button>Add Asset</button>
+                                        </Link>
+                                    </div>
 
-                                                <button>Edit Asset</button>
-                                            </Link>
-                                            <Link to={`/delete-asset/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-
-                                                <button>Delete Asset</button>
-                                            </Link>
-                                        </div>
-                                    ) : null}
                                 </div>
                                 {asset.length === 0 ? (
                                     <p className='switches-p'>No Sports Kits & Equipment found for this academy.</p>
@@ -255,25 +276,60 @@ const Asset = () => {
 
                                                 <thead>
                                                     <tr>
-                                                        <th>Asset ID</th>
+                                                        <th style={{ width: '80px' }}>Asset ID</th>
                                                         <th>Asset Name</th>
-                                                        <th>Quantity</th>
+                                                        <th style={{ width: '100px' }}>Quantity</th>
                                                         <th>Cost</th>
                                                         <th>Asset Type</th>
+                                                        <th style={{ width: '124px' }}>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {asset.map((assetItem) => (
                                                         <tr key={assetItem.id}>
-                                                            <td>{assetItem.id}</td>
+                                                            <td style={{ width: '80px' }}>{assetItem.id}</td>
                                                             <td>{assetItem.name}</td>
-                                                            <td>{assetItem.quantity}</td>
+                                                            <td style={{ width: '100px' }}>{assetItem.quantity}</td>
                                                             <td>{assetItem.cost} / hr</td>
                                                             <td>{assetItem.assetType}</td>
+                                                            {/* <td style={{ width: '120px' }}>
+                                                                <div style={{ display: 'flex', gap: '6px' }}>
+                                                                    <Link to={`/edit-asset/${role}/${academyId}`} state={{ assetId: assetItem.id }} style={{ backgroundColor: '#007BFF', color: '#fff', padding: '5px 10px', borderRadius: '6px', textDecoration: 'none', fontWeight: 'bold' }}>Edit</Link>
+                                                                    <Link to={`/delete-asset/${role}/${academyId}`} state={{ assetId: assetItem.id }} style={{ backgroundColor: '#DC3545', color: '#fff', padding: '5px 10px', borderRadius: '6px', textDecoration: 'none', fontWeight: 'bold' }}>Delete</Link>
+                                                                </div>
+                                                            </td> */}
+                                                            <td style={{ width: '120px' }}>
+                                                                <div style={{ display: 'flex', gap: '6px' }}>
+                                                                    <Link to={`/edit-asset/${role}/${academyId}`} state={{ assetId: assetItem.id }} style={{ backgroundColor: '#007BFF', color: '#fff', padding: '6px 8px', borderRadius: '6px', textDecoration: 'none', fontWeight: 'bold' }}>Edit</Link>
+                                                                    <button onClick={() => handleDelete(assetItem.id)} style={{ backgroundColor: '#DC3545', color: '#fff', padding: '6px 8px', borderRadius: '6px', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>Delete</button>
+                                                                </div>
+                                                            </td>
+
                                                         </tr>
                                                     ))}
                                                 </tbody>
                                             </table>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Confirmation Modal */}
+                                {showModal && (
+                                    <div style={{
+                                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                                        backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',
+                                        justifyContent: 'center', alignItems: 'center', zIndex: 1000
+                                    }}>
+                                        <div style={{
+                                            background: 'white', padding: '20px', borderRadius: '10px',
+                                            minWidth: '300px', textAlign: 'center'
+                                        }}>
+                                            <h3>Are you sure you want to delete this asset?</h3>
+                                            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-around' }}>
+                                                <button onClick={confirmDelete} style={{ backgroundColor: '#DC3545', color: '#fff', padding: '8px 16px', borderRadius: '6px', border: 'none' }}>Yes, Delete</button>
+                                                <button onClick={() => setShowModal(false)} style={{ backgroundColor: '#6c757d', color: '#fff', padding: '8px 16px', borderRadius: '6px', border: 'none' }}>Cancel</button>
+                                            </div>
+                                            {message && <p style={{ color: 'red', marginTop: '10px' }}>{message}</p>}
                                         </div>
                                     </div>
                                 )}

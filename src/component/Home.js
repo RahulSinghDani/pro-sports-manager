@@ -13,6 +13,7 @@ import FitnessTrainerImg from "./Images/fitnessimg.jpg";
 import homeCricket from "./Images/home-cricket-icon.png";
 import { motion } from "framer-motion";
 import ContactForm from './ContactForm';
+import LogoIcon from './Images/PSM-logo1.ico';
 
 const Home = () => {
   const { role } = useParams();
@@ -167,7 +168,10 @@ const Home = () => {
       <div className="fade-page">
         {role !== 'admin' && (
           <nav className='nav'>
-            <h1 className='logo'>Pro Sports Manager</h1>
+            <div className='logo-container'>
+              <img style={{ width: '50px', borderRadius: '50%' }} src={LogoIcon} alt='logo' />
+              <p className="logo" >Pro Sports Manager</p>
+            </div>
 
             {isMobile ? (
               <div className="navbar-dropdown">
@@ -328,7 +332,7 @@ const Home = () => {
         <section style={{ padding: '50px 20px', backgroundColor: '#f9f9f9', textAlign: 'center' }}>
           <h2>User Testimonials</h2>
           <p>"This platform has made managing our academy’s data so much easier!"</p>
-          <p>- Coach John, XYZ Academy</p>
+          <p> <b> Pro Sports Manager </b></p>
         </section>
 
         {/* Contact us*/}
@@ -344,12 +348,12 @@ const Home = () => {
             </div>
 
             {/* Contact Information */}
-            <div className="contact-info">
+            {/* <div className="contact-info">
               <h3>Our Contact Information</h3>
               <p><strong>Email:</strong> support@prosportsmanager.in</p>
               <p><strong>Phone:</strong> +1 (555) 123-4567</p>
               <p><strong>Address:</strong> 123 Academy Bangalore, Cityville, State, 12345</p>
-            </div>
+            </div> */}
           </div>
         </section>
 

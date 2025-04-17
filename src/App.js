@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from "framer-motion";
-import { jwtDecode } from "jwt-decode"; // Import jwt-decode
+// import { jwtDecode } from "jwt-decode"; // Import jwt-decode
 import { AuthProvider } from "./component/AuthContext";
 
 
@@ -63,6 +63,11 @@ import CreateAcademyRegistration from "./component/CreateAcademyRegistration";
 import ContactForm from "./component/ContactForm";
 import UpdateAcademyProfile from "./component/UpdateAcademyProfile";
 import SportsEquipment from "./component/SportsEquipment";
+import PlayerAttendance from "./component/PlayerAttendance";
+import AttendanceCalendar from "./component/AttendanceCalendar";
+import Student from "./component/students/page";
+import Attendance from "./component/attendance/page";
+import PlayerPaymentsHistory from "./component/PlayerPaymentsHistory";
 
 // Create an AuthContext
 // const AuthContext = createContext();
@@ -186,7 +191,22 @@ function App() {
               <Route path="/UserRegistration" element={<UserRegistration />} />
               <Route path="/playerRegistration" element={<PlayerRegistration />} />
               <Route path="/AcademyRegistration" element={<AcademyRegistration />} />
+
+              <Route path="/AcademyDetails/:role/:academyId/Player" element={<Player />} /> {/* Add Players Route */}
+              <Route path="/AcademyDetails/:role/:academyId/Courses" element={<Courses />} /> {/* Add Courses Route */}
+              <Route path="/AcademyDetails/:role/:academyId/Coach" element={<Coach />} />
+              <Route path="/AcademyDetails/:role/:academyId/Asset" element={<Asset />} /> {/* Add Asset Route */}
               <Route path="/AcademyDetails/:role/:academyId/ManagePayment" element={<ManagePayment />} />
+              <Route path="/player-payments-history" element={<PlayerPaymentsHistory />}/>
+              {/* <Route path="/AcademyDetails/:role/:academyId/AttendanceCalendar" element={<AttendanceCalendar />} /> */}
+              <Route path="/AcademyDetails/attendance/:role/:academyId" element={<PlayerAttendance />} />
+              {/* <Route path="/AcademyDetails/attendance/:role/:academyId/Student" element={<Student />} /> */}
+              <Route path="/AcademyDetails/AttendanceCalendar/:role/:academyId" element={<AttendanceCalendar />}>
+                {/* Nested Route: Renders inside AttendanceCalendar */}
+                <Route path="Student" element={<Student />} />
+                <Route path="Attendance" element={<Attendance />} />
+              </Route>
+
               <Route path="/edit-player-record/:role/:academyId/:id" element={<EditPlayerPaymentRecord />} />
               <Route path="/ManagePayment/:role/:academyId/Bookings" element={<Bookings />} />
               <Route path="/edit-booking/:role/:academyId/:id" element={<EditBooking />} />
@@ -196,15 +216,6 @@ function App() {
 
               <Route path="/all-bookings/:role/:academyId/:id" element={<AllBookings />} />
               <Route path="/bookable-dashboard/:role/:academyId/:id" element={<BookableDashboard />} />
-
-
-
-
-
-              <Route path="/AcademyDetails/:role/:academyId/Coach" element={<Coach />} />
-              <Route path="/AcademyDetails/:role/:academyId/Courses" element={<Courses />} /> {/* Add Courses Route */}
-              <Route path="/AcademyDetails/:role/:academyId/Asset" element={<Asset />} /> {/* Add Asset Route */}
-              <Route path="/AcademyDetails/:role/:academyId/Player" element={<Player />} /> {/* Add Players Route */}
 
 
               <Route path="/add-academy/:role" element={<AddAcademy />} />

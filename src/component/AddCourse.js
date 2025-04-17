@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import About from "./About";
@@ -44,7 +44,7 @@ const AddCourse = () => {
           timing: timing,
           fee: parseFloat(fee),
           half_yearly: parseFloat(half_yearly),
-          yearly : parseFloat(yearly),
+          yearly: parseFloat(yearly),
         },
         { withCredentials: true }
       );
@@ -70,90 +70,94 @@ const AddCourse = () => {
       <div className="nav">
         <h3 className="logo">Pro Sports Manager</h3>
       </div>
-    <div className="below-navbar">
-      <h2>Add New Course</h2>
-      <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
+      <div className="below-navbar">
+        <h2>Add New Course</h2>
+        <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Course Name:</label>
-          <input
-            type="text"
-            value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
-            required
-          />
-        </div>
-        {/* ---------------------------------- */}
-        <div className="form-group">
-          <label>Start Time:</label>
-          <select value={startHour} onChange={(e) => setStartHour(e.target.value)} required>
-            <option value="">Hour</option>
-            {[...Array(12)].map((_, i) => (
-              <option key={i + 1} value={i + 1}>{i + 1}</option>
-            ))}
-          </select>
-          <select value={startAmPm} onChange={(e) => setStartAmPm(e.target.value)} required>
-            <option value="">AM/PM</option>
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
-          </select>
+        <form onSubmit={handleSubmit}>
+          <div className="form-seperator-in-parts">
+            <div className="form-group">
+              <label>Course Name:</label>
+              <input
+                type="text"
+                value={courseName}
+                onChange={(e) => setCourseName(e.target.value)}
+                required
+              />
+            </div>
+            {/* ---------------------------------- */}
+            <div className="form-group-timing">
+              <div className="timing-div">
+                <label>Start Time:</label>
+                <select value={startHour} onChange={(e) => setStartHour(e.target.value)} required>
+                  <option value="">Hour</option>
+                  {[...Array(12)].map((_, i) => (
+                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                  ))}
+                </select>
+                <select value={startAmPm} onChange={(e) => setStartAmPm(e.target.value)} required>
+                  <option value="">AM/PM</option>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+              <div className="timing-div">
+                <label>End Time:</label>
+                <select value={endHour} onChange={(e) => setEndHour(e.target.value)} required>
+                  <option value="">Hour</option>
+                  {[...Array(12)].map((_, i) => (
+                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                  ))}
+                </select>
+                <select value={endAmPm} onChange={(e) => setEndAmPm(e.target.value)} required>
+                  <option value="">AM/PM</option>
+                  <option value="AM">AM</option>
+                  <option value="PM">PM</option>
+                </select>
+              </div>
+              <p><strong>Selected Time:</strong> {timing || "Please select both start and end times"}</p>
+            </div>
+            {/* ----------------------------------- */}
 
-          <label>End Time:</label>
-          <select value={endHour} onChange={(e) => setEndHour(e.target.value)} required>
-            <option value="">Hour</option>
-            {[...Array(12)].map((_, i) => (
-              <option key={i + 1} value={i + 1}>{i + 1}</option>
-            ))}
-          </select>
-          <select value={endAmPm} onChange={(e) => setEndAmPm(e.target.value)} required>
-            <option value="">AM/PM</option>
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
-          </select>
+            <div className="form-group">
+              <label>Quarterly Fee:</label>
+              <input
+                type="number"
+                value={fee}
+                onChange={(e) => setFee(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Half Yearly Fee:</label>
+              <input
+                type="number"
+                value={half_yearly}
+                onChange={(e) => setHalfYearly(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Yearly Fee:</label>
+              <input
+                type="number"
+                value={yearly}
+                onChange={(e) => setYearly(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+          <button type="submit" disabled={loading}>
+            {loading ? "Adding..." : "Submit Course"}
+          </button>
+          {message && <p style={{ textAlign: "center", color: "green" }}>{message}</p>}
+          <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <button className="back-btn">Back</button>
+          </Link>
+        </form>
 
-          <p><strong>Selected Time:</strong> {timing || "Please select both start and end times"}</p>
-        </div>
-        {/* ----------------------------------- */}
-
-        <div className="form-group">
-          <label>Quarterly Fee:</label>
-          <input
-            type="number"
-            value={fee}
-            onChange={(e) => setFee(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Half Yearly Fee:</label>
-          <input
-            type="number"
-            value={half_yearly}
-            onChange={(e) => setHalfYearly(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Yearly Fee:</label>
-          <input
-            type="number"
-            value={yearly}
-            onChange={(e) => setYearly(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Adding..." : "Submit Course"}
-        </button>
-        {message && <p style={{textAlign:"center",color:"green"}}>{message}</p>}
-        <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <button>Back</button>
-        </Link>
-      </form>
-      
-    </div>
-    <About />
+      </div>
+      <About />
     </div>
   );
 };

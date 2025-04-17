@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const FinancialSummary = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-    const { academyId} = useParams();
+    const { academyId } = useParams();
     const [financialData, setFinancialData] = useState({
         totalRevenue: 0,
         totalExpenses: 0,
@@ -16,11 +16,11 @@ const FinancialSummary = () => {
         const fetchFinancialData = async () => {
             try {
                 // Fetch total revenue
-                const revenueResponse = await axios.get(`${API_BASE_URL}/api/booking/totalrevenue/${academyId}`,{ withCredentials: true });
+                const revenueResponse = await axios.get(`${API_BASE_URL}/api/booking/totalrevenue/${academyId}`, { withCredentials: true });
                 const totalRevenue = revenueResponse.data.totalRevenue || 0;
 
                 // Fetch total expenses
-                const expensesResponse = await axios.get(`${API_BASE_URL}/api/player_financial/totalexpenses/${academyId}`,{ withCredentials: true });
+                const expensesResponse = await axios.get(`${API_BASE_URL}/api/player_financial/totalexpenses/${academyId}`, { withCredentials: true });
                 const totalExpenses = expensesResponse.data.totalExpenses || 0;
 
                 // Fetch account receivables
@@ -35,7 +35,7 @@ const FinancialSummary = () => {
         };
 
         fetchFinancialData();
-    }, [API_BASE_URL ,academyId]);
+    }, [API_BASE_URL, academyId]);
 
     return (
         <div

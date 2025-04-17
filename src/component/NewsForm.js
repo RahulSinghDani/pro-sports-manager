@@ -1,51 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import defaultImage from './Images/ground2.jpg';
-// import { newDate } from 'react-datepicker/dist/date_utils';
 import imageCompression from 'browser-image-compression';
 
 const NewsForm = ({ role, academyId }) => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-    const [newsData, setNewsData] = useState([]); // Initialize with an empty array
-    const [newsDetails, setNewsDetails] = useState({ title: '', image: null });
+    const [showPopup, setShowPopup] = useState(false);
 
+    const [newsData, setNewsData] = useState([]); // Holds news list
+    const [newsDetails, setNewsDetails] = useState({ title: '', image: null });
+    const [reload, setReload] = useState(false); // Triggers re-fetching
+
+    // Fetch news on mount and when reload changes
     useEffect(() => {
         if (API_BASE_URL) {
-            axios.get(`${API_BASE_URL}/api/getNews/${academyId}`, { withCredentials: true })
+            axios.get(`${API_BASE_URL}/api/getNews/${academyId}?t=${new Date().getTime()}`, { withCredentials: true })
                 .then(response => {
-                    console.log(response.data); // Check the data structure
-                    setNewsData(response.data); // Directly set the fetched data
+                    setNewsData(response.data); // Update news list
                 })
                 .catch(error => console.error('Error fetching news data:', error));
         }
-    }, [API_BASE_URL, academyId]);
-    // console.log("news data : ",newsData);
+    }, [API_BASE_URL, academyId, reload]);
 
-    // const handleInputChange = (e) => {
-    //     const { name, value, files } = e.target;
-
-
-    //     setNewsDetails(prevState => ({
-    //         ...prevState,
-    //         [name]: name === 'image' && files?.[0] ? files[0] : value,
-    //     }));
-    // };
-
+    // Handle text & image inputs
     const handleInputChange = async (e) => {
         const { name, value, files } = e.target;
 
         if (name === 'image' && files?.[0]) {
             try {
                 const options = {
-                    maxSizeMB: 0.5, // Maximum file size (0.5MB = 500KB)
-                    maxWidthOrHeight: 1024, // Resize if needed
+                    maxSizeMB: 0.5,
+                    maxWidthOrHeight: 1024,
                     useWebWorker: true,
                 };
 
                 const compressedFile = await imageCompression(files[0], options);
-
-                console.log("Original File Size:", (files[0].size / 1024).toFixed(2), "KB");
-                console.log("Compressed File Size:", (compressedFile.size / 1024).toFixed(2), "KB");
 
                 setNewsDetails(prevState => ({
                     ...prevState,
@@ -61,8 +50,22 @@ const NewsForm = ({ role, academyId }) => {
             }));
         }
     };
+    const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this item?")) return;
 
-
+        try {
+            await axios.delete(`${API_BASE_URL}/api/news-announcements/${id}`, { withCredentials: true });
+            setShowPopup({ message: "Equipment deleted successfully!", type: "success" });
+            setReload(prev => !prev);
+        } catch (error) {
+            console.error("Error deleting equipment:", error);
+            setShowPopup({ message: "Failed to delete equipment. Please try again.", type: "error" });
+        }
+        setTimeout(() => {
+            setShowPopup(false);
+        }, 2000);
+    };
+    // Handle publishing news
     const handlePublish = () => {
         if (!newsDetails.title) {
             alert('Title is required.');
@@ -74,12 +77,11 @@ const NewsForm = ({ role, academyId }) => {
         formData.append('title', newsDetails.title);
         if (newsDetails.image) formData.append('image', newsDetails.image);
 
-        axios.post(`${API_BASE_URL}/api/publishNews`, formData , { withCredentials: true })
-            .then(response => {
+        axios.post(`${API_BASE_URL}/api/publishNews`, formData, { withCredentials: true })
+            .then(() => {
                 alert('News published successfully!');
                 setNewsDetails({ title: '', image: null });
-                setNewsData(response.data); // Directly set new fetched data
-                window.location.reload(); 
+                setReload(prev => !prev); // Triggers re-fetching
             })
             .catch(error => {
                 console.error('Error publishing news:', error);
@@ -101,9 +103,9 @@ const NewsForm = ({ role, academyId }) => {
                         cols="50"
                         required
                     />
-                    <div style={{display:'flex',gap:'10px',marginTop:'6px'}}>
-                    <input type="file" name="image" accept="image/*" onChange={handleInputChange} />
-                    <button onClick={handlePublish}>Publish</button>
+                    <div style={{ display: 'flex', gap: '10px', marginTop: '6px' }}>
+                        <input type="file" name="image" accept="image/*" onChange={handleInputChange} />
+                        <button onClick={handlePublish}>Publish</button>
                     </div>
                 </div>
             )}
@@ -116,7 +118,7 @@ const NewsForm = ({ role, academyId }) => {
                     ) : (
                         newsData.map(news => (
                             <div key={news.id} className="display-news-section">
-                                <div className='display-news-section2' >
+                                <div className='display-news-section2'>
                                     <img
                                         src={news.image ? `${API_BASE_URL}/uploads/${news.image}` : defaultImage}
                                         alt="News"
@@ -125,7 +127,27 @@ const NewsForm = ({ role, academyId }) => {
                                     />
                                     <div className="news-text">
                                         <p><strong>{news.title}</strong></p>
-                                        <p><strong><i>Publish Date: </i></strong> {news.created_at ? new Date(news.created_at).toLocaleDateString('en-GB') : '-'}</p>
+                                        <p><strong><i>Publish Date: </i></strong>
+                                            {news.created_at ? new Date(news.created_at).toLocaleDateString('en-GB') : 'Not Available'}
+                                        </p>
+                                        <p><div className="equipment-actions">
+                                            {/* <button onClick={() => handleEdit(item)} className="edit-btn">Edit</button> */}
+                                            {(role === 'academy' || role === 'admin') && (
+                                                <button onClick={() => handleDelete(news.id)} className="delete-btn">
+                                                    Delete
+                                                </button>
+                                            )}
+                                            {showPopup && (
+                                                <div style={{
+                                                    position: 'fixed', bottom: '20px', right: '20px',
+                                                    backgroundColor: showPopup.type === "success" ? "green" : "red",
+                                                    color: 'white', padding: '10px 20px',
+                                                    borderRadius: '5px', boxShadow: '0px 0px 10px rgba(0,0,0,0.2)'
+                                                }}>
+                                                    {showPopup.message}
+                                                </div>
+                                            )}
+                                        </div></p>
                                     </div>
                                 </div>
                             </div>
@@ -135,7 +157,6 @@ const NewsForm = ({ role, academyId }) => {
                     <p>Loading...</p>
                 )}
             </div>
-
         </div>
     );
 };

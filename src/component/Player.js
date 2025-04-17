@@ -3,21 +3,31 @@ import axios from 'axios';
 import AcademyNavbar from './AcademyNavbar.js';
 import { Link, useParams } from 'react-router-dom';
 import About from './About.js';
-
+import searchpng from './Images/search.png';
+import defaultImage from "./Images/playerpng.png";
 
 const Player = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
   const { academyId, role } = useParams(); // Get the academy_id from the URL
   const [totalPlayers, setTotalPlayers] = useState(0);
+  const [newPlayerCount, setNewPlayerCount] = useState(0);
+  const [filterStatus, setFilterStatus] = useState("all");
 
   const [players, setPlayers] = useState([]);
+  const [records, setRecords] = useState([]);
+  const [originalPlayers, setOriginalPlayers] = useState([]);
   const [revenue, setRevenue] = useState(0);
+  const [searchParams, setSearchParams] = useState({
+    playerId: "",
+    playerName: "",
+  });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSearchParams((prev) => ({ ...prev, [name]: value }));
+  };
   // const [courses, setCourses] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true); // Add a loading state
-
-
   // Function to format date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -26,6 +36,72 @@ const Player = () => {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
+
+  const fetchAllRecords = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/financial-records/filter-paid/${academyId}`, { withCredentials: true });
+      // console.log("All Payment Records:", response.data);
+      setRecords(response.data);
+    } catch (error) {
+      console.error("Error fetching all records:", error);
+    }
+  };
+  // const isPaymentComplete = (playerId) => {
+  //   // console.log(`Checking payment for player ID: ${playerId}`);
+
+  //   if (!records || records.length === 0) {
+  //     // console.log("Records not loaded yet.");
+  //     return false;
+  //   }
+
+  //   const playerRecord = records.find(record => record.player_id === playerId);
+
+  //   if (!playerRecord) {
+  //     // console.log(`No payment record found for ${playerId}`);
+  //     return false;
+  //   }
+
+  //   // console.log(`Paid: ${playerRecord.paid_amount}, Total Fee: ${playerRecord.total_fee}`);
+
+  //   return playerRecord.paid_amount >= playerRecord.total_fee;
+  // };
+  const isPaymentComplete = (playerId) => {
+    console.log("Records:", records); // Debugging step
+
+    if (!records || records.length === 0) {
+      console.log("Records not loaded yet.");
+      return false;
+    }
+
+    const playerRecord = records.find(record => record.player_id === playerId);
+
+    if (!playerRecord) {
+      console.log(`No payment record found for ${playerId}`);
+      return false;
+    }
+
+    return playerRecord.paid_amount >= playerRecord.total_fee || playerRecord.status === "paid";
+  };
+
+  useEffect(() => {
+    fetchAllRecords();
+  }, [API_BASE_URL, academyId]);
+  useEffect(() => {
+    setPlayers(prevPlayers => [...prevPlayers]); // Force re-render
+  }, [records]);
+
+    const fetchNewPlayersCount = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/count-new-players-this-month/${academyId}`, {
+          withCredentials: true
+        });
+        console.log("New players this month:", response.data.countNewPlayersThisMonth);
+        setNewPlayerCount(response.data.countNewPlayersThisMonth);
+      } catch (error) {
+        console.error("Error fetching new players count:", error);
+      }
+    };
+
   //fetch acdemy total player
   useEffect(() => {
     const fetchTotalPlayers = async () => {
@@ -40,6 +116,7 @@ const Player = () => {
     };
 
     fetchTotalPlayers();
+    fetchNewPlayersCount();
   }, [API_BASE_URL, academyId]);
   useEffect(() => {
     axios
@@ -59,6 +136,7 @@ const Player = () => {
       .get(`${API_BASE_URL}/api/players/${academyId}`, { withCredentials: true })
       .then(response => {
         setPlayers(response.data); // Set the fetched player data
+        setOriginalPlayers(response.data);
         setLoading(false); // Stop loading
       })
       .catch(error => {
@@ -73,6 +151,7 @@ const Player = () => {
   useEffect(() => {
     setStatus(players.status); // Set initial status when component mounts
   }, [players.status]);
+
   //toggle button for active and deactive player
   const toggleStatus = async (playerId, currentStatus) => {
     const newStatus = currentStatus === "active" ? "inactive" : "active";
@@ -105,25 +184,35 @@ const Player = () => {
     }
   };
 
+  const handlePlayerSearch = () => {
+    const { playerId, playerName } = searchParams;
 
+    if (!playerId && !playerName) {
+      setPlayers(originalPlayers); // Reset the list
+      return;
+    }
 
+    const filteredPlayers = originalPlayers.filter(player =>
+      (playerId && player.id.toLowerCase().includes(playerId.toLowerCase())) ||
+      (playerName && player.name.toLowerCase().includes(playerName.toLowerCase()))
+    );
 
+    setPlayers(filteredPlayers);
+  };
 
-  // useEffect(() => {
-  //   // Fetch course data from the backend
-  //   axios
-  //     .get(`${API_BASE_URL}/api/courses/${academyId}`)
-  //     .then(response => {
-  //       setCourses(response.data); // Set the fetched courses data
-  //       setLoading(false); // Set loading to false after data is fetched
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching data:', error);
-  //       setError('Failed to load course details.');
-  //       setLoading(false); // Set loading to false even on error
-  //     });
-  // }, [API_BASE_URL, academyId]);
+  const handleRefresh = () => {
+    setPlayers(originalPlayers); // Reset players list
+  };
 
+  const handleFilterChange = (e) => {
+    const value = e.target.value;
+    setFilterStatus(value);
+    if (value === "all") {
+      setPlayers(originalPlayers);
+    } else {
+      setPlayers(originalPlayers.filter(player => player.status === value));
+    }
+  };
   // Show loading spinner or message while fetching data
   if (loading) {
     return <div>Loading...</div>;
@@ -133,111 +222,139 @@ const Player = () => {
   if (error) {
     return <div>{error}</div>;
   }
-
-  // Show message if no players exist for the academy
-  // if (!players.length) {
-  //   return <div>No players found for this academy.</div>;
-  // }
-
   return (
     <div>
       <AcademyNavbar role={role} academyId={academyId} /> {/* Pass the academyId correctly */}
 
       <div className='below-navbar'>
-        <h2>Player Information</h2>
+        <h2 className='heading'>Player Information</h2>
         <div id="dashboard-boxes" style={{ display: "flex", gap: "20px", justifyContent: 'center', alignItems: 'center', marginBottom: "20px" }}>
           {/* Total Players Box */}
-          <div style={boxStyle}>
+          <div className='box-style'>
             <h3>Total Players</h3>
             <p>{totalPlayers}</p>
           </div>
-          <div style={boxStyle}>
+          <div className='box-style'>
             <h3>New Players MTD</h3>
-            <p>{totalPlayers}</p>
+            <p>{newPlayerCount}</p>
           </div>
-          <div style={boxStyle}>
+          <div className='box-style'>
             <h3>YTD Revenue</h3>
             <p>₹ {revenue}</p>
           </div>
         </div>
-        <Link to={`/edit-player/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <button>Edit Player</button>
-        </Link>
-        {/* <Link to={`/delete-player/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <button>Delete Player</button>
-        </Link> */}
-        {/* <Link to={`/search-player/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-        <button>Search Player</button>
-      </Link> */}
+        <div className='player-functionality-btns'>
+          <div>
+            {players.length > 0 ? (
+              <Link to={`/edit-player/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <button>Edit Player</button>
+              </Link>) : null}
 
-        <Link to={`/add-player/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to={`/add-player/${role}/${academyId}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <button>Add Player</button>
+            </Link>
+          </div>
+          <div>
+            {/* search player by id or name  */}
+            <div className="search-box-managepayment" id="search-by-player">
+              <div className="date-filter-style">
+                <label style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
+                  Search Player: {" "} </label>
+                <input
+                  type="text"
+                  name="playerName"
+                  value={searchParams.searchQuery}
+                  onChange={handleInputChange}
+                  placeholder="Search by Player ID or Name"
+                />
 
-          <button>Add Player</button>
-        </Link>
+                <button onClick={handlePlayerSearch} className="search-btn">
+                  <img src={searchpng} alt="Search" className="search-icon" />
+                </button>
 
+                <p onClick={handleRefresh} className="refresh-btn tooltip" >
+                  🔄<span className="tooltip-text">Reset</span>
+                </p>
+                <select onChange={handleFilterChange} value={filterStatus}>
+                  <option value="all">All Players</option>
+                  <option value="active">Active Players</option>
+                  <option value="inactive">Inactive Players</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {error && <p>{error}</p>}
         {players.length === 0 ? (
-          <p>No Players found for this academy.</p>
+          <p>No Players found for this academy. <p style={{}} className='tooltip'>ℹ️ <span className="tooltip-text">Player not found!</span></p></p>
         ) : (
           <div className="table-wrapper">
             <table border="1" width="800px">
               <thead>
                 <tr>
-                  <th>Status</th>
-                  <th>Manage</th>
-                  {/* <th>Player ID</th> */}
+                  <th style={{ width: '50px' }}></th>
+                  <th style={{ width: '50px' }}>Status</th>
+                  <th style={{ width: '70px' }}>Manage</th>
                   <th>Name</th>
                   <th>Batch & Fee</th>
-                  <th>Gender &<br /> DOB</th>
                   <th>Phone Number</th>
                   <th>School Name</th>
-                  <th>Parent & Address</th>
-                  <th>Add Score</th>
-                  {/* <th>Profile Picture</th> */}
+
                 </tr>
               </thead>
               <tbody>
                 {players.map(player => (
                   <tr key={player.id} className='player-row-data'>
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+                      <img src={player.profile_pic ? `${API_BASE_URL}/uploads/${player.profile_pic}` : defaultImage}
+                        alt="Player"
+                        style={{ width: "50px", height: '50px', margin: '8px 8px', borderRadius: "50%", pointerEvents: "none", userSelect: "none", cursor: 'not-allowed' }}
+                        onDoubleClick={(e) => e.preventDefault()} // Prevents double-click
+                        onContextMenu={(e) => e.preventDefault()} // Disables right-click (prevents download)
+                        draggable="false" // Prevents drag & drop
+                      />
+                    </div>
                     {/* Toggle Button */}
-                    <td>
+                    <td style={{ width: '50px' }}>
                       <label className="toggle">
                         <input
                           type="checkbox"
                           checked={player.status === "active"}
-                          onChange={() => toggleStatus(player.id, player.status)}
+                          onChange={() => {
+                            if (!isPaymentComplete(player.id)) {
+                              alert("Payment is not done. Please complete the payment first.");
+                              return;
+                            }
+                            toggleStatus(player.id, player.status);
+                          }}
+                          disabled={!isPaymentComplete(player.id)} // Disable if payment is incomplete
                         />
                         <span className="slider"></span>
                       </label>
                     </td>
-                    <td><Link to={`/financialform/${role}/${academyId}/${player.id}/${player.name}/${player.fee}`}>Payment <br /><b> {player.id.toUpperCase()}</b></Link></td>
 
-                    <td><Link to={`/AcademyDetails/${role}/${academyId}/${player.id}/${player.name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                      <b> {player.name}</b>
-                    </Link></td>
-                    <td> <b>Batch:</b> {player.batch} <br /> {player.fee_type}<br /><b>Fee</b> Rs. <span style={{ color: "blue", fontSize: "1rem" }}> {player.fee}</span></td>
-                    <td><i>{player.gender}</i> <br /><b>DOB:</b>{formatDate(player.dob)} <br /><b>Sorts Expertise: </b>{player.sports_expertise}</td>
-                    <td><b>Player Ph.: </b>{player.phone_number} <br /> <b>Father Ph.: </b>{player.f_ph_num} <br /> <b>Mother Ph.: </b>{player.m_ph_num}</td>
-                    <td><b> School Name:</b> {player.school_name} <br /><b> Pre Aca:</b> {player.previous_academy}</td>
-                    {/* <td>{player.address}</td> */}
-                    {/* <td>{player.previous_academy}</td> */}
-                    <td><b>Father:</b> {player.father_name} <br /><b>Mother:</b> {player.mother_name} <br /> <b>Address: </b>{player.address}</td>
-                    <td>
-                      <Link to={`/player-cricket-data/${role}/${academyId}/${player.id}/${player.name}`}> Score </Link>
+                    {/* <td><Link to={`/financialform/${role}/${academyId}/${player.id}/${player.name}/${player.fee}`}>Payment <br /><b> {player.id.toUpperCase()}</b></Link></td> */}
+                    <td style={{ width: '70px' }}>
+                      {isPaymentComplete(player.id) ? (
+                        <button style={{backgroundColor:'rgb(100, 200, 100)', color: "green",  padding: '3px 3px' }}><Link to={`/AcademyDetails/${role}/${academyId}/ManagePayment`} style={{ color: "white" }}>Paid <br /> {player.id.toUpperCase()}</Link></button>
+                      ) : (
+                        <Link to={`/financialform/${role}/${academyId}/${player.id}/${player.name}/${player.fee}`}>
+                          Payment <br /><b> {player.id.toUpperCase()}</b>
+                        </Link>
+                      )}
                     </td>
 
+                    <td><Link to={`/AcademyDetails/${role}/${academyId}/${player.id}/${player.name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <b> {player.name.toUpperCase()}</b>
+                    </Link></td>
+                    <td className="parent-address-style"> <b>Batch:</b> {player.batch} <br /> {player.fee_type}<br /><b>Fee</b> Rs. <span style={{ color: "blue", fontSize: "1rem" }}> {player.fee}</span></td>
+                    {/* <td className="parent-address-style"><i>{player.gender}</i> <br /><b>DOB:</b>{formatDate(player.dob)} <br /><b>Sorts Expertise: </b>{player.sports_expertise}</td> */}
+                    <td ><b>Player Ph.: </b>{player.phone_number} <br /> <b>Father Ph.: </b>{player.f_ph_num} <br /> <b>Mother Ph.: </b>{player.m_ph_num}</td>
+                    <td className="parent-address-style"><b> Sch. Name:</b> {player.school_name} <br /><b> Pre Aca:</b> {player.previous_academy}</td>
 
-                    {/* <td> */}
-                    {/* Uncomment and replace the placeholder with the real profile image URL */}
-                    {/* <img
-                  src={`${API_BASE_URL}/uploads/${player.profile_pic}`}
-                  alt={player.name}
-                  width="50"
-                  height="50"
-                /> */}
-                    {/* Profile Picture Placeholder */}
-                    {/*    </td> */}
+                    {/* <td className="parent-address-style"><b>Father:</b> {player.father_name} <br /><b>Mother:</b> {player.mother_name} <br /> <b>Address: </b>{player.address}</td> */}
+                    
                   </tr>
                 ))}
               </tbody>
@@ -249,17 +366,4 @@ const Player = () => {
     </div>
   );
 };
-
-const boxStyle = {
-  border: "1px solid #ddd",
-  padding: "20px",
-  borderRadius: "8px",
-  width: "200px",
-  height: "100px",
-  alignItems: "center",
-  textAlign: "center",
-  background: "#f9f9f9",
-  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-};
-
 export default Player;

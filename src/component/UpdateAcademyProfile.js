@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import defaultProfileImg from "./Images/profile-icon.png";
+import About from './About';
+import LogoIcon from './Images/PSM-logo1.ico';
+
 const EditAcademy = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const { role, academyId } = useParams(); // Destructure both role and academyId from URL params
@@ -95,10 +98,13 @@ const EditAcademy = () => {
 
     return (
         <div>
-            <div className='nav'>
-                <p className='logo'>Pro Sports Manager</p>
-            </div>
-            <div className='edit-academy-container'>
+            <nav className='nav'>
+                <div className='logo-container'>
+                    <Link to={`/AcademyDetails/${role}/${academyId}`}><img style={{ width: '50px', borderRadius: '50%' }} src={LogoIcon} alt='logo' /></Link>
+                    <Link to={`/AcademyDetails/${role}/${academyId}`} className="logo" >Pro Sports Manager</Link>
+                </div>
+            </nav>
+            <div className='edit-academy-container' >
                 <h2 className="edit-academy-title">Edit Academy</h2>
                 <form onSubmit={handleSubmit}>
                     <div className='edit-academy-current-image'>
@@ -196,6 +202,7 @@ const EditAcademy = () => {
                 </form>
                 {message && <p>{message}</p>}
             </div>
+            <About />
         </div>
     );
 };

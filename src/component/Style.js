@@ -129,13 +129,14 @@ export const styles = {
   },
   map:{
     display:'flex',
+    flexDirection:'column',
     justifyContent:'center',
     alignItems:'center',
-    width:'80%',
+    // width:'80%',
     background:'white',
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
     padding:'20px',
-    height:'500px',
+    height:'300px',
 
   },
   responsiveMap:{

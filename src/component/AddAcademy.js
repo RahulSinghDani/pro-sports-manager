@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import About from './About';
 
 const AddAcademy = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -19,8 +20,8 @@ const AddAcademy = () => {
     youtube: '',
     instagram: '',
     facebook: '',
-    latitude: '',
-    longitude: '',
+    latitude: 0.0,
+    longitude: 0.0,
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -37,7 +38,7 @@ const AddAcademy = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const formDataToSend = new FormData();
     Object.keys(formData).forEach((key) => {
       formDataToSend.append(key, formData[key]);
@@ -50,7 +51,7 @@ const AddAcademy = () => {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        withCredentials: true 
+        withCredentials: true
       });
       setSuccess('Academy added successfully!');
       setTimeout(() => {
@@ -70,39 +71,48 @@ const AddAcademy = () => {
           <button style={{ background: 'rgb(13, 101, 183)', float: 'right' }}>Home</button>
         </Link>
       </nav>
-      <div className='container' style={{ maxWidth: '600px', marginTop: '40px', padding: '20px' }}>
+      <div className='below-navbar' >
         <h2 className='heading'>Add a New Academy</h2>
         <div style={{ width: '100%', height: '2px', backgroundColor: 'blue', margin: '5px 0' }} />
         {error && <p style={{ color: 'red' }}>{error}</p>}
         {success && <p style={{ color: 'green' }}>{success}</p>}
         <form onSubmit={handleSubmit}>
-          <input type='text' name='name' placeholder='Academy Name' value={formData.name} onChange={handleChange} required />
-          <input type='text' name='address' placeholder='Address' value={formData.address} onChange={handleChange} required />
-          <input type='text' name='owner_name' placeholder='Owner Name' value={formData.owner_name} onChange={handleChange} required />
-          <input type='text' name='phone_num' placeholder='Phone Number' value={formData.phone_num} onChange={handleChange} required />
-          <input type='email' name='email' placeholder='Email' value={formData.email} onChange={handleChange} required />
-          <div style={{ display: 'flex', width: '300px' }}>
+          <div className="form-group-main">
+            <div className="form-seperator-in-parts" style={{gap:'5px'}}>
+              <input type='text' name='name' placeholder='Academy Name' value={formData.name} onChange={handleChange} required />
+              <input type='text' name='address' placeholder='Address' value={formData.address} onChange={handleChange} required />
+              <input type='text' name='owner_name' placeholder='Owner Name' value={formData.owner_name} onChange={handleChange} required />
+              <input type='text' name='phone_num' placeholder='Phone Number' value={formData.phone_num} onChange={handleChange} required />
+              <input type='email' name='email' placeholder='Email' value={formData.email} onChange={handleChange} required />
+              <input type='text' name='website' placeholder='Website' value={formData.website} onChange={handleChange} />
+            </div>
+            {/* <div style={{ display: 'flex', width: '300px' }}>
             <label>Location Coordinates: </label>
             <input type='text' name='latitude' placeholder='Latitude' value={formData.latitude} onChange={handleChange} required />
             <input type='text' name='longitude' placeholder='Longitude' value={formData.longitude} onChange={handleChange} required />
+           </div> */}
+            <div className="form-seperator-in-parts" style={{gap:'5px'}}>
+              
+              {/* <input type='file' name='images' accept='images/*' onChange={handleImageChange} required /> */}
+              <input
+                type="file"
+                accept="images/*"
+                onChange={handleImageChange}
+              />
+              <input type='text' name='logo' placeholder='Logo URL' value={formData.logo} onChange={handleChange} />
+              <input type='text' name='youtube' placeholder='YouTube Link' value={formData.youtube} onChange={handleChange} />
+              <input type='text' name='instagram' placeholder='Instagram Link' value={formData.instagram} onChange={handleChange} />
+              <input type='text' name='facebook' placeholder='Facebook Link' value={formData.facebook} onChange={handleChange} />
+            </div>
+            
           </div>
-          <input type='text' name='website' placeholder='Website' value={formData.website} onChange={handleChange} />
-          {/* <input type='file' name='images' accept='images/*' onChange={handleImageChange} required /> */}
-          <input
-              type="file"
-              accept="images/*"
-              onChange={handleImageChange}
-            />
-          <input type='text' name='logo' placeholder='Logo URL' value={formData.logo} onChange={handleChange} />
-          <input type='text' name='youtube' placeholder='YouTube Link' value={formData.youtube} onChange={handleChange} />
-          <input type='text' name='instagram' placeholder='Instagram Link' value={formData.instagram} onChange={handleChange} />
-          <input type='text' name='facebook' placeholder='Facebook Link' value={formData.facebook} onChange={handleChange} />
           <button type='submit'>Submit</button>
-          <Link to={`/Dashboard/${role}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <button>Back</button>
-          </Link>
+            <Link to={`/Dashboard/${role}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <button className='back-btn'>Back</button>
+            </Link>
         </form>
       </div>
+      <About />
     </div>
   );
 };

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate, Link } from "react-router-dom";
+import LogoIcon from './Images/PSM-logo1.ico';
 
 const AddAsset = () => {
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL  ;
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 
   const { academyId, role } = useParams(); // Get academyId from URL
@@ -32,6 +33,7 @@ const AddAsset = () => {
           assetName: assetName,
           quantity: quantity,
           cost: parseFloat(cost),
+          assetType: assetType,
         },
         { withCredentials: true }
       );
@@ -42,7 +44,7 @@ const AddAsset = () => {
         // Redirect to the AcademyDetails/Asset page after success
         setTimeout(() => {
           navigate(`/AcademyDetails/${role}/${academyId}/Asset`);
-        }, 2000); // Redirect after 2 seconds
+        }, 100); // Redirect after 2 seconds
       }
     } catch (error) {
       console.error("Error adding asset:", error);
@@ -55,112 +57,134 @@ const AddAsset = () => {
   return (
     <div>
       <nav className='nav'>
-        <h1 className='logo'>Pro Sports Manager</h1>
+        <div className='logo-container'>
+          <Link to={`/AcademyDetails/${role}/${academyId}`}><img style={{ width: '50px', borderRadius: '50%' }} src={LogoIcon} alt='logo' /></Link>
+          <Link to={`/AcademyDetails/${role}/${academyId}`} className="logo" >Pro Sports Manager</Link>
+        </div>
       </nav>
-    <div className="below-navbar">
-    <div className="add-asset-container">
-      <h2>Add New Asset</h2>
-      <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
+      <div className="below-navbar">
+        <div className="add-asset-container">
+          <h2>Add New Asset</h2>
+          <div style={{ width: "100%", height: "2px", backgroundColor: "blue", margin: "20px 0" }} /> {/*  adjust margin to set into column line */}
 
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Select Asset Type:</label>
-          <select
-            name="assets"
-            id="assets"
-            value={assetType}
-            onChange={(e) => setAssetType(e.target.value)}
-            required
-          >
-            <option value="default" disabled>
-              Select Type
-            </option>
-            <optgroup label="Kit/Equipment">
-              <option value="cricket_kit">Cricket Kit</option>
-              <option value="football_kit">Football Kit</option>
-              <option value="basketball_kit">Basketball Kit</option>
-              <option value="archery_kit">Archery Kit</option>
-              <option value="gym_equipment">Gym Equipment</option>
-              <option value="badminton_kit">Badminton Kit</option>
-              <option value="skating_gear">Skating Gear</option>
-              <option value="swimming_pool_gear">Swimming Pool Gear</option>
-            </optgroup>
-            <optgroup label="Machines">
-              <option value="bowling_machine">Bowling Machine</option>
-              <option value="shuttlecock_machine">Shuttlecock Machine</option>
-              <option value="ball_throwing_machine">Ball Throwing Machine</option>
-              <option value="treadmill">Treadmills</option>
-              <option value="rowing_machine">Rowing Machine</option>
-              <option value="cycle_ergometer">Cycle Ergometer</option>
-            </optgroup>
-            <optgroup label="Grounds/Courts/Facilities">
-              <option value="football_ground">Football Ground</option>
-              <option value="cricket_pitch">Cricket Pitch</option>
-              <option value="tennis_court">Tennis Court</option>
-              <option value="badminton_court">Badminton Court</option>
-              <option value="basketball_court">Basketball Court</option>
-              <option value="running_track">Running Track</option>
-              <option value="swimming_pool">Swimming Pool</option>
-              <option value="skating_rink">Skating Rink</option>
-            </optgroup>
-            <optgroup label="Support Facilities">
-              <option value="locker_rooms">Locker Rooms</option>
-              <option value="changing_rooms">Changing Rooms</option>
-              <option value="first_aid_equipment">First Aid Equipment</option>
-              <option value="cafeteria">Cafeteria</option>
-              <option value="parking_facilities">Parking Facilities</option>
-            </optgroup>
-            <optgroup label="Training Tools">
-              <option value="whiteboards">Whiteboards/Digital Boards</option>
-              <option value="video_analysis_equipment">Video Analysis Equipment</option>
-              <option value="vr_trainers">Virtual Reality Sports Trainers</option>
-              <option value="stopwatches">Stopwatches</option>
-            </optgroup>
-            <optgroup label="Additional Accessories">
-              <option value="cones_markers">Cones and Markers</option>
-              <option value="training_ladders">Training Ladders</option>
-              <option value="resistance_bands">Resistance Bands</option>
-              <option value="medicine_balls">Medicine Balls</option>
-            </optgroup>
-          </select>
+          <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '500px' }}>
+            <div className="form-group">
+              <label>Select Asset Type:</label>
+              <select
+                name="assets"
+                id="assets"
+                value={assetType}
+                onChange={(e) => setAssetType(e.target.value)}
+                required
+              >
+                <option value="default" disabled>
+                  Select Type
+                </option>
+                <optgroup label="Kit/Equipment">
+                  <option value="cricket_kit">Cricket Kit</option>
+                  <option value="football_kit">Football Kit</option>
+                  <option value="basketball_kit">Basketball Kit</option>
+                  <option value="archery_kit">Archery Kit</option>
+                  <option value="gym_equipment">Gym Equipment</option>
+                  <option value="badminton_kit">Badminton Kit</option>
+                  <option value="skating_gear">Skating Gear</option>
+                  <option value="swimming_pool_gear">Swimming Pool Gear</option>
+                </optgroup>
+                <optgroup label="Machines">
+                  <option value="bowling_machine">Bowling Machine</option>
+                  <option value="shuttlecock_machine">Shuttlecock Machine</option>
+                  <option value="ball_throwing_machine">Ball Throwing Machine</option>
+                  <option value="treadmill">Treadmills</option>
+                  <option value="rowing_machine">Rowing Machine</option>
+                  <option value="cycle_ergometer">Cycle Ergometer</option>
+                </optgroup>
+                <optgroup label="Grounds/Courts/Facilities">
+                  <option value="football_ground">Football Ground</option>
+                  <option value="cricket_pitch">Cricket Pitch</option>
+                  <option value="tennis_court">Tennis Court</option>
+                  <option value="badminton_court">Badminton Court</option>
+                  <option value="basketball_court">Basketball Court</option>
+                  <option value="running_track">Running Track</option>
+                  <option value="swimming_pool">Swimming Pool</option>
+                  <option value="skating_rink">Skating Rink</option>
+                </optgroup>
+                <optgroup label="Support Facilities">
+                  <option value="locker_rooms">Locker Rooms</option>
+                  <option value="changing_rooms">Changing Rooms</option>
+                  <option value="first_aid_equipment">First Aid Equipment</option>
+                  <option value="cafeteria">Cafeteria</option>
+                  <option value="parking_facilities">Parking Facilities</option>
+                </optgroup>
+                <optgroup label="Training Tools">
+                  <option value="whiteboards">Whiteboards/Digital Boards</option>
+                  <option value="video_analysis_equipment">Video Analysis Equipment</option>
+                  <option value="vr_trainers">Virtual Reality Sports Trainers</option>
+                  <option value="stopwatches">Stopwatches</option>
+                </optgroup>
+                <optgroup label="Additional Accessories">
+                  <option value="cones_markers">Cones and Markers</option>
+                  <option value="training_ladders">Training Ladders</option>
+                  <option value="resistance_bands">Resistance Bands</option>
+                  <option value="medicine_balls">Medicine Balls</option>
+                </optgroup>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Asset Name:</label>
+              <input
+                type="text"
+                value={assetName}
+                onChange={(e) => setAsssetName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>quantity:</label>
+              <input
+                type="number"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>cost:</label>
+              <input
+                type="number"
+                value={cost}
+                onChange={(e) => setCost(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" disabled={loading || assetType === "default"} style={{ padding: '12px 20px', backgroundColor: loading || assetType === "default" ? '#ccc' : '#007bff', color: '#fff', border: 'none', borderRadius: '8px', cursor: loading || assetType === "default" ? 'not-allowed' : 'pointer', marginBottom: '10px', width: '100%', fontSize: '16px', fontWeight: '500', transition: 'background-color 0.3s ease' }}>{loading ? "Adding..." : "Add Asset Type"}</button>
+
+            {/* <button type="submit" disabled={loading || assetType === "default"} style={{
+                padding: '10px 16px',
+                backgroundColor: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                marginBottom: '10px',
+                width: '100%',
+              }}>
+              {loading ? "Adding..." : "Add Asset Type"}
+            </button> */}
+            <Link to={`/AcademyDetails/${role}/${academyId}/Asset`} style={{
+                display: 'inline-block',
+                width: '100%',
+                textAlign: 'center',
+                backgroundColor: '#6c757d',
+                padding: '10px 16px',
+                borderRadius: '8px',
+                textDecoration: 'none',
+                color: 'white',
+              }}>Back
+            </Link>
+          </form>
+          {message && <p id="message">{message}</p>}
         </div>
-        <div className="form-group">
-          <label>Asset Name:</label>
-          <input
-            type="text"
-            value={assetName}
-            onChange={(e) => setAsssetName(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>quantity:</label>
-          <input
-            type="text"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>cost:</label>
-          <input
-            type="number"
-            value={cost}
-            onChange={(e) => setCost(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Adding..." : "Add Asset"}
-        </button>
-        <Link to={`/AcademyDetails/${role}/${academyId}/Asset`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <button>Back</button>
-        </Link>
-      </form>
-      {message && <p id="message">{message}</p>}
-    </div>
-    </div>
+      </div>
     </div>
   );
 };

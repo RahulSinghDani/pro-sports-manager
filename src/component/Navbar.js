@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import './Style.css';
 import LogOutPng from './Images/log-out_1.png';
+import LogoIcon from './Images/PSM-logo1.ico';
 
 const Navbar = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -18,7 +19,11 @@ const Navbar = () => {
   return (
     <div>
       <nav className='nav'>
-        <h1 className="logo">Pro Sports Manager</h1>
+        <div display='flex' className='logo-container'>
+          {/* <img src={LogoIcon} alt='logo' /> */}
+          <img style={{ width: '50px', borderRadius: '50%' }} src={LogoIcon} alt='logo' />
+          <h1 className="logo">Pro Sports Manager</h1>
+        </div>
         <a onClick={handleLogout} className='logout-btn-png'>
           <img src={LogOutPng} alt='logout' />
         </a>

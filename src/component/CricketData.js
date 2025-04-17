@@ -8,7 +8,7 @@ const CricketData = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const navigate = useNavigate();
 
-    const {role, academyId, id , name } = useParams();
+    const { role, academyId, id, name } = useParams();
     const [formData, setFormData] = useState({
         matches_played: 0,
         runs: 0,

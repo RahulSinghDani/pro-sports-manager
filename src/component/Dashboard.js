@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from './Navbar';
 import './Style.css';
 import { styles } from './Style';
-import academyIcon from "./Images/academy_png.png"; // Import the academy image
+//import academyIcon from "./Images/academy_png.png"; // Import the academy image
 import About from './About';
 import CreateAcademyRegistration from './CreateAcademyRegistration';
 import ContactUsList from './ContactUsList';
 import SportsEquipment from './SportsEquipment';
-// import { useAuth } from "./AuthContext";
-// const token = localStorage.getItem('token');
 
 const Dashboard = () => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -19,14 +17,10 @@ const Dashboard = () => {
     const [academicData, setAcademicData] = useState([]);
     const [totalPlayers, setTotalPlayers] = useState(0);
     const [error, setError] = useState('');
-    const [refresh, setRefresh] = useState(false);
+    const [countdown, setCountdown] = useState(10);
 
-    const triggerRefresh = () => {
-        setRefresh(prev => !prev); // Toggle state to force re-render
-    };
+    const navigate = useNavigate();
 
-
-    // console.log(role);
     //fetch acdemy total player
     useEffect(() => {
         const fetchTotalPlayers = async () => {
@@ -37,12 +31,13 @@ const Dashboard = () => {
                 setTotalPlayers(response.data.total);
             } catch (error) {
                 console.error("Error fetching total players count:", error);
-                setError("Session expired. Please log in again.");
+                setError("Session expired. Please LogIn again.");
+                setCountdown(10);
             }
         };
 
         fetchTotalPlayers();
-    }, [API_BASE_URL]);
+    }, [API_BASE_URL, navigate]);
 
     useEffect(() => {
         // Fetch academic data from the backend
@@ -52,14 +47,36 @@ const Dashboard = () => {
             })
             .catch(error => {
                 console.error('There was an error fetching the academic data!', error);
-                setError("Session expired. Please log in again.");
+                setError("Session expired. Please LogIn again.");
+                setCountdown(10);
             });
-    }, [API_BASE_URL]);
+    }, [API_BASE_URL, navigate]);
+
+    // Separate useEffect for countdown
+    useEffect(() => {
+        if (error) {
+            const countdownInterval = setInterval(() => {
+                setCountdown((prev) => {
+                    if (prev === 1) {
+                        clearInterval(countdownInterval);
+                        navigate("/Login");
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+
+            return () => clearInterval(countdownInterval); // Cleanup on unmount
+        }
+    }, [error, navigate]);
 
     return (
         <div>
-
-            {error ? <p>{error}</p> :
+            {error ? (
+                <div className="error-container">
+                    <p className="error-message-session">{error}</p>
+                    <p>Redirecting in <span className="countdown">{countdown}</span> seconds...</p>
+                </div>
+            ) : (
                 <div className='body'>
                     {/* <div className='body' style={{ backgroundImage: `url(${dashboardBg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', minHeight: '100vh' }}> */}
                     {/* style={{background:"rgb(72,72,72)", color:'white'}} */}
@@ -222,21 +239,9 @@ const Dashboard = () => {
 
                     <About />
                 </div>
-            }
+            )}
         </div>
     )
 }
-const boxStyle = {
-    border: "1px solid #ddd",
-    padding: "20px",
-    borderRadius: "8px",
-    width: "200px",
-    height: "100px",
-    alignItems: "center",
-    textAlign: "center",
-    background: "#f9f9f9",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
-
-};
 
 export default Dashboard;

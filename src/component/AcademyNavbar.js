@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { styles } from './Style';
-import LogoIcon from './Images/favicon.ico';
+// import LogoIcon from './Images/favicon.ico';
+import LogoIcon from './Images/PSM-logo1.ico';
 import LogOutPng from './Images/log-out_1.png';
 import axios from 'axios';
 
@@ -28,7 +29,7 @@ const AcademyNavbar = ({ role, academyId }) => {
         console.error('Error fetching data:', error);
         setError('Failed to load academy details.');
       });
-  }, [academyId]);
+  }, [API_BASE_URL, academyId]);
 
   // Extract first letter from academy name
   const firstLetter = academy?.name ? academy.name.charAt(0).toUpperCase() : '?';
@@ -65,7 +66,7 @@ const AcademyNavbar = ({ role, academyId }) => {
   const handleLogout = async () => {
     try {
       await axios.post(`${API_BASE_URL}/api/logout`, {}, { withCredentials: true });
-      window.location.href = '/Login'; // Redirect after logout
+      navigate('/Login'); // Redirect after logout
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -73,7 +74,7 @@ const AcademyNavbar = ({ role, academyId }) => {
   return (
     <nav className='nav'>
       <div className='logo-container'>
-        <img style={{ width: '50px', borderRadius: '50%' }} src={LogoIcon} alt='logo' />
+        <Link to={`/AcademyDetails/${role}/${academyId}`}><img style={{ width: '50px', borderRadius: '50%' }} src={LogoIcon} alt='logo' /></Link>
         <Link to={`/AcademyDetails/${role}/${academyId}`} className="logo" >Pro Sports Manager</Link>
       </div>
       {/* For Mobile View (Dropdown on small screens) */}
@@ -99,7 +100,7 @@ const AcademyNavbar = ({ role, academyId }) => {
               </li> */}
               <li>
                 <Link to={`/AcademyDetails/${role}/${academyId}/Coach`}>
-                Employee </Link>
+                  Employee </Link>
               </li>
               <li>
                 <Link to={`/AcademyDetails/${role}/${academyId}/Courses`}>
@@ -115,6 +116,8 @@ const AcademyNavbar = ({ role, academyId }) => {
                   <img src={LogOutPng} alt='logout' />
                 </a>
               </li>
+              {/* <Link to={`/AcademyDetails/AttendanceCalendar/${role}/${academyId}`} ><button style={styles.btn}>Attendance</button></Link> */}
+
             </ul>
           )}
         </div>
@@ -122,18 +125,17 @@ const AcademyNavbar = ({ role, academyId }) => {
         // For Desktop View (Always visible on larger screens)
         <ul className='navLinks' >
           {/* <li><Link to={`/Dashboard`}><button>Dashboard</button></Link></li> */}
-          
+
           {role === 'admin' && !isLoginAcademyDashboard && (
             <Link to={`/Dashboard/${role}`}><button style={styles.btn}>All Academy</button></Link>
 
           )}
           <Link to={`/AcademyDetails/${role}/${academyId}/ManagePayment`} ><button style={styles.btn}>Payments</button></Link>
-
-          {/* <Link to={`/AcademyDetails/${role}/${academyId}`} ><button style={styles.btn}>AcademyDetails</button></Link> */}
           <Link to={`/AcademyDetails/${role}/${academyId}/Coach`} ><button style={styles.btn}>Employee</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} ><button style={styles.btn}>Courses</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Asset`} ><button style={styles.btn}>Assets</button></Link>
           <Link to={`/AcademyDetails/${role}/${academyId}/Player`} ><button style={styles.btn}>Player</button></Link>
+          {/* <Link to={`/AcademyDetails/AttendanceCalendar/${role}/${academyId}`} ><button style={styles.btn}>Attendance</button></Link> */}
           <div className="profile-avatar" onClick={handleClick}>
             {firstLetter}
           </div>

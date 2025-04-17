@@ -18,6 +18,7 @@ body {
   background-color: #585858;
   color:white;
 }
+
 /* --------------------------------------- */
 /* loading spinner */
 .update-button {
@@ -115,7 +116,7 @@ body {
 /* Main container for the edit academy section */
 .edit-academy-container {
   padding-top: 50px;
-  max-width: 90%;
+  max-width: 95%;
   margin: 20px auto;
   padding: 20px;
   border: 1px solid #ccc;
@@ -138,7 +139,7 @@ body {
 }
 /* Title styling */
 .edit-academy-title {
-  margin-top: 30px;
+  margin-top: 35px;
   text-align: center;
   font-size: 24px;
   color: #333;
@@ -147,6 +148,7 @@ body {
 
 .edit-academy-inputs {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   align-items: center;
   justify-content: space-evenly;
@@ -209,7 +211,148 @@ button:hover:not([disabled]) {
   margin-bottom: 20px;
   /* Adds space below the image */
 }
+
+/* ---------------------------------------- */
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.checkbox-label {
+  /* display: flex; */
+  font-size: 12px;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.checkbox-label:hover {
+  background: #e0e0e0;
+}
+
+.checkbox-input {
+  margin-right: 5px;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.selected-text {
+  border: 1px solid #ccc;
+  margin-top: 15px;
+  font-size: 10px;
+  /* font-weight: bold; */
+}
 /* ---------------------------- */
+
+.remove-value-btn{
+  /* width: 100px; */
+  padding: 4px 4px;
+  background-color: #243c5f;
+  color: white;
+}
+.add-value-btn{
+  /* width: 100px; */
+  padding: 4px 4px;
+  background-color: #157243;
+  color: white;
+}
+/* ------------------------------- */
+.attendance-sidebar{
+  width: 16rem;
+  position: fixed;
+  /* background-color: #e5e7eb;  */
+  border: 2px solid #e5e7eb;
+  height: 100vh;
+  padding: 1rem;
+}
+.attendance-calendar{
+  flex: 1;
+  margin-left: 16rem; /* Offset for the sidebar */
+  padding: 1rem;
+}
+/* -------------------------------------- */
+/* Sidebar container */
+.side-nav-below-navbar{
+  margin-top: 65px;
+}
+.sidenav {
+  margin-top: 60px;
+  width: 16rem;
+  height: 100vh;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  
+}
+
+/* Individual menu items */
+.menu-item {
+
+  padding: 0.5rem 1rem;
+  color: #6b6b6b;
+  margin-top: 0.5rem;
+  border-radius: 0.375rem; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.menu-item:hover {
+  background-color: #d5d5d5;
+  border: 1px solid rgb(206, 0, 0); /* Lighter blue (similar to slate-700) */
+}
+.menu-content{
+  display: flex;
+  gap:4px;
+}
+.menu-icon-sidenav {
+  width: 20px;
+  height: 20px;
+  border-radius: 40%;
+}
+
+/* ----------------------------------------------- */
+/* error-message-session */
+.error-message-session {
+  text-align: center;
+  color: #ff4d4d; 
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #ffe6e6; 
+  padding: 10px;
+  border: 1px solid #ff4d4d;
+  border-radius: 5px;
+  display: inline-block;
+  margin: 10px auto; 
+  width: fit-content;
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+}
+.countdown {
+  font-size: 14px;
+  font-weight: bold;
+  color: #d9534f; /* Dark red for countdown */
+}
+
+
+
+/* ------------------------  */
 /* sports equipment  */
 /* General Styles */
 /* General Styling for the container */
@@ -327,7 +470,7 @@ button:hover:not([disabled]) {
   background-color: #c0392b;
 }
 .edit-btn {
-  background-color: #15d15d;
+  background-color: #8b8b8b;
   color: white;
   padding: 5px 10px;
   border: none;
@@ -336,7 +479,21 @@ button:hover:not([disabled]) {
 }
 
 .edit-btn:hover {
-  background-color: #73c02b;
+  background-color: #191919;
+}
+.download-btn-main{
+  display: flex;
+  justify-content: center;
+}
+.download-btn{
+  padding: 10px 15px;
+  background: #191919;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  /* margin-bottom: 15px; */
 }
 .SportsEquipment-style {
   max-height: 400px;
@@ -352,48 +509,7 @@ button:hover:not([disabled]) {
   color: #777;
   font-size: 1.2rem;
 }
-/* -------------------------------- */
-/* Responsive styles */
-@media (max-width: 600px) {
-  .equipment-container{
-    position: relative;
-    flex-direction: column;
-    justify-content: center;
-    /* z-index: 10; */
-    
-  }
-  .display-academy-style{
-    /* z-index: 100; */
-    /* padding-top: 14px; */
-  }
-  .sports-equipment-box-style{
-    display: flex;
-    flex-direction: column;
-    padding: 3px;
-  }
-  .edit-academy-container {
-    padding: 10px;
-  }
-
-  .edit-academy-title {
-    font-size: 20px;
-    /* Decreases title size */
-  }
-
-  input[type="text"],
-  input[type="email"] {
-    font-size: 14px;
-    /* Decreases input font size */
-  }
-
-  button {
-    font-size: 14px;
-    /* Decreases button font size */
-  }
-}
-
-
-/* ------------------------------------------------------ */
+/* ------------------------------------------ */
 .about-section {
   background-color: #000000;
   color: white;
@@ -709,6 +825,12 @@ body {
   margin: 0;
   padding: 0;
 }
+.parent-address-style {
+  max-width: 200px; /* Adjust width as needed */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
 
 
 /* main table css */
@@ -878,13 +1000,26 @@ li button:active,
 }
 
 
-
+.box-style {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  width: 200px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 .heading {
   padding-top: 8px;
   text-align: center;
   font-size: 28px;
   color: #333;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 /* General form styling */
@@ -968,58 +1103,66 @@ form div input:focus {
 #aboutHome {
   width: 40%;
 }
-
-@media (max-width: 1170px) {
-  /* ----------------------------------- */
-  /* for table  */
-
-  /* ---------------------- */
-  .homeImgWithText {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .homeImage {
-    width: 90%;
-  }
-
-  #aboutHome {
-    width: 100%;
-  }
-
-  .academy-details-home {
-    display: flex;
-    /* flex-wrap: nowrap; */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Styling for navLinks inside a separate div */
-  .navLinks {
-    position: absolute;
-    top: 50px;
-    /* Fixed: Added 'px' for proper positioning */
-    right: 0;
-    width: 200px;
-    height: auto;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    /* Ensure consistent spacing */
-    align-items: stretch;
-    /* Ensure child elements stretch to container width */
-  }
+/* ------------------------------------------------ */
+/* quick search button style  */
+.date-filter-style{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 0px 4px;
+}
+.search-by-year-month {
+  display: flex;
+  gap: 10px;
 }
 
+.quick-search-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #333;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
 
+.quick-search-btn:hover {
+  background-color: #ddd;
+}
+
+.quick-search-btn:active {
+  background-color: #ccc;
+}
+.quick-reset-btn {
+  padding: 5px 5px;
+  font-size: 14px;
+  color: #004cff;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  background: none;
+}
+
+.search-icon {
+  width: 24px;  /* Adjust size as needed */
+  height: 24px;
+}
+
+/* ------------------------------------------------------------------ */
 
 
 p,
@@ -1104,10 +1247,10 @@ body {
 
 /* Button Styles */
 button {
-  background-color: #4CAF50;
+  background-color: #4f46e5;
   /* Green background for buttons */
   color: white;
-  padding: 10px 20px;
+  padding: 10px 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -1170,7 +1313,10 @@ button[onClick="handleRefresh"]:hover {
   background-color: #e53935;
 }
 
-
+.payment-quick-filter-main{
+  display: flex;
+  justify-content: space-between;
+}
 /* General container styling */
 /* ------------------------------------------- */
 
@@ -1858,10 +2004,19 @@ p {
 .input-required-field-style button:hover {
   background-color: #4338ca;
 }
+/* ------------------------------------------------ */
+.active-menu-item-side-nav {
+  background-color: #007bff; /* Blue color */
+  color: white; /* Text color */
+  font-weight: bold;
+  border-radius: 5px;
+}
+/* ---------------------------------------- */
+
 
 /* ------------------------------------ */
 div {
-  flex-wrap: wrap;
+  /* flex-wrap: nowrap; */
 }
 
 .user-registration-form {
@@ -1902,6 +2057,44 @@ div {
   border-radius: 12px;
   box-shadow: #444;
 }
+
+/* ---------------------------------------  */
+/* tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 100px;
+  background-color: rgb(68, 68, 68);
+  color: #fff;
+  text-align: center;
+  /* padding: 5px; */
+  border-radius: 5px;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ---------------------------------- */
+.refresh-btn{
+  cursor: pointer;
+}
+.player-functionality-btns{
+  display: flex;
+  justify-content: space-between;
+}
 /* ------------------------------------------------------- */
 /* search box manage payemnt  */
 /* Search Section */
@@ -1910,10 +2103,10 @@ div {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
-  padding: 20px;
-  background: #ffffff;
+  /* padding: 20px; */
+  /* background: #ffffff; */
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
   margin: 20px;
 }
 
@@ -1922,7 +2115,7 @@ div {
   align-items: center;
   gap: 10px;
   background: rgb(243, 248, 247);
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 5px;
 }
 
@@ -1931,32 +2124,25 @@ div {
   border: 1px solid #ccc;
   border-radius: 5px;
   outline: none;
+  width: 130px;
+  font-size: 10px;
 }
 
-.search-box-managepayment button {
+/* .search-box-managepayment button {
   padding: 8px 12px;
   background-color: #0e381b;
   color: white;
   border: none;
   cursor: pointer;
   border-radius: 5px;
-}
+} */
 
 .search-box-managepayment button:hover {
   background-color: #0a2b14;
 }
 
 /* Quick Search Buttons */
-.search-by-year-month button {
-  padding: 10px 15px;
-  margin: 5px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+
 
 .search-by-year-month button:hover {
   background: #0056b3;
@@ -1969,8 +2155,8 @@ div {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  width: 100%;
-  border: 1px solid grey;
+  /* width: 100%; */
+  /* border: 1px solid grey; */
 }
 
 
@@ -2032,8 +2218,115 @@ div {
 
 }
 /* ------------------------------ */
-.player-row-data td{
-  /* padding: 3px; */
+.player-details-img-part{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 4px;
+  /* background-color: #45a049; */
+}
+.player-details-cricket-score-card {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  text-align: left;
+}
+
+.player-details-cricket-score-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.player-details-cricket-score-card tr {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 6px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  /* text-align: center; */
+}
+
+.player-details-cricket-score-card td {
+  font-size: 16px;
+  font-weight: 600;
+  color: #007bff;
+  width: 100px;
+  border-radius: 30px;
+}
+
+.player-details-cricket-score-card strong {
+  color: #555;
+}
+
+.player-details-cricket-score-card a {
+  display: inline-block;
+  text-decoration: none;
+  background: #007bff;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.player-details-cricket-score-card a:hover {
+  background: #0056b3;
+}
+.player-details-seperate-style{
+  display: flex;
+  justify-content: space-evenly;
+  text-align: left;
+  padding: 30px 12px; 
+  background: rgb(54, 54, 54);
+  border-radius: 14px;
+  width: 100%;
+}
+.details-of-player-v1{
+  gap: 12px;
+  color: white;
+  /* background-color: rgb(103, 103, 103); */
+}
+
+/* --- */
+.player-details-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+.player-details-v1,
+.parent-details-v1 {
+  width: 48%;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.player-details-v1 p,
+.parent-details p {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.parent-details-v1 h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #007bff;
 }
 
 /* ---------------------------------------------- */
@@ -2042,6 +2335,7 @@ div {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: center;
   gap: 20px;
   padding: 20px;
 }
@@ -2129,7 +2423,22 @@ div {
   /* Smooth scrolling for touch devices */
   border: 1px solid #ccc;
   /* Optional: Adds a border to the wrapper */
-  padding: 20px 20px;
+  padding: 20px 24px;
+  /* Optional: Adds spacing inside the wrapper */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+
+}
+.table-wrapper1 {
+  width: 100%;
+  /* Matches the display area width */
+  overflow-x: auto;
+ 
+  /* Adds horizontal scrollbar */
+  -webkit-overflow-scrolling: touch;
+  /* Smooth scrolling for touch devices */
+  border: 1px solid #ccc;
+  /* Optional: Adds a border to the wrapper */
+  padding: 20px 0px;
   /* Optional: Adds spacing inside the wrapper */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 
@@ -2182,7 +2491,7 @@ div {
 /* performer css  */
 .graph-container-academy-page {
   width: 80%;
-  background: #ecf0f1;
+  /* background: #ecf0f1; */
 }
 
 .graph-container-academy-details {
@@ -2264,6 +2573,7 @@ div {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
+  gap:12px;
 }
 /* ------------------------------------------------------------- */
 /* forms design  */
@@ -2277,12 +2587,13 @@ div {
 }
 .form-group-main{
   display: flex;
+  align-items: flex-start;
+  justify-content:space-evenly;
   border: 1px solig rgb(206, 206, 206);;
 }
 /* ---------------------------------------------------------- */
 .contact-form {
   width: 100%;
-  max-width: 500px;
   background: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -2297,7 +2608,23 @@ div {
   align-items: center;
   /* gap: 10px; */
 }
-
+.form-group-timing{
+  display: flex;
+  /* flex-direction: row; */
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.form-group-timing div{
+  width: 48%;
+}
+.form-group-timing select{
+  font-size: 12px;
+}
+.timing-div{
+  display: flex;
+  flex-wrap: nowrap;
+}
 .form-group label {
   width:fit-content;
   font-weight: bold;
@@ -2454,14 +2781,76 @@ div {
   height: 450px;
   border-radius: 20px;
 }
+@media (max-width: 1170px) {
+  /* ----------------------------------- */
+  /* for table  */
 
+  /* ---------------------- */
+  .homeImgWithText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .homeImage {
+    width: 90%;
+  }
+
+  #aboutHome {
+    width: 100%;
+  }
+
+  .academy-details-home {
+    display: flex;
+    /* flex-wrap: nowrap; */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:12px;
+  }
+
+  /* Styling for navLinks inside a separate div */
+  .navLinks {
+    position: absolute;
+    top: 50px;
+    /* Fixed: Added 'px' for proper positioning */
+    right: 0;
+    width: 200px;
+    height: auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    /* Ensure consistent spacing */
+    align-items: stretch;
+    /* Ensure child elements stretch to container width */
+  }
+}
 /* ------------------------------------------------------------------- */
 /* Media Queries for Small Screens (Mobile) */
 @media (max-width: 850px) {
+  .attendance-sidebar{
+    width: 12rem;
+    position: fixed;
+    /* background-color: #e5e7eb;  */
+    border: 2px solid #e5e7eb;
+    height: 100vh;
+    padding: 1rem;
+  }
+  .form-group-timing div{
+    width: 100%;
+  }
   .dashboard-box p {
     font-size: 1.3rem;
   }
-
+  .box-style{
+    flex-direction: column;
+  }
   .about-content {
     width: 100%;
     text-align: center;
@@ -2500,6 +2889,7 @@ div {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap:12px;
   }
 
   .academy-details {
@@ -2538,7 +2928,6 @@ div {
   }
 
   form div {
-    flex-direction: column;
     /* Stack label and input vertically on smaller screens */
     align-items: center;
     /* Center the label and input */
@@ -2667,7 +3056,7 @@ div {
   }
 
   .below-navbar {
-    padding-top: 70px;
+    padding-top: 75px;
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 20px;
@@ -2681,7 +3070,7 @@ div {
     /* flex-wrap: nowrap; */
     justify-content: center;
     align-items: center;
-    border: 1px solid grey;
+    /* border: 1px solid grey; */
   }
 
   .managepayment-search-main {
@@ -2785,11 +3174,6 @@ div {
     font-size: 14px;
   }
 
-  p {
-    font-size: 10px;
-    line-height: 1.4;
-  }
-
   h1 {
     font-size: 1rem;
   }
@@ -2870,3 +3254,102 @@ div {
     font-family: sans-serif;
   }
 }
+
+
+/* -------------------------------- */
+/* Responsive styles */
+@media (max-width: 600px) {
+  .attendance-calendar{
+    margin-left: 8rem;
+  }
+  .sidenav{
+    margin-top: 70px;
+    padding: 0.1rem;
+  }
+  .attendance-sidebar{
+    width: 8rem;
+    position: fixed;
+    /* background-color: #e5e7eb;  */
+    border: 2px solid #e5e7eb;
+    height: 100vh;
+    padding: 0.3rem;
+  }
+  .form-group-timing div{
+    width: 100%;
+  }
+  .player-details-img-part{
+    width: 40%;
+  }
+  .player-details-cricket-score-card{
+    width: 50%;
+  }
+  .player-details-cricket-score-card td{
+    width: 80px;
+  }
+  .player-details-seperate-style{
+    text-align: left;
+    padding: 8px 12px; 
+    background: rgb(232,232,232);
+    border-radius: 14px;
+    width: 100%;
+  }
+  .equipment-container{
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    /* z-index: 10; */
+    
+  }
+  .user-registration-form{
+    max-width: 320px;
+  }
+  .form-seperator-in-parts{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:20px;
+    flex-wrap: wrap;
+  }
+  .box-style {
+    flex-direction: column;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    max-width:  150px;
+    max-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .sports-equipment-box-style{
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+  }
+  .edit-academy-container {
+    padding: 10px;
+  }
+
+  .edit-academy-title {
+    font-size: 20px;
+    /* Decreases title size */
+  }
+
+  input[type="text"],
+  input[type="email"] {
+    font-size: 14px;
+    /* Decreases input font size */
+  }
+
+  button {
+    font-size: 14px;
+    /* Decreases button font size */
+  }
+}
+
+
+/* ------------------------------------------------------ */

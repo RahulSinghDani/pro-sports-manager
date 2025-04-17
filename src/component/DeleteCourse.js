@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom';
 import About from './About';
 
 const DeleteCourse = () => {
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
+  const location = useLocation();
   const { academyId, role } = useParams(); // Getting academyId from URL params
-  const [courseId, setCourseId] = useState('');
+  const [courseId, setCourseId] = useState(location.state?.courseId || '');
   const [courseName, setCourseName] = useState('');
   const [timing, setTiming] = useState('');
   const [message, setMessage] = useState('');
@@ -15,6 +16,12 @@ const DeleteCourse = () => {
   const [courseFound, setCourseFound] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (courseId) {
+      handleCourseIdSubmit();
+    }
+  }, [courseId]);
+  
   // Step 1: Handle the courseId input
   const handleCourseIdSubmit = () => {
     if (!courseId) {
@@ -27,7 +34,7 @@ const DeleteCourse = () => {
       .get(`${API_BASE_URL}/api/courses/${academyId}/${courseId}`, { withCredentials: true })
       .then((response) => {
         const { course_name } = response.data;
-        const {timing} = response.data;
+        const { timing } = response.data;
         setCourseName(course_name);
         setTiming(timing);
         setCourseFound(true); // Mark course found
@@ -57,7 +64,7 @@ const DeleteCourse = () => {
         setMessage('Course deleted successfully!');
         setTimeout(() => {
           navigate(`/AcademyDetails/${role}/${academyId}/Courses`); // Redirect to courses list after deletion
-        }, 1000);
+        }, 100);
       }
     } catch (error) {
       console.error('Error deleting course:', error);
@@ -78,33 +85,20 @@ const DeleteCourse = () => {
 
 
         {/* Step 1: Input for courseId */}
-        {!courseFound ? (
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:'12px'}}>
-            <label>Course ID:</label>
-            <input
-              type="text"
-              value={courseId}
-              onChange={(e) => setCourseId(e.target.value)}
-              placeholder="Enter Course ID"
-            />
-            <button onClick={handleCourseIdSubmit}>Find Course</button>
-          </div>
-        ) : (
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:'12px'}}>
-            {/* Step 2: Display course details and delete confirmation */}
-            <p style={{color:"red"}}>Are you sure you want to delete the course:<b>{courseName}</b>    (ID: {courseId})?</p>
-            <p>Timing ( {timing}  )</p>
-            {message && <p>{message}</p>}
 
-            <button onClick={handleDelete} disabled={loading}>
-              {loading ? 'Deleting...' : 'Delete Course'}
-            </button>
-            <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              <button>Back</button>
-            </Link>
-          </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: '12px' }}>
+          {/* Step 2: Display course details and delete confirmation */}
+          <p style={{ color: "red" }}>Are you sure you want to delete the course:<b>{courseName}</b>    (ID: {courseId})?</p>
+          <p>Timing ( {timing}  )</p>
+          {message && <p>{message}</p>}
 
-        )}
+          <button onClick={handleDelete} disabled={loading}>
+            {loading ? 'Deleting...' : 'Delete Course'}
+          </button>
+          <Link to={`/AcademyDetails/${role}/${academyId}/Courses`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <button>Back</button>
+          </Link>
+        </div>
       </div>
       <About />
     </div>
