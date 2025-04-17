@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.0d41b702.css",
+    "main.css": "/static/css/main.1980c737.css",
     "main.js": "/static/js/main.f60ad3f1.js",
     "static/js/239.dfdb0d71.chunk.js": "/static/js/239.dfdb0d71.chunk.js",
     "static/js/977.d75cf9f7.chunk.js": "/static/js/977.d75cf9f7.chunk.js",
@@ -30,14 +30,14 @@
     "static/media/log-out_1.png": "/static/media/log-out_1.e331b3889871ecbdb9bd.png",
     "static/media/bowling-machine.jpg": "/static/media/bowling-machine.60fb00058053a90d8a84.jpg",
     "index.html": "/index.html",
-    "main.0d41b702.css.map": "/static/css/main.0d41b702.css.map",
+    "main.1980c737.css.map": "/static/css/main.1980c737.css.map",
     "main.f60ad3f1.js.map": "/static/js/main.f60ad3f1.js.map",
     "239.dfdb0d71.chunk.js.map": "/static/js/239.dfdb0d71.chunk.js.map",
     "732.9a305367.chunk.js.map": "/static/js/732.9a305367.chunk.js.map",
     "453.d855a71b.chunk.js.map": "/static/js/453.d855a71b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0d41b702.css",
+    "static/css/main.1980c737.css",
     "static/js/main.f60ad3f1.js"
   ]
 }
