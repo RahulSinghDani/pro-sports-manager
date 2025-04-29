@@ -128,7 +128,7 @@ const Player = () => {
         console.error('Error fetching data:', error);
         setError('Failed to load revenue details.');
       });
-  })
+  },[API_BASE_URL, academyId]);
 
   useEffect(() => {
     // Fetch player data from the backend

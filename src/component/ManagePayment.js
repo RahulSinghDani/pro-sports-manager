@@ -27,8 +27,11 @@ const ManagePayment = () => {
 
     const { role, academyId } = useParams();
     // console.log(role, academyId);
+    const [error, setError] = useState('');
+
     const [sortColumn, setSortColumn] = useState(null);
     const [sortOrder, setSortOrder] = useState("asc");
+    const [revenue, setRevenue] = useState(0);
 
     const [searchParams, setSearchParams] = useState({
         fromDate: "",
@@ -47,6 +50,18 @@ const ManagePayment = () => {
             console.error("Error fetching all records:", error);
         }
     };
+    useEffect(() => {
+        axios
+            .get(`${API_BASE_URL}/api/revenue/${academyId}`, { withCredentials: true })
+            .then(response => {
+                setRevenue(response.data.YTD_Revenue || 0);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                setError('Failed to load revenue details.');
+            });
+    }, [API_BASE_URL, academyId]);
+
     useEffect(() => {
         fetchAllRecords();
     }, [API_BASE_URL, academyId]);
@@ -242,7 +257,18 @@ const ManagePayment = () => {
                 <h2>Player Payment Record</h2>
 
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems: 'center', gap: '10px' }}>
-
+                    <div className='box-style' style={{ position: 'relative' }}>
+                        <p className="quick-hover-btn tooltip" style={{
+                            color:'blue',
+                            position: 'absolute',
+                            top: '8px',
+                            right: '8px',
+                            margin: 0,
+                            cursor: 'pointer'
+                        }} >ℹ<span className="tooltip-text">April 1 to March 31 </span></p>
+                        <h3>YTD Revenue</h3>
+                        <p>₹ {revenue}</p>
+                    </div>
                     {/* search ways  */}
                     <div className="managepayment-search-main">
                         {/* <div> */}
@@ -274,7 +300,7 @@ const ManagePayment = () => {
                                 <img src={searchpng} alt="Search" className="search-icon" />
                             </button>
                         </div>
-
+                        <p className="quick-hover-btn tooltip" style={{color:'blue', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >ℹ<span className="tooltip-text">These filters search by due date</span></p>
 
                         {/* search player by id or name  */}
                         <div className="search-box-managepayment" id="search-by-player">
@@ -298,7 +324,6 @@ const ManagePayment = () => {
                                 </button>
 
                             </div>
-                            <p className="quick-reset-btn tooltip" >ℹ<span className="tooltip-text">These filters search by due date</span></p>
 
                         </div>
 
@@ -307,7 +332,7 @@ const ManagePayment = () => {
 
                     </div>
                     {/* Download Button */}
-                    <div style={{width:'100%'}}>
+                    <div style={{ width: '100%' }}>
                         <div className="payment-quick-filter-main">
                             <div className="download-btn-main">
                                 <button onClick={handleDownloadPDF} className="download-btn">Download as PDF</button>
